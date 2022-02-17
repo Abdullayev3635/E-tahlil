@@ -3,7 +3,6 @@ import 'package:etahlil/features/home/presentation/pages/home.dart';
 import 'package:etahlil/features/new_history/presentetion/pages/new_history.dart';
 import 'package:etahlil/features/old_history/presentetion/pages/old_history.dart';
 import 'package:etahlil/features/profile/presentation/pages/profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

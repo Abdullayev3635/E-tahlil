@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // All colors
 const cFirstColor = Color(0xFF2972FE);
@@ -17,8 +18,8 @@ const cBackColorImage = Color(0xFFFF007A);
 // All gradient
 const cFirstGradient = LinearGradient(
   colors: [cFirstColor, cSecondColor],
-  begin: Alignment.centerLeft,
-  end: Alignment.centerRight,
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
 );
 
 // All keys for local caches
@@ -29,6 +30,17 @@ const String userTable = 'user_table';
 
 // All sizes
 const double cRadius16 = 16.0;
+const double cRadius22 = 22.0;
+const double cNumberLockW90 = 95.0;
+const double cNumberLockH90 = 90.0;
+const double cNumberLockText42 = 42.0;
 
 // versions
 const String version = "1.0.0";
+
+// lock number style
+
+const numStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.w400,
+    color: cWhiteColor);

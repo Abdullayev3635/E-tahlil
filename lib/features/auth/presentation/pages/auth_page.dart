@@ -1,4 +1,5 @@
 import 'package:etahlil/core/utils/app_constants.dart';
+import 'package:etahlil/features/lock/presentation/pages/lock_page.dart';
 import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,7 @@ class _AuthPageState extends State<AuthPage> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    CupertinoPageRoute(builder: (context) => const BottomNavigationPage()),
+                    CupertinoPageRoute(builder: (context) => PasswordScreen.screen()),
                   );
                 },
                 child: Text(

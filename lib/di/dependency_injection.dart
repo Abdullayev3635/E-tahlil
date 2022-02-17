@@ -1,4 +1,5 @@
 import 'package:etahlil/core/network/network_provider.dart';
+import 'package:etahlil/features/lock/data/datasources/lock_local_datasources.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,8 @@ Future<void> init() async {
   //   ),
   // );
 
+  /// Lock
+  di.registerLazySingleton(() => PassLocalDataSource());
 
 
   /// Local cache
