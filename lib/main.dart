@@ -6,7 +6,8 @@ import 'di/dependency_injection.dart' as di;
 import 'features/app.dart';
 
 void main() async {
-  di.init();
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runZonedGuarded(() {
     runApp(const AppProvider());
   }, (error, stacktrace) {

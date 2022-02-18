@@ -32,13 +32,13 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: cWhiteColor,
+      backgroundColor: cBackColor,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: Container(
         height: 80.h,
-        margin: EdgeInsets.symmetric(horizontal: 18.w, vertical: 23.h),
+        margin: EdgeInsets.only(left: 18.w, right: 18.w, bottom: 23.h),
         decoration: BoxDecoration(
           color: cFirstColor,
           borderRadius: BorderRadius.all(Radius.circular(16.r)),

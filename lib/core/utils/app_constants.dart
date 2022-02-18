@@ -11,15 +11,22 @@ const cBlackColor = Color(0xFF000000);
 const cWhiteColor = Color(0xFFFFFFFF);
 const cRedColor = Color(0xFFFF3030);
 const cGrayColor = Color(0xFF949494);
+const cGrayColor2 = Color(0xFF4F4F4F);
 const cYellowColor = Color(0xFFFFC92F);
 const cBackColorIcon = Color(0xFF99BAFF);
-const cBackColorImage = Color(0xFFFF007A);
+const cBackColor  = Color(0xFFF8F8F8);
 
 // All gradient
 const cFirstGradient = LinearGradient(
   colors: [cFirstColor, cSecondColor],
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,
+);
+
+const cSecondGradient = LinearGradient(
+  colors: [Colors.transparent, cFirstColor],
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
 );
 
 // All keys for local caches
@@ -31,6 +38,7 @@ const String userTable = 'user_table';
 // All sizes
 const double cRadius16 = 16.0;
 const double cRadius22 = 22.0;
+
 const double cNumberLockW90 = 95.0;
 const double cNumberLockH90 = 90.0;
 const double cNumberLockText42 = 42.0;

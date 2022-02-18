@@ -29,7 +29,7 @@ class PassBloc extends Bloc<PassEvent, PassState> {
       PassCompileEvent event, Emitter<PassState> emit) async {
     emit(const PassLoading(""));
     if (event.passController.text == await _passRepository.setCompile()) {
-      Navigator.push(
+      Navigator.pushReplacement(
           _context,
           CupertinoPageRoute(
               builder: (context) => const BottomNavigationPage()));
