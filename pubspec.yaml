@@ -40,8 +40,8 @@ dependencies:
   pin_code_fields: ^7.0.0-nullsafety
   # 13.Bloc cached clear helper
   bloc_concurrency: ^0.2.0
-  # 14.GridView scroll helper
-  scrollable_positioned_list: ^0.2.3
+  # 14.Image picker from camera
+  image_picker: ^0.8.4+9
 
 dev_dependencies:
   flutter_test:

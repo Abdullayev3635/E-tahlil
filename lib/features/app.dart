@@ -1,5 +1,5 @@
+import 'package:etahlil/features/send_data/presentetion/pages/send_data.dart';
 import 'package:flutter/material.dart';
-
 import 'login/presentation/pages/login_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,7 +31,7 @@ class App extends StatelessWidget {
               );
             },
             debugShowCheckedModeBanner: false,
-            home: const LoginPage(),
+            home: const SendData(),
           ),
     );
   }

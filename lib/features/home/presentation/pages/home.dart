@@ -9,11 +9,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  static Widget screen() => BlocProvider(
-        create: (context) => HomeBloc(),
-        child: const HomePage(),
-      );
-
   @override
   _HomePageState createState() => _HomePageState();
 }
