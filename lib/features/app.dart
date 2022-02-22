@@ -15,6 +15,7 @@ class AppProvider extends StatelessWidget {
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -31,7 +32,7 @@ class App extends StatelessWidget {
               );
             },
             debugShowCheckedModeBanner: false,
-            home: const SendData(),
+            home: const LoginPage(),
           ),
     );
   }

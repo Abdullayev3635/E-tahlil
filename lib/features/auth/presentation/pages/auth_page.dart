@@ -30,7 +30,8 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: cWhiteColor,
-      body: InkResponse(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: (){
           FocusScope.of(context).requestFocus(FocusNode());
         },

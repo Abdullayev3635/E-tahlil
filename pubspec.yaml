@@ -42,6 +42,8 @@ dependencies:
   bloc_concurrency: ^0.2.0
   # 14.Image picker from camera
   image_picker: ^0.8.4+9
+  # 15.intro views images
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,8 @@
 import 'package:etahlil/core/utils/app_constants.dart';
-import 'package:etahlil/features/home/domain/bloc/home_bloc.dart';
 import 'package:etahlil/features/home/domain/models/section_model.dart';
+import 'package:etahlil/features/send_data/presentetion/pages/send_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.circular(cRadius16.r),
                                 border: Border.all(
-                                    width: 1,
+                                    width: 1.5.w,
                                     color:
                                         isLarge ? cWhiteColor : cSecondColor),
                                 color: cSecondColor),
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50.r),
                                 border: Border.all(
-                                    width: 1,
+                                    width: 1.5.w,
                                     color: sectionList[index].isCheck!
                                         ? cWhiteColor
                                         : cSecondColor),
@@ -242,50 +242,58 @@ class _HomePageState extends State<HomePage> {
               child: ListView.builder(
                   itemCount: 12,
                   itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(cRadius16.r),
-                          color: cWhiteColor),
-                      height: 80.h,
-                      margin: EdgeInsets.only(bottom: 12.h),
-                      padding: EdgeInsets.symmetric(horizontal: 22.w),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/ellipse.svg",
-                            height: 5.h,
-                            width: 5.w,
-                          ),
-                          SizedBox(
-                            width: 15.w,
-                          ),
-                          Text(
-                            "Мактаблар",
-                            maxLines: 2,
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                color: cGrayColor2,
-                                fontFamily: 'Medium'),
-                          ),
-                          const Spacer(),
-                          Text(
-                            "10",
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontSize: 16.sp,
-                                color: cRedColor,
-                                fontFamily: 'Medium'),
-                          ),
-                          SizedBox(
-                            width: 6.w,
-                          ),
-                          SvgPicture.asset(
-                            "assets/icons/warning_icon.svg",
-                            height: 20.h,
-                            width: 20.w,
-                            color: cRedColor,
-                          ),
-                        ],
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context) => const SendData()),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(cRadius16.r),
+                            color: cWhiteColor),
+                        height: 80.h,
+                        margin: EdgeInsets.only(bottom: 12.h),
+                        padding: EdgeInsets.symmetric(horizontal: 22.w),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/ellipse.svg",
+                              height: 5.h,
+                              width: 5.w,
+                            ),
+                            SizedBox(
+                              width: 15.w,
+                            ),
+                            Text(
+                              "Мактаблар",
+                              maxLines: 2,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: cGrayColor2,
+                                  fontFamily: 'Medium'),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "10",
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: cRedColor,
+                                  fontFamily: 'Medium'),
+                            ),
+                            SizedBox(
+                              width: 6.w,
+                            ),
+                            SvgPicture.asset(
+                              "assets/icons/warning_icon.svg",
+                              height: 20.h,
+                              width: 20.w,
+                              color: cRedColor,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }),

@@ -1,5 +1,4 @@
 import 'package:etahlil/core/utils/app_constants.dart';
-import 'package:etahlil/features/lock/data/datasources/lock_local_datasources.dart';
 import 'package:etahlil/features/lock/data/repositories/lock_repositories.dart';
 import 'package:etahlil/features/lock/domain/bloc/pass_bloc.dart';
 import 'package:etahlil/features/lock/presentation/widgets/num_pad.dart';
@@ -24,8 +23,6 @@ class PasswordScreen extends StatefulWidget {
 
 class _PasswordScreenState extends State<PasswordScreen> {
   late PassBloc bloc;
-  String txtInfo = "Махфий паролни киритинг";
-  String txtError = "Киритилган пароль нотўғри илтимос қайтадан ҳаракат қилинг";
   bool onError = false;
 
   @override
@@ -122,8 +119,10 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       errorBorderColor: cBackColorIcon,
                     ),
                     onCompleted: (value) {
-                      bloc.add(
-                          PassCompileEvent(passController: _pinPutController));
+                      if (value.length == 4) {
+                        bloc.add(PassCompileEvent(
+                            passController: _pinPutController));
+                      }
                     },
                     onChanged: (controllerPin) {},
                   ),

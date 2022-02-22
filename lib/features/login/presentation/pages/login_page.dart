@@ -28,8 +28,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: cWhiteColor,
-      body: InkResponse(
-        onTap: (){
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Container(
@@ -120,16 +121,16 @@ class _LoginPageState extends State<LoginPage> {
                     "Бундай фойдаланувчи рўйхатдан ўтмаган! Дастурдан фойдаланиш учун администратор билан боғланинг!",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 12.sp, color: cRedColor, fontFamily: "Regular"),
+                        fontSize: 12.sp,
+                        color: cRedColor,
+                        fontFamily: "Regular"),
                   ),
                 ),
               ),
               MaterialButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    CupertinoPageRoute(builder: (context) => const AuthPage()),
-                  );
+                  onError = true;
+                  setState(() {});
                 },
                 child: Text(
                   'Давом этиш',
@@ -152,7 +153,13 @@ class _LoginPageState extends State<LoginPage> {
               Visibility(
                 visible: onError,
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => const AuthPage()),
+                    );
+                  },
                   child: Text(
                     'Админстратор билан боғланиш',
                     style: TextStyle(

@@ -2,12 +2,15 @@ import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget number (TextEditingController _pinPutController, String number){
+Widget number(TextEditingController _pinPutController, String number) {
   return GestureDetector(
     onTap: () {
-      _pinPutController.text = _pinPutController.text+number;
-      _pinPutController.selection = TextSelection.collapsed(
-          offset: _pinPutController.text.length);
+      if (_pinPutController.text.length != 4 &&
+          _pinPutController.text.length != 5) {
+        _pinPutController.text = _pinPutController.text + number;
+      }
+      _pinPutController.selection =
+          TextSelection.collapsed(offset: _pinPutController.text.length);
     },
     behavior: HitTestBehavior.translucent,
     excludeFromSemantics: true,
