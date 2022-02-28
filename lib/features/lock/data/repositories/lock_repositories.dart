@@ -1,12 +1,20 @@
-import 'package:etahlil/di/dependency_injection.dart';
+import 'package:dartz/dartz.dart';
+import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/features/lock/data/datasources/lock_local_datasources.dart';
-import 'package:etahlil/features/lock/domain/repositories/i_lock_repositories.dart';
+import 'package:etahlil/features/lock/domain/repositories/lock_repositories.dart';
 
-class PassRepository implements IPassRepository {
-  final PassLocalDataSource _passLocalDataSource = di.get();
+class PassRepositoryImpl implements PassRepository {
+  final PassLocalDataSource passLocalDataSource;
+
+  PassRepositoryImpl({required this.passLocalDataSource});
 
   @override
-  Future<String> setCompile() async {
-    return _passLocalDataSource.setCompile();
+  Future<Either<Failure, bool>> setCompile(String pass) async {
+    try {
+      final result = await passLocalDataSource.setCompile(pass);
+      return Right(result);
+    } on LocalFailure {
+      return const Left(ServerFailure("Киритилган пароль нотўғри"));
+    }
   }
 }

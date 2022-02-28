@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/description_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class OldHistory extends StatefulWidget {
   const OldHistory({Key? key}) : super(key: key);
@@ -38,15 +40,25 @@ class _OldHistoryState extends State<OldHistory> {
                       bottomLeft: Radius.circular(cRadius22.r),
                       bottomRight: Radius.circular(cRadius22.r))),
               child: Center(
-                child: SizedBox(
-                  child: Text("Юборилган",
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      style: TextStyle(
-                          fontSize: 18.sp,
-                          color: cWhiteColor,
-                          fontFamily: 'Medium')),
-                  width: 300.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 24.w,
+                    ),
+                    Text("Юборилган",
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: 18.sp,
+                            color: cWhiteColor,
+                            fontFamily: 'Medium')),
+                    SvgPicture.asset(
+                      "assets/icons/filter_icon.svg",
+                      width: 24.w,
+                      height: 24.h,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -129,7 +141,7 @@ class _OldHistoryState extends State<OldHistory> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Янги",
+                                "Дам олиш объектлари",
                                 style: TextStyle(
                                     color: cFirstColor,
                                     fontFamily: 'Medium',

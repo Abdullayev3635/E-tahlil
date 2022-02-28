@@ -1,7 +1,8 @@
 import 'package:etahlil/core/utils/app_constants.dart';
-import 'package:etahlil/features/lock/data/repositories/lock_repositories.dart';
+import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/lock/domain/bloc/pass_bloc.dart';
 import 'package:etahlil/features/lock/presentation/widgets/num_pad.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,8 +13,7 @@ class PasswordScreen extends StatefulWidget {
   const PasswordScreen({Key? key}) : super(key: key);
 
   static Widget screen() => BlocProvider(
-        create: (context) =>
-            PassBloc(passRepository: PassRepository(), context: context),
+        create: (context) => di<PassBloc>(),
         child: const PasswordScreen(),
       );
 
@@ -61,6 +61,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 50.w),
                   child: BlocBuilder<PassBloc, PassState>(
+                    buildWhen: (_, state) {
+                      Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => PasswordScreen.screen()),
+                      );
+                      debugPrint(state.message);
+                      return state is! PassSuccess;
+                    },
                     builder: (context, state) {
                       if (state is PassInitial) {
                         return Text(
@@ -100,8 +109,9 @@ class _PasswordScreenState extends State<PasswordScreen> {
                       height: 14.h,
                       width: 14.w,
                       decoration: BoxDecoration(
-                          color: cWhiteColor,
-                          borderRadius: BorderRadius.circular(7)),
+                        color: cWhiteColor,
+                        borderRadius: BorderRadius.circular(7),
+                      ),
                     ),
                     enableActiveFill: true,
                     enablePinAutofill: true,

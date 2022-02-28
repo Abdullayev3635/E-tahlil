@@ -11,6 +11,10 @@ class PassInitial extends PassState {
   const PassInitial(String pass) : super(message: pass);
 }
 
+class PassSuccess extends PassState {
+  const PassSuccess(String pass) : super(message: pass);
+}
+
 class PassLoading extends PassState {
   const PassLoading(String pass) : super(message: pass);
 }

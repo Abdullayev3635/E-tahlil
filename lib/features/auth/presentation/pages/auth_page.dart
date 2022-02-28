@@ -18,7 +18,8 @@ class _AuthPageState extends State<AuthPage> {
   var maskFormatter = MaskTextInputFormatter(mask: '#   #   #   #');
   TextEditingController code = TextEditingController();
   bool onError = false;
-  String txtMain = "Ушбу +99833 213-36-35 рақамга 4 рақамдан иборат  маҳфий код юборилди илтимос кодни киритинг!";
+  String txtMain =
+      "Ушбу +99833 213-36-35 рақамга 4 рақамдан иборат  маҳфий код юборилди илтимос кодни киритинг!";
 
   @override
   void dispose() {
@@ -32,7 +33,7 @@ class _AuthPageState extends State<AuthPage> {
       backgroundColor: cWhiteColor,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Container(
@@ -57,7 +58,9 @@ class _AuthPageState extends State<AuthPage> {
                   txtMain,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 12.sp, color: onError?cRedColor:cFirstColor, fontFamily: "Regular"),
+                      fontSize: 13.sp,
+                      color: onError ? cRedColor : cFirstColor,
+                      fontFamily: "Regular"),
                 ),
               ),
               SizedBox(
@@ -106,7 +109,8 @@ class _AuthPageState extends State<AuthPage> {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    CupertinoPageRoute(builder: (context) => PasswordScreen.screen()),
+                    CupertinoPageRoute(
+                        builder: (context) => PasswordScreen.screen()),
                   );
                 },
                 child: Text(

@@ -44,6 +44,12 @@ dependencies:
   image_picker: ^0.8.4+9
   # 15.intro views images
   carousel_slider: ^4.0.0
+  # 16. For get current time and others
+  intl: ^0.17.0
+  # 17.Value equality
+  equatable: ^2.0.3
+  # 18.Functional programming thingies
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:

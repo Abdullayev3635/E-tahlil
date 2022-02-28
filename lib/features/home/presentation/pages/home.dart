@@ -159,11 +159,12 @@ class _HomePageState extends State<HomePage> {
                   child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: isLarge ? 3 : 1,
-                          mainAxisExtent: 68.w,
+                          mainAxisExtent: 75.w,
                           crossAxisSpacing: 12,
                           childAspectRatio: 2 / 1,
                           mainAxisSpacing: 13.w),
                       scrollDirection: Axis.horizontal,
+                      physics: const BouncingScrollPhysics(),
                       itemCount: sectionList.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -174,29 +175,57 @@ class _HomePageState extends State<HomePage> {
                             sectionList[index].isCheck = true;
                             setState(() {});
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50.r),
-                                border: Border.all(
-                                    width: 1.5.w,
-                                    color: sectionList[index].isCheck!
-                                        ? cWhiteColor
-                                        : cSecondColor),
-                                color: cSecondColor),
-                            height: 68.h,
-                            width: 68.w,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 2.h),
-                            child: Center(
-                                child: Text(
-                              sectionList[index].name!,
-                              maxLines: 2,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: cWhiteColor,
-                                  fontFamily: 'Medium',
-                                  fontSize: 9.sp),
-                            )),
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50.r),
+                                    border: Border.all(
+                                        width: 1.5.w,
+                                        color: sectionList[index].isCheck!
+                                            ? cWhiteColor
+                                            : cSecondColor),
+                                    color: cSecondColor),
+                                height: 75.h,
+                                width: 68.w,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2.w, vertical: 2.h),
+                                child: Center(
+                                    child: Text(
+                                  sectionList[index].name!,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: cWhiteColor,
+                                      fontFamily: 'Medium',
+                                      fontSize: 9.sp),
+                                )),
+                              ),
+                              Align(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15.r),
+                                      color: cWhiteColor),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 5.w, vertical: 5.h),
+                                  padding: EdgeInsets.only(bottom: 2.h),
+                                  height: 18.h,
+                                  width: 18.w,
+                                  child: Center(
+                                    child: Text(
+                                      "-1",
+                                      maxLines: 1,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: cFirstColor,
+                                          fontFamily: 'Medium',
+                                          fontSize: 9.sp),
+                                    ),
+                                  ),
+                                ),
+                                alignment: Alignment.topRight,
+                              ),
+                            ],
                           ),
                         );
                       }),
@@ -241,12 +270,14 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.symmetric(horizontal: 18.w, vertical: 0),
               child: ListView.builder(
                   itemCount: 12,
+                  physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          CupertinoPageRoute(builder: (context) => const SendData()),
+                          CupertinoPageRoute(
+                              builder: (context) => SendData.screen()),
                         );
                       },
                       child: Container(

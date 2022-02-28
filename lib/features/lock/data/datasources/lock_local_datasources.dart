@@ -1,13 +1,18 @@
-abstract class IPassLocalDataSource{
-  Future<String> setCompile();
+import 'package:shared_preferences/shared_preferences.dart';
+
+abstract class IPassLocalDataSource {
+  Future<bool> setCompile(String pass);
 }
 
-class PassLocalDataSource implements IPassLocalDataSource{
+class PassLocalDataSource implements IPassLocalDataSource {
+  final SharedPreferences sharedPreferences;
 
-  String pass = "0000";
+  PassLocalDataSource({required this.sharedPreferences});
+
+  final String _pass = "0000";
+
   @override
-  Future<String> setCompile() {
-    return Future.value(pass);
+  Future<bool> setCompile(String pass) async {
+    return _pass == pass;
   }
-
 }
