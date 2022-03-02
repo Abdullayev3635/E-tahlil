@@ -31,7 +31,7 @@ class PassBloc extends Bloc<PassEvent, PassState> {
                       "Киритилган пароль нотўғри илтимос қайтадан ҳаракат қилинг",
                   errorMessage: "error"))
             },
-        (s) => {emit(const PassSuccess("Successful"))});
+        (s) => {emit(const PassSuccess(""))});
 
     event.passController.clear();
   }

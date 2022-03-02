@@ -2,6 +2,7 @@ import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/lock/domain/bloc/pass_bloc.dart';
 import 'package:etahlil/features/lock/presentation/widgets/num_pad.dart';
+import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,13 +63,16 @@ class _PasswordScreenState extends State<PasswordScreen> {
                   margin: EdgeInsets.symmetric(horizontal: 50.w),
                   child: BlocBuilder<PassBloc, PassState>(
                     buildWhen: (_, state) {
-                      Navigator.pushReplacement(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => PasswordScreen.screen()),
-                      );
+                      if (state is PassSuccess) {
+                        Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  const BottomNavigationPage()),
+                        );
+                      }
                       debugPrint(state.message);
-                      return state is! PassSuccess;
+                      return state is PassSuccess;
                     },
                     builder: (context, state) {
                       if (state is PassInitial) {

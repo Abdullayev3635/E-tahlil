@@ -4,7 +4,7 @@ import 'package:etahlil/features/lock/data/datasources/lock_local_datasources.da
 import 'package:etahlil/features/lock/domain/repositories/lock_repositories.dart';
 
 class PassRepositoryImpl implements PassRepository {
-  final PassLocalDataSource passLocalDataSource;
+  final PassLocalDataSourceImpl passLocalDataSource;
 
   PassRepositoryImpl({required this.passLocalDataSource});
 

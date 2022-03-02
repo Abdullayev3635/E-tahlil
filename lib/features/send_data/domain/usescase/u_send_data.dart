@@ -13,13 +13,21 @@ class SendData extends UseCase<bool, SendDataParams> {
   @override
   Future<Either<Failure, bool>> call(SendDataParams params) {
     return sendDataRepository.sendData(
-        params.userId, params.subId, params.title, params.text, params.images);
+        params.userId,
+        params.subId,
+        params.subCategoryId,
+        params.presenceOfDeputy,
+        params.title,
+        params.text,
+        params.images);
   }
 }
 
 class SendDataParams extends Equatable {
   final int userId;
   final int subId;
+  final int subCategoryId;
+  final int presenceOfDeputy;
   final String title;
   final String text;
   final List<SendModel> images;
@@ -27,5 +35,6 @@ class SendDataParams extends Equatable {
   @override
   List<Object?> get props => [userId, subId, title, text, images];
 
-  SendDataParams(this.userId, this.subId, this.title, this.text, this.images);
+  const SendDataParams(this.userId, this.subId, this.subCategoryId,
+      this.presenceOfDeputy, this.title, this.text, this.images);
 }

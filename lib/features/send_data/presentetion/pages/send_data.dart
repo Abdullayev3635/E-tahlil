@@ -1,13 +1,15 @@
+import 'dart:convert';
+import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
+import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
-import 'package:etahlil/features/send_data/data/models/helper_model.dart';
 import 'package:etahlil/features/send_data/data/models/send_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -42,14 +44,19 @@ class _SendDataState extends State<SendData> {
       latLang3 = "41.21021020,70.12125485",
       latLang4 = "41.21021020,70.12125485",
       latLang5 = "41.21021020,70.12125485";
+
+  List<int>? imageBytes;
+  String? imageString;
+
   final _picker = ImagePicker();
   TextEditingController subject = TextEditingController();
   TextEditingController text = TextEditingController();
 
   late SendDataBloc _bloc;
 
-  late List<SendModel> images;
-  late List<HelperModel> _list;
+  bool checkOrin = true;
+
+  late List<SendModel> images = [];
 
   @override
   void initState() {
@@ -78,12 +85,12 @@ class _SendDataState extends State<SendData> {
             children: [
               Container(
                 padding: EdgeInsets.only(left: 19.w, right: 19.w, top: 20.h),
-                height: 114.h,
+                height: 140.h,
                 decoration: BoxDecoration(
                     color: cFirstColor,
                     borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(cRadius22.r),
-                        bottomRight: Radius.circular(cRadius22.r))),
+                        bottomLeft: Radius.circular(cRadius16.r),
+                        bottomRight: Radius.circular(cRadius16.r))),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -113,6 +120,9 @@ class _SendDataState extends State<SendData> {
                       width: 300.w,
                     ),
                     const Spacer(),
+                    SizedBox(
+                      width: 30.w,
+                    )
                   ],
                 ),
               ),
@@ -157,14 +167,14 @@ class _SendDataState extends State<SendData> {
                 ),
               ),
               SizedBox(
-                height: 12.h,
+                height: 16.h,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 24.w),
-                padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 18.h),
                 decoration: BoxDecoration(
                     color: cBackColor,
-                    borderRadius: BorderRadius.circular(cRadius22),
+                    borderRadius: BorderRadius.circular(cRadius12),
                     border: Border.all(color: cFirstColor, width: 1.5.w)),
                 child: Column(
                   children: [
@@ -235,26 +245,27 @@ class _SendDataState extends State<SendData> {
                 height: 69.h,
                 decoration: BoxDecoration(
                     color: cBackColor,
-                    borderRadius: BorderRadius.circular(cRadius22),
+                    borderRadius: BorderRadius.circular(cRadius12),
                     border: Border.all(color: cFirstColor, width: 1.5.w)),
-                child: Center(
-                  child: Theme(
-                    data: ThemeData(
-                        unselectedWidgetColor: cGrayColor2,
-                        toggleableActiveColor: cGrayColor2),
-                    child: CheckboxListTile(
-                      title: Text(
-                        "Ўринбосар иштирокида",
-                        style: TextStyle(
-                            fontSize: 18.sp,
-                            color: cGrayColor2,
-                            fontFamily: 'Regular'),
-                      ),
-                      //    <-- label
-                      value: true,
-                      onChanged: (newValue) {},
-                      controlAffinity: ListTileControlAffinity.leading,
+                child: Theme(
+                  data: ThemeData(
+                      unselectedWidgetColor: cGrayColor2,
+                      toggleableActiveColor: cGrayColor2),
+                  child: CheckboxListTile(
+                    title: Text(
+                      "Ўринбосар иштирокида",
+                      style: TextStyle(
+                          fontSize: 18.sp,
+                          color: cGrayColor2,
+                          fontFamily: 'Regular'),
                     ),
+                    //    <-- label
+                    value: checkOrin,
+                    onChanged: (newValue) {
+                      checkOrin = newValue!;
+                      setState(() {});
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
                   ),
                 ),
               ),
@@ -268,7 +279,7 @@ class _SendDataState extends State<SendData> {
                     Expanded(
                       child: MaterialButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
                         child: Text(
                           "Бекор қилиш",
@@ -282,7 +293,7 @@ class _SendDataState extends State<SendData> {
                         height: 70.h,
                         textColor: cGrayColor2,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(cRadius22.r)),
+                            borderRadius: BorderRadius.circular(cRadius12.r)),
                       ),
                       flex: 1,
                     ),
@@ -294,19 +305,49 @@ class _SendDataState extends State<SendData> {
                         onPressed: () {
                           addFile();
                         },
-                        child: Text(
-                          "Юбориш",
-                          style: TextStyle(
-                              fontSize: 18.sp,
-                              color: cWhiteColor,
-                              fontFamily: 'Regular'),
+                        child: BlocBuilder<SendDataBloc, SendDataState>(
+                          builder: (context, state) {
+                            if (state is NoConnectionSendData) {
+                              CustomToast.showToast(
+                                  "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
+                            } else if (state is SendDataFailure) {
+                              CustomToast.showToast(
+                                  "Маълумотлар юкланишда хатолик юз берди!");
+                            }
+                            if (state is SendDataSuccess) {
+                              WidgetsBinding.instance
+                                  ?.addPostFrameCallback((_) {
+                                Navigator.of(context).pop();
+                              });
+                            }
+                            if (state is SendDataInitial) {
+                              return Text(
+                                "Юбориш",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: cWhiteColor,
+                                    fontFamily: 'Regular'),
+                              );
+                            } else if (state is SendDataLoading) {
+                              return const CupertinoActivityIndicator();
+                            } else {
+                              return Text(
+                                "Юбориш",
+                                style: TextStyle(
+                                    fontSize: 18.sp,
+                                    color: cWhiteColor,
+                                    fontFamily: 'Regular'),
+                              );
+                            }
+                          },
+                          bloc: _bloc,
                         ),
                         color: cFirstColor,
                         elevation: 0,
                         height: 70.h,
                         textColor: cGrayColor2,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(cRadius22.r)),
+                            borderRadius: BorderRadius.circular(cRadius12.r)),
                       ),
                       flex: 1,
                     ),
@@ -399,43 +440,58 @@ class _SendDataState extends State<SendData> {
   }
 
   void addFile() async {
-    if (_imageFile0 != null) {
-      _list.add(
-          HelperModel(url: _imageFile0!.path, latLang: latLang0, sana: sana0));
-    } else if (_imageFile1 != null) {
-      _list.add(
-          HelperModel(url: _imageFile1!.path, latLang: latLang1, sana: sana1));
-    } else if (_imageFile2 != null) {
-      _list.add(
-          HelperModel(url: _imageFile2!.path, latLang: latLang2, sana: sana2));
-    } else if (_imageFile3 != null) {
-      _list.add(
-          HelperModel(url: _imageFile3!.path, latLang: latLang3, sana: sana3));
-    } else if (_imageFile4 != null) {
-      _list.add(
-          HelperModel(url: _imageFile4!.path, latLang: latLang4, sana: sana4));
-    } else if (_imageFile5 != null) {
-      _list.add(
-          HelperModel(url: _imageFile5!.path, latLang: latLang5, sana: sana5));
-    }
-    for (int i = 0; i < _list.length; i++) {
-      File imageFile = File(_list[i].url.toString());
-      var stream = ByteStream(imageFile.openRead());
-      var length = await imageFile.length();
-      var multipartFile = MultipartFile('images', stream, length,
-          filename: imageFile.path.split('/').last);
-      images.add(SendModel(
-          latLang: _list[i].latLang,
-          sana: _list[i].sana,
-          multipartFile: multipartFile));
-    }
-    _bloc.add(
-      SendDataToServerEvent(
-          userId: 1,
+    try {
+      images.clear();
+      if (_imageFile0 != null) {
+        imageBytes = _imageFile0!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang0, sana: sana0, image: imageString));
+      }
+      if (_imageFile1 != null) {
+        imageBytes = _imageFile1!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang1, sana: sana1, image: imageString));
+      }
+      if (_imageFile2 != null) {
+        imageBytes = _imageFile2!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang2, sana: sana2, image: imageString));
+      }
+      if (_imageFile3 != null) {
+        imageBytes = _imageFile3!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang3, sana: sana3, image: imageString));
+      }
+      if (_imageFile4 != null) {
+        imageBytes = _imageFile4!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang4, sana: sana4, image: imageString));
+      }
+      if (_imageFile5 != null) {
+        imageBytes = _imageFile5!.readAsBytesSync();
+        imageString = base64Encode(imageBytes!);
+        images
+            .add(SendModel(latLang: latLang5, sana: sana5, image: imageString));
+      }
+      _bloc.add(
+        SendDataToServerEvent(
+          userId: 2,
           subId: 1,
+          subCategoryId: 1,
+          presenceOfDeputy: checkOrin ? 1 : 0,
           title: subject.text,
           text: text.text,
-          images: images),
-    );
+          images: images,
+        ),
+      );
+    } on InputFormatterFailure {
+      debugPrint("Малумотлар юкланишда ҳатолик");
+      return;
+    }
   }
 }

@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-abstract class IPassLocalDataSource {
+abstract class PassLocalDataSource {
   Future<bool> setCompile(String pass);
 }
 
-class PassLocalDataSource implements IPassLocalDataSource {
+class PassLocalDataSourceImpl implements PassLocalDataSource {
   final SharedPreferences sharedPreferences;
 
-  PassLocalDataSource({required this.sharedPreferences});
+  PassLocalDataSourceImpl({required this.sharedPreferences});
 
   final String _pass = "0000";
 

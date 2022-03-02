@@ -38,6 +38,7 @@ const String userData = 'user_data';
 const String userTable = 'user_table';
 
 // All sizes
+const double cRadius10 = 10.0;
 const double cRadius12 = 12.0;
 const double cRadius16 = 16.0;
 const double cRadius22 = 22.0;
