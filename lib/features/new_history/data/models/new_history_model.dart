@@ -9,6 +9,7 @@ class NewHistoryModel {
   String? orinbosarIshtirokida;
   int? newCount;
   int? sendedCount;
+  List<String>? imgList;
 
   NewHistoryModel(
       {this.id,
@@ -27,9 +28,11 @@ class NewHistoryModel {
     title = json['title'];
     text = json['text'];
     if (json['image_list'] != null) {
-      imageList = <ImageList>[];
       json['image_list'].forEach((v) {
-        imageList!.add(ImageList.fromJson(v));
+        imgList!.add(v["image"]);
+        // v.forEach((b) {
+        //   imgList!.add(b.image);
+        // });
       });
     }
     regionName = json['region_name'];

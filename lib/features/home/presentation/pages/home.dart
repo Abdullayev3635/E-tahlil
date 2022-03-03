@@ -396,7 +396,9 @@ class _HomePageState extends State<HomePage> {
                                     "assets/icons/warning_icon.svg",
                                     height: 20.h,
                                     width: 20.w,
-                                    color: cRedColor,
+                                    color: state.list[index].status == "1"
+                                        ? cRedColor
+                                        : cYellowColor,
                                   ),
                                 ],
                               ),

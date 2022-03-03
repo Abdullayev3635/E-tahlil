@@ -9,6 +9,7 @@ class OldHistoryModel {
   String? orinbosarIshtirokida;
   int? newCount;
   int? sendedCount;
+  List<String>? imgList;
 
   OldHistoryModel({
     this.id,
@@ -30,7 +31,8 @@ class OldHistoryModel {
     if (json['image_list'] != null) {
       imageList = <ImageList>[];
       json['image_list'].forEach((v) {
-        imageList!.add(ImageList.fromJson(v));
+        imgList!.add(v["image"]);
+        // imageList!.add(ImageList.fromJson(v));
       });
     }
     regionName = json['region_name'];
