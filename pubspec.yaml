@@ -50,6 +50,8 @@ dependencies:
   equatable: ^2.0.3
   # 18.Functional programming thingies
   dartz: ^0.10.1
+  # 19.For get uni address
+  device_info_plus: ^3.2.2
 
 dev_dependencies:
   flutter_test:

@@ -14,11 +14,19 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class SendData extends StatefulWidget {
-  const SendData({Key? key}) : super(key: key);
+  final int categoryId;
+  final int subCategoryId;
 
-  static Widget screen() => BlocProvider(
+  const SendData(
+      {Key? key, required this.categoryId, required this.subCategoryId})
+      : super(key: key);
+
+  static Widget screen(int catId, int subCatId) => BlocProvider(
         create: (context) => di<SendDataBloc>(),
-        child: const SendData(),
+        child: SendData(
+          categoryId: catId,
+          subCategoryId: subCatId,
+        ),
       );
 
   @override
@@ -329,7 +337,11 @@ class _SendDataState extends State<SendData> {
                                     fontFamily: 'Regular'),
                               );
                             } else if (state is SendDataLoading) {
-                              return const CupertinoActivityIndicator();
+                              return CupertinoTheme(
+                                data: CupertinoTheme.of(context)
+                                    .copyWith(primaryColor: cWhiteColor),
+                                child: const CupertinoActivityIndicator(),
+                              );
                             } else {
                               return Text(
                                 "Юбориш",
@@ -481,8 +493,8 @@ class _SendDataState extends State<SendData> {
       _bloc.add(
         SendDataToServerEvent(
           userId: 2,
-          subId: 1,
-          subCategoryId: 1,
+          subId: widget.categoryId,
+          subCategoryId: widget.subCategoryId,
           presenceOfDeputy: checkOrin ? 1 : 0,
           title: subject.text,
           text: text.text,

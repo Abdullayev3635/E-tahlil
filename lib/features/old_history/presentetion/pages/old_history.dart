@@ -14,7 +14,8 @@ class OldHistory extends StatefulWidget {
   const OldHistory({Key? key}) : super(key: key);
 
   static Widget screen() => BlocProvider(
-        create: (context) => di<OldHistoryBloc>(),
+        create: (context) =>
+            di<OldHistoryBloc>()..add(GetOldHistoryEvent(userId: 2)),
         child: const OldHistory(),
       );
 
@@ -109,7 +110,7 @@ class _OldHistoryState extends State<OldHistory> {
                   } else if (state is OldHistorySuccess) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        imageSliders = state.list[index].imgList!
+                        imageSliders = state.list[index].imgList
                             .map(
                               (item) => Container(
                                 margin: const EdgeInsets.all(5.0),
@@ -117,7 +118,7 @@ class _OldHistoryState extends State<OldHistory> {
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(12.0),
                                   ),
-                                  child: Image.asset(item,
+                                  child: Image.network(item,
                                       fit: BoxFit.cover, width: 1000.0),
                                 ),
                               ),
@@ -161,7 +162,7 @@ class _OldHistoryState extends State<OldHistory> {
                                   : Container(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: state.list[index].imgList!
+                                children: state.list[index].imgList
                                     .asMap()
                                     .entries
                                     .map((entry) {

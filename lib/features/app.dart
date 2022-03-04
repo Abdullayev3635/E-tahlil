@@ -29,7 +29,7 @@ class App extends StatelessWidget {
           );
         },
         debugShowCheckedModeBanner: false,
-        home: const LoginPage(),
+        home: LoginPage.screen(),
       ),
     );
   }

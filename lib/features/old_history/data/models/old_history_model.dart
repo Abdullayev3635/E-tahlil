@@ -1,3 +1,5 @@
+import 'package:etahlil/core/utils/api_path.dart';
+
 class OldHistoryModel {
   int? id;
   String? title;
@@ -9,7 +11,7 @@ class OldHistoryModel {
   String? orinbosarIshtirokida;
   int? newCount;
   int? sendedCount;
-  List<String>? imgList;
+  List<String> imgList = [];
 
   OldHistoryModel({
     this.id,
@@ -31,8 +33,7 @@ class OldHistoryModel {
     if (json['image_list'] != null) {
       imageList = <ImageList>[];
       json['image_list'].forEach((v) {
-        imgList!.add(v["image"]);
-        // imageList!.add(ImageList.fromJson(v));
+        imgList.add(baseUrlImg + v["image"]);
       });
     }
     regionName = json['region_name'];

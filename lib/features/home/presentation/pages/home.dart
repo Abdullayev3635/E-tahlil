@@ -351,7 +351,9 @@ class _HomePageState extends State<HomePage> {
                               Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) => SendData.screen()),
+                                    builder: (context) => SendData.screen(
+                                        state.list[index].categoryId!,
+                                        state.list[index].id!)),
                               );
                             },
                             child: Container(
@@ -382,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   const Spacer(),
                                   Text(
-                                    state.list[index].id!.toString(),
+                                    state.list[index].countWorks!.toString(),
                                     maxLines: 1,
                                     style: TextStyle(
                                         fontSize: 16.sp,

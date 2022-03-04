@@ -39,8 +39,8 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
   Future<List<SubCategoryModel>> getSubCategory(int id) async {
     List<SubCategoryModel> list = [];
     try {
-      final response =
-          await http.get(Uri.parse(baseUrl + subcategoriesPHP + id.toString()));
+      final response = await http
+          .get(Uri.parse(baseUrl + subcategoriesPHP + id.toString() + "/2"));
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         for (int i = 0; i < (parsed["data"] as List).length; i++) {

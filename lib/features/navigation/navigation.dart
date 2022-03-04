@@ -22,8 +22,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   void initState() {
     _widgetOptions = <Widget>[
       HomePage.screen(),
-      const NewHistory(),
-      const OldHistory(),
+      NewHistory.screen(),
+      OldHistory.screen(),
       const Profile(),
     ];
     super.initState();

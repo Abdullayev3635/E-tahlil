@@ -13,7 +13,8 @@ class NewHistory extends StatefulWidget {
   const NewHistory({Key? key}) : super(key: key);
 
   static Widget screen() => BlocProvider(
-        create: (context) => di<NewHistoryBloc>(),
+        create: (context) =>
+            di<NewHistoryBloc>()..add(GetNewHistoryEvent(userId: 2)),
         child: const NewHistory(),
       );
 
@@ -82,7 +83,7 @@ class _NewHistoryState extends State<NewHistory> {
                   } else if (state is NewHistorySuccess) {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        imageSliders = state.list[index].imgList!
+                        imageSliders = state.list[index].imgList
                             .map(
                               (item) => Container(
                                 margin: const EdgeInsets.all(5.0),
@@ -90,7 +91,7 @@ class _NewHistoryState extends State<NewHistory> {
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(12.0),
                                   ),
-                                  child: Image.asset(item,
+                                  child: Image.network(item,
                                       fit: BoxFit.cover, width: 1000.0),
                                 ),
                               ),
@@ -134,7 +135,7 @@ class _NewHistoryState extends State<NewHistory> {
                                   : Container(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: state.list[index].imgList!
+                                children: state.list[index].imgList
                                     .asMap()
                                     .entries
                                     .map((entry) {
