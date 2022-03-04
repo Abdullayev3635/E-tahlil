@@ -4,13 +4,13 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/usescases/usecase.dart';
 import 'package:etahlil/features/login/domain/repositories/login_repository.dart';
 
-class LoginData extends UseCase<String, LoginParams> {
+class LoginData extends UseCase<dynamic, LoginParams> {
   final LoginRepository loginRepository;
 
   LoginData({required this.loginRepository});
 
   @override
-  Future<Either<Failure, String>> call(LoginParams params) {
+  Future<Either<Failure, dynamic>> call(LoginParams params) {
     return loginRepository.sendLogin(params.tel, params.macAddress);
   }
 }

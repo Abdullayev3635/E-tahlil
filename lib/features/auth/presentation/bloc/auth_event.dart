@@ -5,6 +5,7 @@ abstract class AuthEvent {}
 
 class SendSMSEvent extends AuthEvent {
   final String sms;
+  final String tel;
 
-  SendSMSEvent(this.sms);
+  SendSMSEvent(this.sms, this.tel);
 }

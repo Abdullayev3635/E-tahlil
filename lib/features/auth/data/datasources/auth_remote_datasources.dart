@@ -1,25 +1,37 @@
+import 'dart:convert';
+
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/features/auth/data/model/auth_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AuthRemoteDatasource {
-  Future<List<UserModel>> setData(String code);
+  Future<dynamic> setData(String code, String tel, String mac);
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
-  Future<List<UserModel>> setData(String code) async {
+  Future<dynamic> setData(String code, String tel, String mac) async {
     List<UserModel> _list = [];
     try {
       var body = {
-        "tel": code,
+        "verification_code": code,
+        "mac_address": mac,
+        "phone_number": tel,
       };
 
       final response =
           await http.post(Uri.parse(baseUrl + authPHP), body: body);
       if (response.statusCode == 200) {
-        return _list;
+        if (response.body.toString() == "0") {
+          return "0";
+        } else {
+          final parsed = json.decode(response.body);
+          for (int i = 0; i < (parsed["data"] as List).length; i++) {
+            _list.add(UserModel.fromJson(parsed["data"][i]));
+          }
+          return _list;
+        }
       } else {
         return [];
       }

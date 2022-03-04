@@ -36,8 +36,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         (r) => {
               if (r == "1")
                 {emit(LoginSuccess("Success"))}
-              else if (r == "500")
+              else if (r == "0")
                 {emit(NoUser())}
+              else if (r == "2")
+                {emit(OldUser())}
             });
   }
 

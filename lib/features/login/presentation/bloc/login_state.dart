@@ -17,6 +17,8 @@ class LoginFailure extends LoginState {
 
 class NoUser extends LoginState {}
 
+class OldUser extends LoginState {}
+
 class LoginSuccess extends LoginState {
   final String token;
 

@@ -1,4 +1,10 @@
 import 'package:etahlil/core/network/network_info.dart';
+import 'package:etahlil/features/auth/data/datasources/auth_locat_datasources.dart';
+import 'package:etahlil/features/auth/data/datasources/auth_remote_datasources.dart';
+import 'package:etahlil/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:etahlil/features/auth/domain/repositories/auth_repository.dart';
+import 'package:etahlil/features/auth/domain/usescases/auth.dart';
+import 'package:etahlil/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:etahlil/features/home/data/datasources/home_remote_datasources.dart';
 import 'package:etahlil/features/home/data/repositories/repository_impl.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
@@ -11,6 +17,7 @@ import 'package:etahlil/features/lock/data/repositories/lock_repositories.dart';
 import 'package:etahlil/features/lock/domain/bloc/pass_bloc.dart';
 import 'package:etahlil/features/lock/domain/repositories/lock_repositories.dart';
 import 'package:etahlil/features/lock/domain/usescases/u_lock.dart';
+import 'package:etahlil/features/login/data/datasources/login_locat_datasources.dart';
 import 'package:etahlil/features/login/data/datasources/login_remote_datasources.dart';
 import 'package:etahlil/features/login/data/repositories/login_repository_impl.dart';
 import 'package:etahlil/features/login/domain/repositories/login_repository.dart';
@@ -26,6 +33,11 @@ import 'package:etahlil/features/old_history/data/repositories/old_history_remos
 import 'package:etahlil/features/old_history/domain/repository/old_history_repository.dart';
 import 'package:etahlil/features/old_history/domain/usescases/u_old_history.dart';
 import 'package:etahlil/features/old_history/presentetion/bloc/old_history_bloc.dart';
+import 'package:etahlil/features/profile/data/datasources/profile_remote_datasources.dart';
+import 'package:etahlil/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:etahlil/features/profile/domain/repositories/profile_repository.dart';
+import 'package:etahlil/features/profile/domain/usescases/u_profile.dart';
+import 'package:etahlil/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_local_datasources.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_remote_datasources.dart';
 import 'package:etahlil/features/send_data/data/repositories/send_data_repositoryimpl.dart';
@@ -72,6 +84,14 @@ Future<void> init() async {
   di.registerFactory(
     () => LoginBloc(loginData: di()),
   );
+  //auth
+  di.registerFactory(
+    () => AuthBloc(authData: di()),
+  );
+  //profile
+  di.registerFactory(
+    () => ProfileBloc(profData: di()),
+  );
 
   ///Repositories
   // sendData
@@ -79,6 +99,7 @@ Future<void> init() async {
     () => SendDataRepositoryImpl(
         networkInfo: di(),
         dataRemoteDatasource: di(),
+        sharedPreferences: di(),
         dataLocalDatasource: di()),
   );
   // lock
@@ -103,7 +124,21 @@ Future<void> init() async {
   );
   // login
   di.registerLazySingleton<LoginRepository>(
-    () => LoginRepositoryImpl(networkInfo: di(), loginRemoteDatasource: di()),
+    () => LoginRepositoryImpl(
+        networkInfo: di(),
+        loginRemoteDatasource: di(),
+        loginLocalDatasource: di()),
+  );
+  // auth
+  di.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(
+        networkInfo: di(),
+        authRemoteDatasource: di(),
+        authLocalDatasource: di()),
+  );
+  // profile
+  di.registerLazySingleton(
+    () => ProfRepositoryImpl(networkInfo: di(), profRemoteDatasource: di()),
   );
 
   /// UsesCases
@@ -120,6 +155,10 @@ Future<void> init() async {
   di.registerLazySingleton(() => UOldHistory(oldHistoryRepo: di()));
   //login
   di.registerLazySingleton(() => LoginData(loginRepository: di()));
+  //auth
+  di.registerLazySingleton(() => AuthData(authRepository: di()));
+  //profile
+  di.registerLazySingleton(() => ProfData(profRepository: di()));
 
   /// Data sources
   //send data
@@ -148,6 +187,22 @@ Future<void> init() async {
   //login
   di.registerLazySingleton(
     () => LoginRemoteDatasourceImpl(),
+  );
+  //login
+  di.registerLazySingleton(
+    () => LoginLocalDataSourceImpl(sharedPreferences: di()),
+  );
+  //auth
+  di.registerLazySingleton(
+    () => AuthRemoteDatasourceImpl(),
+  );
+  //auth
+  di.registerLazySingleton(
+    () => AuthLocalDataSourceImpl(sharedPreferences: di()),
+  );
+  //profile
+  di.registerLazySingleton(
+    () => ProfRemoteDatasourceImpl(),
   );
 
   /// Network Info

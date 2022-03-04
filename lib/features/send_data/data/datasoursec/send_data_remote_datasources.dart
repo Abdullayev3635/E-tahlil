@@ -5,14 +5,14 @@ import 'package:etahlil/features/send_data/data/models/send_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class SendDataRemoteDatasource {
-  Future<bool> setData(int userId, int subId, int subCategoryId,
+  Future<bool> setData(String userId, int subId, int subCategoryId,
       int presenceOfDeputy, String title, String text, List<SendModel> images);
 }
 
 class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
   @override
   Future<bool> setData(
-      int userId,
+      String userId,
       int subId,
       int subCategoryId,
       int presenceOfDeputy,

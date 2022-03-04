@@ -3,6 +3,7 @@ import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/auth/presentation/pages/auth_page.dart';
 import 'package:etahlil/features/login/presentation/bloc/login_bloc.dart';
+import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,10 +62,23 @@ class _LoginPageState extends State<LoginPage> {
               CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
             }
             if (state is LoginSuccess) {
-              Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(builder: (context) => AuthPage.screen()),
-              );
+              WidgetsBinding.instance?.addPostFrameCallback((_) {
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => AuthPage.screen(
+                          "+998" + maskFormatter.getUnmaskedText())),
+                );
+              });
+            }
+            if (state is OldUser) {
+              WidgetsBinding.instance?.addPostFrameCallback((_) {
+                Navigator.pushReplacement(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => const BottomNavigationPage()),
+                );
+              });
             }
             if (state is NoUser) {
               return Container(
@@ -157,14 +171,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     MaterialButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Давом этиш',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
+                      onPressed: () {
+                        _bloc.add(SendLoginEvent(
+                            "+998" + maskFormatter.getUnmaskedText()));
+                      },
+                      child: _widget1(state),
                       color: cFirstColor,
                       elevation: 0,
                       minWidth: 360.w,
@@ -317,19 +328,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     MaterialButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => AuthPage.screen()),
-                        );
+                        _bloc.add(SendLoginEvent(
+                            "+998" + maskFormatter.getUnmaskedText()));
                       },
-                      child: Text(
-                        'Давом этиш',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
+                      child: _widget1(state),
                       color: cFirstColor,
                       elevation: 0,
                       minWidth: 360.w,
@@ -386,5 +388,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget _widget1(state) {
+    if (state is LoginLoading) {
+      return const CupertinoActivityIndicator();
+    } else {
+      return Text(
+        'Давом этиш',
+        style: TextStyle(
+          fontSize: 18.sp,
+          fontFamily: 'Regular',
+        ),
+      );
+    }
   }
 }

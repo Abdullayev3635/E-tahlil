@@ -24,7 +24,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       HomePage.screen(),
       NewHistory.screen(),
       OldHistory.screen(),
-      const Profile(),
+      Profile.screen(),
     ];
     super.initState();
   }

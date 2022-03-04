@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
+import 'package:etahlil/core/widgets/location_service.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/send_data/data/models/send_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
@@ -46,16 +47,15 @@ class _SendDataState extends State<SendData> {
       sana3 = "",
       sana4 = "",
       sana5 = "",
-      latLang0 = "41.21021020,70.12125485",
-      latLang1 = "41.21021020,70.12125485",
-      latLang2 = "41.21021020,70.12125485",
-      latLang3 = "41.21021020,70.12125485",
-      latLang4 = "41.21021020,70.12125485",
-      latLang5 = "41.21021020,70.12125485";
+      latLang0 = "",
+      latLang1 = "",
+      latLang2 = "",
+      latLang3 = "",
+      latLang4 = "",
+      latLang5 = "";
 
   List<int>? imageBytes;
   String? imageString;
-
   final _picker = ImagePicker();
   TextEditingController subject = TextEditingController();
   TextEditingController text = TextEditingController();
@@ -428,27 +428,32 @@ class _SendDataState extends State<SendData> {
   Future<void> _pickImageFromCamera(String key) async {
     final XFile? pickedFile = await _picker.pickImage(
         source: ImageSource.camera, maxHeight: 1024, maxWidth: 1024);
-    setState(() {
-      if (key == "0") {
-        _imageFile0 = File(pickedFile!.path);
-        sana0 = DateTime.now().toString();
-      } else if (key == "1") {
-        _imageFile1 = File(pickedFile!.path);
-        sana1 = DateTime.now().toString();
-      } else if (key == "2") {
-        _imageFile2 = File(pickedFile!.path);
-        sana2 = DateTime.now().toString();
-      } else if (key == "3") {
-        _imageFile3 = File(pickedFile!.path);
-        sana3 = DateTime.now().toString();
-      } else if (key == "4") {
-        _imageFile4 = File(pickedFile!.path);
-        sana4 = DateTime.now().toString();
-      } else if (key == "5") {
-        _imageFile5 = File(pickedFile!.path);
-        sana5 = DateTime.now().toString();
-      }
-    });
+    if (key == "0") {
+      _imageFile0 = File(pickedFile!.path);
+      sana0 = DateTime.now().toString();
+      latLang0 = await LocationService.determinePosition();
+    } else if (key == "1") {
+      _imageFile1 = File(pickedFile!.path);
+      sana1 = DateTime.now().toString();
+      latLang1 = await LocationService.determinePosition();
+    } else if (key == "2") {
+      _imageFile2 = File(pickedFile!.path);
+      sana2 = DateTime.now().toString();
+      latLang2 = await LocationService.determinePosition();
+    } else if (key == "3") {
+      _imageFile3 = File(pickedFile!.path);
+      sana3 = DateTime.now().toString();
+      latLang3 = await LocationService.determinePosition();
+    } else if (key == "4") {
+      _imageFile4 = File(pickedFile!.path);
+      sana4 = DateTime.now().toString();
+      latLang4 = await LocationService.determinePosition();
+    } else if (key == "5") {
+      _imageFile5 = File(pickedFile!.path);
+      sana5 = DateTime.now().toString();
+      latLang5 = await LocationService.determinePosition();
+    }
+    setState(() {});
   }
 
   void addFile() async {

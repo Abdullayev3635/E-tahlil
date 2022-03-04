@@ -33,11 +33,6 @@ class OldHistoryBloc extends Bloc<OldHistoryEvent, OldHistoryState> {
               else if (failure is ServerFailure)
                 {emit(OldHistoryFailure(message: failure.message))}
             },
-        (r) => {
-              if (r.isEmpty)
-                {emit(OldHistoryFailure(message: "Nomalum xato"))}
-              else
-                {emit(OldHistorySuccess(list: r))}
-            });
+        (r) => {emit(OldHistorySuccess(list: r))});
   }
 }

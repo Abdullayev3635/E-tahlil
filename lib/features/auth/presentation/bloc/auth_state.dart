@@ -9,6 +9,8 @@ class AuthLoading extends AuthState {}
 
 class AuthNoInternet extends AuthState {}
 
+class AuthError extends AuthState {}
+
 class AuthFailure extends AuthState {
   final String message;
 
@@ -16,7 +18,7 @@ class AuthFailure extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  final List<UserModel> _list;
+  final String message;
 
-  AuthSuccess(this._list);
+  AuthSuccess(this.message);
 }

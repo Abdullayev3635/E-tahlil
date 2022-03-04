@@ -52,6 +52,8 @@ dependencies:
   dartz: ^0.10.1
   # 19.For get uni address
   device_info_plus: ^3.2.2
+  # 19.For get current location
+  geolocator: ^8.2.0
 
 dev_dependencies:
   flutter_test:
