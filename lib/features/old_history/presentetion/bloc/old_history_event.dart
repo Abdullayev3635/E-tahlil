@@ -4,7 +4,14 @@ part of 'old_history_bloc.dart';
 abstract class OldHistoryEvent {}
 
 class GetOldHistoryEvent extends OldHistoryEvent {
-  final int userId;
+  final String startData;
+  final String endData;
+  final int categoryId;
+  final int subCategoryId;
 
-  GetOldHistoryEvent({required this.userId});
+  GetOldHistoryEvent(
+      {required this.startData,
+      required this.endData,
+      required this.categoryId,
+      required this.subCategoryId});
 }

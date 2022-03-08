@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NewHistory extends StatefulWidget {
   const NewHistory({Key? key}) : super(key: key);
@@ -91,8 +93,27 @@ class _NewHistoryState extends State<NewHistory> {
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(12.0),
                                   ),
-                                  child: Image.network(item,
-                                      fit: BoxFit.cover, width: 1000.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: item,
+                                    height: 309.h,
+                                    width: 392.w,
+                                    placeholder: (context, url) => Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 40.h, horizontal: 40.w),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/placeholder.svg',
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 40.h, horizontal: 40.w),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/placeholder.svg',
+                                      ),
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             )

@@ -6,6 +6,7 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/features/old_history/data/models/old_history_model.dart';
 import 'package:etahlil/features/old_history/domain/usescases/u_old_history.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'old_history_event.dart';
 
@@ -24,7 +25,7 @@ class OldHistoryBloc extends Bloc<OldHistoryEvent, OldHistoryState> {
       GetOldHistoryEvent event, Emitter<OldHistoryState> emit) async {
     emit(OldHistoryLoading());
     final result = await oldHistory(
-      NewHistoryParams(userId: event.userId),
+      NewHistoryParams(categoryId: event.categoryId, subCategoryId: event.subCategoryId, startDate: event.startData, endDate: event.endData),
     );
     result.fold(
         (failure) => {

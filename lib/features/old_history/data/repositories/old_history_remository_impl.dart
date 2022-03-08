@@ -14,12 +14,11 @@ class OldHistoryRepositoryImpl extends OldHistoryRepository {
       required this.networkInfo});
 
   @override
-  Future<Either<Failure, List<OldHistoryModel>>> getOldHistory(
-      int userId) async {
+  Future<Either<Failure, List<OldHistoryModel>>> getOldHistory(int categoryId, int subCategoryId, String startDate, String endDate) async {
     if (await networkInfo.isConnected) {
       try {
         final result =
-            await oldHistoryRemoteDatasourceImpl.getOldHistory(userId);
+            await oldHistoryRemoteDatasourceImpl.getOldHistory(categoryId, subCategoryId, startDate, endDate);
         return Right(result);
       } on ServerFailure {
         return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));

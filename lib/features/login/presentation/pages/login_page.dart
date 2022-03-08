@@ -2,6 +2,7 @@ import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/auth/presentation/pages/auth_page.dart';
+import 'package:etahlil/features/lock/presentation/pages/lock_page.dart';
 import 'package:etahlil/features/login/presentation/bloc/login_bloc.dart';
 import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(
-                      builder: (context) => const BottomNavigationPage()),
+                      builder: (context) => PasswordScreen.screen()),
                 );
               });
             }

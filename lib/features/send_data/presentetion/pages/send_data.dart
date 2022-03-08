@@ -318,14 +318,15 @@ class _SendDataState extends State<SendData> {
                             if (state is NoConnectionSendData) {
                               CustomToast.showToast(
                                   "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
-                            } else if (state is SendDataFailure) {
+                            }
+                            if (state is SendDataFailure) {
                               CustomToast.showToast(
                                   "Маълумотлар юкланишда хатолик юз берди!");
                             }
                             if (state is SendDataSuccess) {
-                              WidgetsBinding.instance
-                                  ?.addPostFrameCallback((_) {
-                                Navigator.of(context).pop();
+                              WidgetsBinding.instance!
+                                  .addPostFrameCallback((_) {
+                                Navigator.pop(context);
                               });
                             }
                             if (state is SendDataInitial) {

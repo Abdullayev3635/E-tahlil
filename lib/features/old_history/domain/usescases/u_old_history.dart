@@ -12,15 +12,23 @@ class UOldHistory extends UseCase<List<OldHistoryModel>, NewHistoryParams> {
 
   @override
   Future<Either<Failure, List<OldHistoryModel>>> call(NewHistoryParams params) {
-    return oldHistoryRepo.getOldHistory(params.userId);
+    return oldHistoryRepo.getOldHistory(params.categoryId, params.subCategoryId,
+        params.startDate, params.endDate);
   }
 }
 
 class NewHistoryParams extends Equatable {
-  final int userId;
+  final int categoryId;
+  final int subCategoryId;
+  final String startDate;
+  final String endDate;
 
-  const NewHistoryParams({required this.userId});
+  const NewHistoryParams(
+      {required this.categoryId,
+      required this.subCategoryId,
+      required this.startDate,
+      required this.endDate});
 
   @override
-  List<Object?> get props => [userId];
+  List<Object?> get props => [categoryId, subCategoryId, startDate, endDate];
 }

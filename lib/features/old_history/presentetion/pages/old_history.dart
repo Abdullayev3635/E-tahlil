@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/core/widgets/description_widget.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/old_history/presentetion/bloc/old_history_bloc.dart';
+import 'package:etahlil/features/old_history/presentetion/widgets/dialog_filter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,8 +16,9 @@ class OldHistory extends StatefulWidget {
   const OldHistory({Key? key}) : super(key: key);
 
   static Widget screen() => BlocProvider(
-        create: (context) =>
-            di<OldHistoryBloc>()..add(GetOldHistoryEvent(userId: 2)),
+        create: (context) => di<OldHistoryBloc>()
+          ..add(GetOldHistoryEvent(
+              startData: "0", endData: "0", categoryId: 0, subCategoryId: 0)),
         child: const OldHistory(),
       );
 
@@ -28,6 +31,7 @@ class _OldHistoryState extends State<OldHistory> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
   late OldHistoryBloc _bloc;
+  String categoryName = "Фильтр ишлатилмаган";
 
   @override
   void initState() {
@@ -62,17 +66,43 @@ class _OldHistoryState extends State<OldHistory> {
                     SizedBox(
                       width: 24.w,
                     ),
-                    Text("Юборилган",
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        style: TextStyle(
-                            fontSize: 18.sp,
-                            color: cWhiteColor,
-                            fontFamily: 'Medium')),
-                    SvgPicture.asset(
-                      "assets/icons/filter_icon.svg",
-                      width: 24.w,
-                      height: 24.h,
+                    Text(
+                      "Юборилган",
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      style: TextStyle(
+                          fontSize: 18.sp,
+                          color: cWhiteColor,
+                          fontFamily: 'Medium'),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const DialogFilter();
+                          },
+                        ).then((value) {
+                          setState(() {
+                            categoryName = value['categoryName'].toString() +
+                                ' бўйича сараланган';
+                          });
+                          _bloc.add(
+                            GetOldHistoryEvent(
+                              categoryId: value['categoryId'],
+                              subCategoryId: value['subCategoryId'],
+                              startData: value['startData'].toString(),
+                              endData: value['endData'].toString(),
+                            ),
+                          );
+                        });
+                      },
+                      child: SvgPicture.asset(
+                        "assets/icons/filter_icon.svg",
+                        width: 24.w,
+                        height: 24.h,
+                      ),
                     ),
                   ],
                 ),
@@ -85,13 +115,17 @@ class _OldHistoryState extends State<OldHistory> {
               margin: EdgeInsets.symmetric(horizontal: 21.w),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  "Фильтр ишлатилмаган",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: cBlackColor,
-                      fontFamily: 'Medium',
-                      fontSize: 18.sp),
+                child: SizedBox(
+                  width: 380.w,
+                  child: Text(
+                    categoryName,
+                    textAlign: TextAlign.start,
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: cBlackColor,
+                        fontFamily: 'Medium',
+                        fontSize: 18.sp),
+                  ),
                 ),
               ),
             ),
@@ -118,8 +152,27 @@ class _OldHistoryState extends State<OldHistory> {
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(12.0),
                                   ),
-                                  child: Image.network(item,
-                                      fit: BoxFit.cover, width: 1000.0),
+                                  child: CachedNetworkImage(
+                                    imageUrl: item,
+                                    height: 309.h,
+                                    width: 392.w,
+                                    placeholder: (context, url) => Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 40.h, horizontal: 40.w),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/placeholder.svg',
+                                      ),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 40.h, horizontal: 40.w),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/placeholder.svg',
+                                      ),
+                                    ),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
                             )
@@ -190,7 +243,7 @@ class _OldHistoryState extends State<OldHistory> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Дам олиш объектлари",
+                                      state.list[index].regionName!,
                                       style: TextStyle(
                                           color: cFirstColor,
                                           fontFamily: 'Medium',

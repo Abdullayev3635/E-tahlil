@@ -3,7 +3,6 @@ import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:etahlil/features/home/presentation/bloc/subCategory/sub_category_bloc.dart';
-import 'package:etahlil/features/kutilmoqda/presentetion/pages/yuborilmagan.dart';
 import 'package:etahlil/features/send_data/presentetion/pages/send_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,9 +82,9 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        SizedBox(
-                          width: 24.w,
-                        ),
+                        // SizedBox(
+                        //   width: 24.w,
+                        // ),
                         const Spacer(),
                         SizedBox(
                           width: 260.w,
@@ -99,21 +98,21 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      const YuborilmaganPage()),
-                            );
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/cloud_icon.svg",
-                            height: 24.h,
-                            width: 24.w,
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       CupertinoPageRoute(
+                        //           builder: (context) =>
+                        //               const YuborilmaganPage()),
+                        //     );
+                        //   },
+                        //   child: SvgPicture.asset(
+                        //     "assets/icons/cloud_icon.svg",
+                        //     height: 24.h,
+                        //     width: 24.w,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -214,16 +213,17 @@ class _HomePageState extends State<HomePage> {
                             child: CupertinoActivityIndicator());
                       } else if (state is HomeSuccessState) {
                         return Container(
-                          height: isLarge ? (220) : (75).h,
+                          height: isLarge ? (225) : (75).h,
                           margin: EdgeInsets.only(left: 18.w),
                           child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: isLarge ? 3 : 1,
-                                      mainAxisExtent: 75.w,
-                                      crossAxisSpacing: 12,
-                                      childAspectRatio: 2 / 1,
-                                      mainAxisSpacing: 13.w),
+                                crossAxisCount: isLarge ? 3 : 1,
+                                mainAxisExtent: 68.w,
+                                crossAxisSpacing: 3.h,
+                                childAspectRatio: 1 / 1,
+                                mainAxisSpacing: 13.w,
+                              ),
                               scrollDirection: Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.list.length,
@@ -347,10 +347,6 @@ class _HomePageState extends State<HomePage> {
                     CustomToast.showToast(
                         "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
                   }
-                  // else if (state is SubCategoryFailureState) {
-                  //   CustomToast.showToast(
-                  //       "Маълумотлар юкланишда хатолик юз берди!");
-                  // }
                   if (state is SubCategoryLoadingState) {
                     return const Center(child: CupertinoActivityIndicator());
                   } else if (state is SubCategorySuccessState) {

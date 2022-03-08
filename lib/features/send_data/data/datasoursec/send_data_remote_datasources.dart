@@ -32,8 +32,14 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
         "images_list": json,
       };
 
-      final response =
-          await http.post(Uri.parse(baseUrl + worksPHP), body: body);
+      final response = await http.post(
+        Uri.parse(baseUrl + worksPHP),
+        body: jsonEncode(body),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
       if (response.statusCode == 200) {
         return true;
       } else {

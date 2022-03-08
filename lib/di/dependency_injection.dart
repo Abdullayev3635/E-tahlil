@@ -35,9 +35,14 @@ import 'package:etahlil/features/old_history/domain/usescases/u_old_history.dart
 import 'package:etahlil/features/old_history/presentetion/bloc/old_history_bloc.dart';
 import 'package:etahlil/features/profile/data/datasources/profile_remote_datasources.dart';
 import 'package:etahlil/features/profile/data/repositories/profile_repository_impl.dart';
-import 'package:etahlil/features/profile/domain/repositories/profile_repository.dart';
 import 'package:etahlil/features/profile/domain/usescases/u_profile.dart';
 import 'package:etahlil/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:etahlil/features/select_part/data/datasoursec/select_part_remote_datasources.dart';
+import 'package:etahlil/features/select_part/data/repositories/select_part_remository_impl.dart';
+import 'package:etahlil/features/select_part/domain/repository/select_part_repository.dart';
+import 'package:etahlil/features/select_part/domain/usescases/u_select_part.dart';
+import 'package:etahlil/features/select_part/domain/usescases/u_select_sub_part.dart';
+import 'package:etahlil/features/select_part/presentetion/bloc/select_part_bloc.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_local_datasources.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_remote_datasources.dart';
 import 'package:etahlil/features/send_data/data/repositories/send_data_repositoryimpl.dart';
@@ -92,6 +97,10 @@ Future<void> init() async {
   di.registerFactory(
     () => ProfileBloc(profData: di()),
   );
+  //selects
+  di.registerFactory(
+    () => SelectPartBloc(uSelectPart: di(), uSelectSubPart: di()),
+  );
 
   ///Repositories
   // sendData
@@ -140,6 +149,11 @@ Future<void> init() async {
   di.registerLazySingleton(
     () => ProfRepositoryImpl(networkInfo: di(), profRemoteDatasource: di()),
   );
+  // selects
+  di.registerLazySingleton<SelectPartRepository>(
+    () => SelectPartRepositoryImpl(
+        networkInfo: di(), selectPartRemoteDatasourceImpl: di()),
+  );
 
   /// UsesCases
   // sendData
@@ -159,6 +173,10 @@ Future<void> init() async {
   di.registerLazySingleton(() => AuthData(authRepository: di()));
   //profile
   di.registerLazySingleton(() => ProfData(profRepository: di()));
+  //selects
+  di.registerLazySingleton(() => USelectPart(selectPartRepo: di()));
+  //selects
+  di.registerLazySingleton(() => USelectSubPart(selectPartRepo: di()));
 
   /// Data sources
   //send data
@@ -174,15 +192,15 @@ Future<void> init() async {
   );
   //new history
   di.registerLazySingleton(
-    () => NewHistoryRemoteDatasourceImpl(),
+    () => NewHistoryRemoteDatasourceImpl(di()),
   );
   //old history
   di.registerLazySingleton(
-    () => OldHistoryRemoteDatasourceImpl(),
+    () => OldHistoryRemoteDatasourceImpl(di()),
   );
   //home
   di.registerLazySingleton(
-    () => HomeRemoteDatasourceImpl(),
+    () => HomeRemoteDatasourceImpl(sharedPreferences: di()),
   );
   //login
   di.registerLazySingleton(
@@ -203,6 +221,10 @@ Future<void> init() async {
   //profile
   di.registerLazySingleton(
     () => ProfRemoteDatasourceImpl(),
+  );
+  //selects
+  di.registerLazySingleton(
+    () => SelectPartRemoteDatasourceImpl(sharedPreferences: di()),
   );
 
   /// Network Info

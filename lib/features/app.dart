@@ -1,4 +1,7 @@
+import 'package:etahlil/di/dependency_injection.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'lock/presentation/pages/lock_page.dart';
 import 'login/presentation/pages/login_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,15 +10,18 @@ class AppProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const App();
+    return App();
   }
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  SharedPreferences sharedPreferences = di.get();
+
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String id = sharedPreferences.getString('id') ?? "";
     return ScreenUtilInit(
       designSize: const Size(428, 926),
       minTextAdapt: true,
@@ -29,7 +35,7 @@ class App extends StatelessWidget {
           );
         },
         debugShowCheckedModeBanner: false,
-        home: LoginPage.screen(),
+        home: id == "" ? LoginPage.screen() : PasswordScreen.screen(),
       ),
     );
   }
