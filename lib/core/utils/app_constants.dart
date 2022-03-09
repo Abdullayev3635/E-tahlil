@@ -34,8 +34,8 @@ const cSecondGradient = LinearGradient(
 // All keys for local caches
 const String userData = 'user_data';
 
-// All keys for local databases
-const String userTable = 'user_table';
+// All table names for local databases
+const String categoryBox = 'category_box';
 
 // All sizes
 const double cRadius10 = 10.0;

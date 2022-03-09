@@ -1,4 +1,7 @@
 import 'package:etahlil/core/network/network_info.dart';
+import 'package:etahlil/core/photo/image_picker_utils.dart';
+import 'package:etahlil/core/location/location_service.dart';
+import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/features/auth/data/datasources/auth_locat_datasources.dart';
 import 'package:etahlil/features/auth/data/datasources/auth_remote_datasources.dart';
 import 'package:etahlil/features/auth/data/repositories/auth_repository_impl.dart';
@@ -6,6 +9,7 @@ import 'package:etahlil/features/auth/domain/repositories/auth_repository.dart';
 import 'package:etahlil/features/auth/domain/usescases/auth.dart';
 import 'package:etahlil/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:etahlil/features/home/data/datasources/home_remote_datasources.dart';
+import 'package:etahlil/features/home/data/models/category_model.dart';
 import 'package:etahlil/features/home/data/repositories/repository_impl.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
 import 'package:etahlil/features/home/domain/usescases/u_category.dart';
@@ -52,6 +56,7 @@ import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 final di = GetIt.instance;
 //di is referred to as Service Locator
@@ -227,6 +232,12 @@ Future<void> init() async {
     () => SelectPartRemoteDatasourceImpl(sharedPreferences: di()),
   );
 
+  /// Image picker
+  di.registerLazySingleton<ImagePickerUtils>(() => ImagePickerUtilsImpl());
+
+  /// Location Service
+  di.registerLazySingleton<LocationService>(() => LocationServiceImpl());
+
   /// Network Info
   di.registerLazySingleton(() => InternetConnectionChecker());
 
@@ -236,4 +247,9 @@ Future<void> init() async {
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   di.registerLazySingleton(() => sharedPreferences);
+
+  /// Local datasource
+  await Hive.initFlutter();
+  Hive.registerAdapter(CategoryModelAdapter());
+  await Hive.openBox<Map<dynamic, dynamic>>(categoryBox);
 }

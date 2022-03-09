@@ -8,6 +8,7 @@ class OldHistoryModel {
   String? regionName;
   int? sectorId;
   String? sectorName;
+  String? date;
   String? orinbosarIshtirokida;
   int? newCount;
   int? sendedCount;
@@ -21,6 +22,7 @@ class OldHistoryModel {
     this.regionName,
     this.sectorId,
     this.sectorName,
+    this.date,
     this.orinbosarIshtirokida,
     this.newCount,
     this.sendedCount,
@@ -39,6 +41,7 @@ class OldHistoryModel {
     regionName = json['region_name'];
     sectorId = json['sector_id'];
     sectorName = json['sector_name'];
+    date = json['date'];
     orinbosarIshtirokida = json['orinbosar_ishtirokida'];
     newCount = json['new_count'];
     sendedCount = json['sended_count'];
@@ -55,6 +58,7 @@ class OldHistoryModel {
     data['region_name'] = regionName;
     data['sector_id'] = sectorId;
     data['sector_name'] = sectorName;
+    data['date'] = date;
     data['orinbosar_ishtirokida'] = orinbosarIshtirokida;
     data['new_count'] = newCount;
     data['sended_count'] = sendedCount;

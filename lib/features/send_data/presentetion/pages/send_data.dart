@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:etahlil/core/errors/failures.dart';
+import 'package:etahlil/core/photo/image_picker_utils.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
-import 'package:etahlil/core/widgets/location_service.dart';
+import 'package:etahlil/core/location/location_service.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/send_data/data/models/send_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class SendData extends StatefulWidget {
@@ -56,7 +56,6 @@ class _SendDataState extends State<SendData> {
 
   List<int>? imageBytes;
   String? imageString;
-  final _picker = ImagePicker();
   TextEditingController subject = TextEditingController();
   TextEditingController text = TextEditingController();
 
@@ -380,7 +379,36 @@ class _SendDataState extends State<SendData> {
   Widget pickedImage(File? _imageFile, String key) {
     return Expanded(
       child: InkWell(
-        onTap: () async => _pickImageFromCamera(key),
+        onTap: () async {
+          final picker = di<ImagePickerUtils>();
+          final latLang = di<LocationService>();
+          if (key == "0") {
+            _imageFile0 = File(await picker.selectImageFromCamera());
+            sana0 = DateTime.now().toString();
+            latLang0 = await latLang.getLatLang();
+          } else if (key == "1") {
+            _imageFile1 = File(await picker.selectImageFromCamera());
+            sana1 = DateTime.now().toString();
+            latLang1 = await latLang.getLatLang();
+          } else if (key == "2") {
+            _imageFile2 = File(await picker.selectImageFromCamera());
+            sana2 = DateTime.now().toString();
+            latLang2 = await latLang.getLatLang();
+          } else if (key == "3") {
+            _imageFile3 = File(await picker.selectImageFromCamera());
+            sana3 = DateTime.now().toString();
+            latLang3 = await latLang.getLatLang();
+          } else if (key == "4") {
+            _imageFile4 = File(await picker.selectImageFromCamera());
+            sana4 = DateTime.now().toString();
+            latLang4 = await latLang.getLatLang();
+          } else if (key == "5") {
+            _imageFile5 = File(await picker.selectImageFromCamera());
+            sana5 = DateTime.now().toString();
+            latLang5 = await latLang.getLatLang();
+          }
+          setState(() {});
+        },
         child: _imageFile == null
             ? SvgPicture.asset('assets/icons/default_image.svg')
             : Stack(
@@ -424,37 +452,6 @@ class _SendDataState extends State<SendData> {
       ),
       flex: 1,
     );
-  }
-
-  Future<void> _pickImageFromCamera(String key) async {
-    final XFile? pickedFile = await _picker.pickImage(
-        source: ImageSource.camera, maxHeight: 1024, maxWidth: 1024);
-    if (key == "0") {
-      _imageFile0 = File(pickedFile!.path);
-      sana0 = DateTime.now().toString();
-      latLang0 = await LocationService.determinePosition();
-    } else if (key == "1") {
-      _imageFile1 = File(pickedFile!.path);
-      sana1 = DateTime.now().toString();
-      latLang1 = await LocationService.determinePosition();
-    } else if (key == "2") {
-      _imageFile2 = File(pickedFile!.path);
-      sana2 = DateTime.now().toString();
-      latLang2 = await LocationService.determinePosition();
-    } else if (key == "3") {
-      _imageFile3 = File(pickedFile!.path);
-      sana3 = DateTime.now().toString();
-      latLang3 = await LocationService.determinePosition();
-    } else if (key == "4") {
-      _imageFile4 = File(pickedFile!.path);
-      sana4 = DateTime.now().toString();
-      latLang4 = await LocationService.determinePosition();
-    } else if (key == "5") {
-      _imageFile5 = File(pickedFile!.path);
-      sana5 = DateTime.now().toString();
-      latLang5 = await LocationService.determinePosition();
-    }
-    setState(() {});
   }
 
   void addFile() async {

@@ -243,14 +243,14 @@ class _OldHistoryState extends State<OldHistory> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      state.list[index].regionName!,
+                                      "Юборилган",
                                       style: TextStyle(
                                           color: cFirstColor,
                                           fontFamily: 'Medium',
                                           fontSize: 11.sp),
                                     ),
                                     Text(
-                                      "18:06  17/02/2022",
+                                      state.list[index].date!,
                                       style: TextStyle(
                                           color: cFirstColor,
                                           fontFamily: 'Medium',

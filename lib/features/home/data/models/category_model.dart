@@ -1,8 +1,18 @@
-class CategoryModel {
+import 'package:hive/hive.dart';
+
+part 'category_model.g.dart';
+
+@HiveType(typeId: 0)
+class CategoryModel extends HiveObject {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? repetition;
+  @HiveField(3)
   int? status;
+  @HiveField(4)
   bool isCheck = false;
 
   CategoryModel({

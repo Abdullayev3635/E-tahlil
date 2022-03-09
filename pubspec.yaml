@@ -25,7 +25,8 @@ dependencies:
   # 5.Local cache
   shared_preferences: ^2.0.13
   # 6.Local database
-  hive: ^2.0.5
+  hive: ^2.0.6
+  hive_flutter: ^1.1.0
   # 7.Message viewer
   fluttertoast: ^8.0.8
   # 8.Support svg icons
@@ -56,6 +57,8 @@ dependencies:
   geolocator: ^8.2.0
   # 19.For Image cached
   cached_network_image: ^3.2.0
+  # 20.For Local storage
+
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +69,9 @@ dev_dependencies:
   # 1.For Splash
   flutter_native_splash: ^2.0.3+1
 
+  # 1.For Local database
+  build_runner: ^2.1.7
+  hive_generator: ^1.1.2
 
 flutter_native_splash:
   color: '#2972FE'

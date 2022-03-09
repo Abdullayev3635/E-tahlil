@@ -1,7 +1,12 @@
 import 'package:geolocator/geolocator.dart';
 
-class LocationService {
-  static Future<String> determinePosition() async {
+abstract class LocationService {
+  Future<String> getLatLang();
+}
+
+class LocationServiceImpl extends LocationService {
+  @override
+  Future<String> getLatLang() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -10,7 +15,7 @@ class LocationService {
         return "0,0";
       }
     }
-    var position = await Geolocator.getCurrentPosition(
+    final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return position.latitude.toString() + "," + position.longitude.toString();
   }

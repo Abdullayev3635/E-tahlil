@@ -191,7 +191,7 @@ class _NewHistoryState extends State<NewHistory> {
                                           fontSize: 11.sp),
                                     ),
                                     Text(
-                                      "18:06  17/02/2022",
+                                      state.list[index].date!,
                                       style: TextStyle(
                                           color: cFirstColor,
                                           fontFamily: 'Medium',

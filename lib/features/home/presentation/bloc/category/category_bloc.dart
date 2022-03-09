@@ -26,6 +26,7 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
     final result = await home(
       GetCategoryParams(),
     );
+
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
