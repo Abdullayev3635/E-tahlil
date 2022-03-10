@@ -33,7 +33,7 @@ class OldHistoryBloc extends Bloc<OldHistoryEvent, OldHistoryState> {
     result.fold(
       (failure) => {
         if (failure is NoConnectionFailure)
-          {emit(OldHistoryNoInternet())}
+          {emit(OldHistoryFailure(message: failure.message))}
         else if (failure is ServerFailure)
           {emit(OldHistoryFailure(message: failure.message))}
       },

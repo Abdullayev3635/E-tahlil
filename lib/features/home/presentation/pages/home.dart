@@ -18,10 +18,7 @@ class HomePage extends StatefulWidget {
           BlocProvider(
             create: (context) => di<CategoryBloc>()..add(GetCategory()),
           ),
-          BlocProvider(
-            create: (context) =>
-                di<SubCategoryBloc>()..add(GetSubCategoryEvent(id: 0)),
-          ),
+          BlocProvider(create: (context) => di<SubCategoryBloc>()),
         ],
         child: const HomePage(),
       );
@@ -87,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                         // ),
                         const Spacer(),
                         SizedBox(
-                          width: 260.w,
+                          width: 250.w,
                           child: Text(
                             "Ёшлар сиёсати, ижтимоий ривожлантириш ва маънавий-маърифий ишлар бўйича",
                             textAlign: TextAlign.center,
@@ -98,21 +95,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const Spacer(),
-                        // InkWell(
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       CupertinoPageRoute(
-                        //           builder: (context) =>
-                        //               const YuborilmaganPage()),
-                        //     );
-                        //   },
-                        //   child: SvgPicture.asset(
-                        //     "assets/icons/cloud_icon.svg",
-                        //     height: 24.h,
-                        //     width: 24.w,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
@@ -150,6 +132,10 @@ class _HomePageState extends State<HomePage> {
                                   width: 20.w,
                                 ),
                               ),
+                              onChanged: (text) {
+                                _subCategoryBloc
+                                    .add(SearchSubCategoryEvent(txt: text));
+                              },
                               style: TextStyle(
                                   fontSize: 15.sp,
                                   fontFamily: 'Medium',
@@ -201,10 +187,7 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   BlocBuilder<CategoryBloc, CategoryState>(
                     builder: (context, state) {
-                      if (state is HomeNotInternetState) {
-                        CustomToast.showToast(
-                            "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
-                      } else if (state is HomeFailureState) {
+                      if (state is HomeFailureState) {
                         CustomToast.showToast(
                             "Маълумотлар юкланишда хатолик юз берди!");
                       }
@@ -212,43 +195,39 @@ class _HomePageState extends State<HomePage> {
                         return const Center(
                             child: CupertinoActivityIndicator());
                       } else if (state is HomeSuccessState) {
+                        _subCategoryBloc.add(GetSubCategoryEvent(
+                            id: state.list[state.selected].id!));
                         return Container(
-                          height: isLarge ? (225) : (75).h,
+                          height: isLarge ? (285).h : (85).h,
                           margin: EdgeInsets.only(left: 18.w),
                           child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: isLarge ? 3 : 1,
+                                crossAxisCount: isLarge ? 5 : 1,
                                 mainAxisExtent: 68.w,
                                 crossAxisSpacing: 3.h,
                                 childAspectRatio: 1 / 1,
                                 mainAxisSpacing: 13.w,
                               ),
-                              scrollDirection: Axis.horizontal,
+                              padding: const EdgeInsets.all(4.0),
+                              scrollDirection:
+                                  isLarge ? Axis.vertical : Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.list.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    for (int i = 0;
-                                        i < state.list.length;
-                                        i++) {
-                                      state.list[i].isCheck = false;
-                                    }
-                                    state.list[index].isCheck = true;
-                                    setState(() {});
-                                    _subCategoryBloc.add(GetSubCategoryEvent(
-                                        id: state.list[index].id!));
+                                    _categoryBloc
+                                        .add(ChangeColor(state.list, index));
                                   },
                                   child: Stack(
                                     children: [
                                       Container(
                                         decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50.r),
+                                            shape: BoxShape.circle,
                                             border: Border.all(
                                                 width: 1.5.w,
-                                                color: state.list[index].isCheck
+                                                color: state.selected == index
                                                     ? cWhiteColor
                                                     : cSecondColor),
                                             color: cSecondColor),
@@ -274,7 +253,8 @@ class _HomePageState extends State<HomePage> {
                                                   BorderRadius.circular(15.r),
                                               color: cWhiteColor),
                                           margin: EdgeInsets.symmetric(
-                                              horizontal: 5.w, vertical: 5.h),
+                                              horizontal: isLarge ? 5.w : 0.w,
+                                              vertical: 5.h),
                                           padding: EdgeInsets.only(bottom: 2.h),
                                           height: 18.h,
                                           width: 18.w,
@@ -343,9 +323,9 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: BlocBuilder<SubCategoryBloc, SubCategoryState>(
                 builder: (context, state) {
-                  if (state is SubCategoryNotInternetState) {
+                  if (state is SubCategoryFailureState) {
                     CustomToast.showToast(
-                        "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
+                        "Маълумотлар юкланишда хатолик юз берди!");
                   }
                   if (state is SubCategoryLoadingState) {
                     return const Center(child: CupertinoActivityIndicator());
@@ -357,7 +337,8 @@ class _HomePageState extends State<HomePage> {
                           itemCount: state.list.length,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return InkWell(
+                            return GestureDetector(
+                              behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 Navigator.push(
                                   context,

@@ -7,8 +7,6 @@ class ProfileInitial extends ProfileState {}
 
 class ProfileLoading extends ProfileState {}
 
-class ProfileNoConnection extends ProfileState {}
-
 class ProfileSuccess extends ProfileState {
   final ProfModel object;
 

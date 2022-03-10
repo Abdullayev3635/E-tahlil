@@ -8,8 +8,10 @@ import 'package:etahlil/features/auth/data/repositories/auth_repository_impl.dar
 import 'package:etahlil/features/auth/domain/repositories/auth_repository.dart';
 import 'package:etahlil/features/auth/domain/usescases/auth.dart';
 import 'package:etahlil/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:etahlil/features/home/data/datasources/home_local_datasources.dart';
 import 'package:etahlil/features/home/data/datasources/home_remote_datasources.dart';
 import 'package:etahlil/features/home/data/models/category_model.dart';
+import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:etahlil/features/home/data/repositories/repository_impl.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
 import 'package:etahlil/features/home/domain/usescases/u_category.dart';
@@ -27,17 +29,23 @@ import 'package:etahlil/features/login/data/repositories/login_repository_impl.d
 import 'package:etahlil/features/login/domain/repositories/login_repository.dart';
 import 'package:etahlil/features/login/domain/usescases/u_login.dart';
 import 'package:etahlil/features/login/presentation/bloc/login_bloc.dart';
+import 'package:etahlil/features/new_history/data/datasoursec/new_history_local_datasources.dart';
 import 'package:etahlil/features/new_history/data/datasoursec/new_history_remote_datasources.dart';
+import 'package:etahlil/features/new_history/data/models/new_history_model.dart';
 import 'package:etahlil/features/new_history/data/repositories/new_history_remository_impl.dart';
 import 'package:etahlil/features/new_history/domain/repository/new_history_repository.dart';
 import 'package:etahlil/features/new_history/domain/usescases/u_new_history.dart';
 import 'package:etahlil/features/new_history/presentetion/bloc/new_history_bloc.dart';
+import 'package:etahlil/features/old_history/data/datasoursec/old_history_local_datasources.dart';
 import 'package:etahlil/features/old_history/data/datasoursec/old_history_remote_datasources.dart';
+import 'package:etahlil/features/old_history/data/models/old_history_model.dart';
 import 'package:etahlil/features/old_history/data/repositories/old_history_remository_impl.dart';
 import 'package:etahlil/features/old_history/domain/repository/old_history_repository.dart';
 import 'package:etahlil/features/old_history/domain/usescases/u_old_history.dart';
 import 'package:etahlil/features/old_history/presentetion/bloc/old_history_bloc.dart';
+import 'package:etahlil/features/profile/data/datasources/profile_local_datasources.dart';
 import 'package:etahlil/features/profile/data/datasources/profile_remote_datasources.dart';
+import 'package:etahlil/features/profile/data/models/prof_model.dart';
 import 'package:etahlil/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:etahlil/features/profile/domain/usescases/u_profile.dart';
 import 'package:etahlil/features/profile/presentation/bloc/profile_bloc.dart';
@@ -123,18 +131,25 @@ Future<void> init() async {
 
   // home
   di.registerLazySingleton<HomeRepository>(
-    () => HomeRepositoryImpl(networkInfo: di(), homeRemoteDatasourceImpl: di()),
+    () => HomeRepositoryImpl(
+        networkInfo: di(),
+        homeRemoteDatasourceImpl: di(),
+        homeLocalDatasourceImpl: di()),
   );
 
   // new history
   di.registerLazySingleton<NewHistoryRepository>(
     () => NewHistoryRepositoryImpl(
-        networkInfo: di(), newHistoryRemoteDatasourceImpl: di()),
+        networkInfo: di(),
+        newHistoryRemoteDatasourceImpl: di(),
+        newHistoryLocalDatasourceImpl: di()),
   );
   // old history
   di.registerLazySingleton<OldHistoryRepository>(
     () => OldHistoryRepositoryImpl(
-        networkInfo: di(), oldHistoryRemoteDatasourceImpl: di()),
+        networkInfo: di(),
+        oldHistoryRemoteDatasourceImpl: di(),
+        oldHistoryLocalDatasourceImpl: di()),
   );
   // login
   di.registerLazySingleton<LoginRepository>(
@@ -152,7 +167,10 @@ Future<void> init() async {
   );
   // profile
   di.registerLazySingleton(
-    () => ProfRepositoryImpl(networkInfo: di(), profRemoteDatasource: di()),
+    () => ProfRepositoryImpl(
+        networkInfo: di(),
+        profRemoteDatasource: di(),
+        profLocalDatasource: di()),
   );
   // selects
   di.registerLazySingleton<SelectPartRepository>(
@@ -199,13 +217,22 @@ Future<void> init() async {
   di.registerLazySingleton(
     () => NewHistoryRemoteDatasourceImpl(di()),
   );
+  di.registerLazySingleton(
+    () => NewHistoryDataSourcesImpl(),
+  );
   //old history
   di.registerLazySingleton(
     () => OldHistoryRemoteDatasourceImpl(di()),
   );
+  di.registerLazySingleton(
+    () => OldHistoryDataSourcesImpl(),
+  );
   //home
   di.registerLazySingleton(
     () => HomeRemoteDatasourceImpl(sharedPreferences: di()),
+  );
+  di.registerLazySingleton(
+    () => CategoryLocalDataSourceImpl(),
   );
   //login
   di.registerLazySingleton(
@@ -226,6 +253,9 @@ Future<void> init() async {
   //profile
   di.registerLazySingleton(
     () => ProfRemoteDatasourceImpl(),
+  );
+  di.registerLazySingleton(
+    () => ProfileLocalDataSourcesImpl(),
   );
   //selects
   di.registerLazySingleton(
@@ -250,6 +280,19 @@ Future<void> init() async {
 
   /// Local datasource
   await Hive.initFlutter();
+  // home
   Hive.registerAdapter(CategoryModelAdapter());
-  await Hive.openBox<Map<dynamic, dynamic>>(categoryBox);
+  await Hive.openBox(categoryBox);
+
+  Hive.registerAdapter(SubCategoryModelAdapter());
+  await Hive.openBox(subCategoryBox);
+  // new history
+  Hive.registerAdapter(NewHistoryModelAdapter());
+  await Hive.openBox(newHistoryBox);
+  // old history
+  Hive.registerAdapter(OldHistoryModelAdapter());
+  await Hive.openBox(oldHistoryBox);
+  // profile
+  Hive.registerAdapter(ProfModelAdapter());
+  await Hive.openBox<ProfModel>(profileBox);
 }

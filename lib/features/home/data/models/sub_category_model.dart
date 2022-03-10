@@ -1,9 +1,20 @@
-class SubCategoryModel {
+import 'package:hive/hive.dart';
+
+part 'sub_category_model.g.dart';
+
+@HiveType(typeId: 1)
+class SubCategoryModel extends HiveObject {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? categoryName;
+  @HiveField(3)
   int? categoryId;
+  @HiveField(4)
   int? countWorks;
+  @HiveField(5)
   String? status;
 
   SubCategoryModel(

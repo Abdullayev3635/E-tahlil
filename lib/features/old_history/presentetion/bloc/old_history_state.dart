@@ -13,8 +13,6 @@ class OldHistorySuccess extends OldHistoryState {
   OldHistorySuccess({required this.list});
 }
 
-class OldHistoryNoInternet extends OldHistoryState {}
-
 class OldHistoryFailure extends OldHistoryState {
   final String message;
 

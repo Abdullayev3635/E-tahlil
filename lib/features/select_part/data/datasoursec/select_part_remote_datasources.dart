@@ -3,7 +3,7 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/home/data/models/category_model.dart';
-import 'package:etahlil/features/home/data/models/sub_caregory_model.dart';
+import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 

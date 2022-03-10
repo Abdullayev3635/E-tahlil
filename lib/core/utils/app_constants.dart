@@ -36,6 +36,10 @@ const String userData = 'user_data';
 
 // All table names for local databases
 const String categoryBox = 'category_box';
+const String subCategoryBox = 'sub_category_box';
+const String newHistoryBox = 'new_history_box';
+const String oldHistoryBox = 'old_history_box';
+const String profileBox = 'profile_box';
 
 // All sizes
 const double cRadius10 = 10.0;

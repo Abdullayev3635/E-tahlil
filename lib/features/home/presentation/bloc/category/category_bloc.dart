@@ -18,6 +18,7 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
     required this.home,
   }) : super(HomeInitialState()) {
     on<GetCategory>(getCategory, transformer: sequential());
+    on<ChangeColor>(changeColor, transformer: sequential());
   }
 
   FutureOr<void> getCategory(
@@ -30,7 +31,7 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
-                {emit(HomeNotInternetState())}
+                {emit(HomeFailureState())}
               else if (failure is ServerFailure)
                 {emit(HomeFailureState())}
             },
@@ -38,7 +39,12 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
               if (r.isEmpty)
                 {emit(HomeFailureState())}
               else
-                {emit(HomeSuccessState(r))}
+                {emit(HomeSuccessState(r, 0))}
             });
+  }
+
+  FutureOr<void> changeColor(
+      ChangeColor event, Emitter<CategoryState> emit) async {
+    emit(HomeSuccessState(event.list, event.index));
   }
 }

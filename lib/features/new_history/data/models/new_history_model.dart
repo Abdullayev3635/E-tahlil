@@ -1,17 +1,33 @@
 import 'package:etahlil/core/utils/api_path.dart';
+import 'package:hive/hive.dart';
 
-class NewHistoryModel {
+part 'new_history_model.g.dart';
+
+@HiveType(typeId: 2)
+class NewHistoryModel extends HiveObject {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? title;
+  @HiveField(2)
   String? text;
+  @HiveField(3)
   List<ImageList>? imageList;
+  @HiveField(4)
   String? regionName;
+  @HiveField(5)
   int? sectorId;
+  @HiveField(6)
   String? sectorName;
+  @HiveField(7)
   String? date;
+  @HiveField(8)
   String? orinbosarIshtirokida;
+  @HiveField(9)
   int? newCount;
+  @HiveField(10)
   int? sendedCount;
+  @HiveField(11)
   List<String> imgList = [];
 
   NewHistoryModel(

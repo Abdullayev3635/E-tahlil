@@ -9,10 +9,15 @@ class HomeLoadingState extends CategoryState {}
 
 class HomeSuccessState extends CategoryState {
   final List<CategoryModel> list;
+  final int selected;
 
-  HomeSuccessState(this.list);
+  HomeSuccessState(this.list, this.selected);
 }
 
-class HomeNotInternetState extends CategoryState {}
+class HomeSuccessStateLocal extends CategoryState {
+  final List<CategoryModel> list;
+
+  HomeSuccessStateLocal(this.list);
+}
 
 class HomeFailureState extends CategoryState {}

@@ -13,8 +13,6 @@ class NewHistorySuccess extends NewHistoryState {
   NewHistorySuccess({required this.list});
 }
 
-class NewHistoryNoInternet extends NewHistoryState {}
-
 class NewHistoryFailure extends NewHistoryState {
   final String message;
 

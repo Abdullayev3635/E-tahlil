@@ -8,3 +8,9 @@ class GetSubCategoryEvent extends SubCategoryEvent {
 
   GetSubCategoryEvent({required this.id});
 }
+
+class SearchSubCategoryEvent extends SubCategoryEvent {
+  final String txt;
+
+  SearchSubCategoryEvent({required this.txt});
+}

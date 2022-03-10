@@ -73,10 +73,7 @@ class _NewHistoryState extends State<NewHistory> {
             Expanded(
               child: BlocBuilder<NewHistoryBloc, NewHistoryState>(
                 builder: (context, state) {
-                  if (state is NewHistoryNoInternet) {
-                    CustomToast.showToast(
-                        "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
-                  } else if (state is NewHistoryFailure) {
+                  if (state is NewHistoryFailure) {
                     CustomToast.showToast(
                         "Маълумотлар юкланишда хатолик юз берди!");
                   }
@@ -191,7 +188,7 @@ class _NewHistoryState extends State<NewHistory> {
                                           fontSize: 11.sp),
                                     ),
                                     Text(
-                                      state.list[index].date!,
+                                      state.list[index].date ?? "",
                                       style: TextStyle(
                                           color: cFirstColor,
                                           fontFamily: 'Medium',

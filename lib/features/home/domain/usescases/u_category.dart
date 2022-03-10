@@ -5,13 +5,13 @@ import 'package:etahlil/core/usescases/usecase.dart';
 import 'package:etahlil/features/home/data/models/category_model.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
 
-class UCategory extends UseCase<List<CategoryModel>, GetCategoryParams> {
+class UCategory extends UseCase<dynamic, GetCategoryParams> {
   final HomeRepository homeRepository;
 
   UCategory({required this.homeRepository});
 
   @override
-  Future<Either<Failure, List<CategoryModel>>> call(GetCategoryParams params) {
+  Future<Either<Failure, dynamic>> call(GetCategoryParams params) {
     return homeRepository.getCategory();
   }
 }

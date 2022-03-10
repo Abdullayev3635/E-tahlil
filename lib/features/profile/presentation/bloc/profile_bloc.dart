@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
-                {emit(ProfileNoConnection())}
+                {emit(ProfileFailure(message: failure.message))}
               else if (failure is ServerFailure)
                 {emit(ProfileFailure(message: failure.message))}
             },

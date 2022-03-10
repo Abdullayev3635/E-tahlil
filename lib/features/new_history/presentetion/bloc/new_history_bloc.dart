@@ -29,7 +29,7 @@ class NewHistoryBloc extends Bloc<NewHistoryEvent, NewHistoryState> {
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
-                {emit(NewHistoryNoInternet())}
+                {emit(NewHistoryFailure(message: failure.message))}
               else if (failure is ServerFailure)
                 {emit(NewHistoryFailure(message: failure.message))}
             },

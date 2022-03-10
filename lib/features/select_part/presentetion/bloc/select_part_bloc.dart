@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/features/home/data/models/category_model.dart';
-import 'package:etahlil/features/home/data/models/sub_caregory_model.dart';
+import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:etahlil/features/select_part/domain/usescases/u_select_part.dart';
 import 'package:etahlil/features/select_part/domain/usescases/u_select_sub_part.dart';
 import 'package:meta/meta.dart';

@@ -1,14 +1,29 @@
-class ProfModel {
+import 'package:hive/hive.dart';
+part 'prof_model.g.dart';
+
+@HiveType(typeId: 4)
+class ProfModel extends HiveObject {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   String? regionName;
+  @HiveField(3)
   int? sectorId;
+  @HiveField(4)
   String? phoneNumber;
+  @HiveField(5)
   int? viloyatBoyicha;
+  @HiveField(6)
   int? tumanBoyicha;
+  @HiveField(7)
   int? barchaJonatmalar;
+  @HiveField(8)
   int? sectorKotibiKormoqda;
+  @HiveField(9)
   int? rejaGrafikBoyicha;
+  @HiveField(10)
   int? bajarilishiKerakIshlar;
 
   ProfModel(

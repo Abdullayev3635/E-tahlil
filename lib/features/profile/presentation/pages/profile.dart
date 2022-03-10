@@ -42,10 +42,7 @@ class _ProfileState extends State<Profile> {
       backgroundColor: cBackColor,
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          if (state is ProfileNoConnection) {
-            CustomToast.showToast(
-                "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
-          } else if (state is ProfileFailure) {
+          if (state is ProfileFailure) {
             CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
           }
           if (state is ProfileLoading) {
