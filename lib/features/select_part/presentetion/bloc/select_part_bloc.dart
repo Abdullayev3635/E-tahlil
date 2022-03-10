@@ -29,6 +29,8 @@ class SelectPartBloc extends Bloc<SelectPartEvent, SelectPartState> {
     on<FilterSelectSubPartEvent>(getFilterSubPart, transformer: sequential());
   }
 
+  List<SubCategoryModel> subList = [];
+
   FutureOr<void> getPart(
       GetSelectPartEvent event, Emitter<SelectPartState> emit) async {
     emit(SelectPartLoading());
@@ -51,6 +53,7 @@ class SelectPartBloc extends Bloc<SelectPartEvent, SelectPartState> {
   FutureOr<void> getSubPart(
       GetSelectSubPartEvent event, Emitter<SelectPartState> emit) async {
     emit(SelectPartLoading());
+    subList.clear();
     final result = await uSelectSubPart(
       SelectSubPartParams(categoryId: event.categoryId),
     );
@@ -62,7 +65,12 @@ class SelectPartBloc extends Bloc<SelectPartEvent, SelectPartState> {
                 {emit(SelectPartFailure(message: failure.message))}
             },
         (r) => {
-              emit(SelectSubPartSuccess(list: r)),
+              for (int i = 0; r.length > i; i++)
+                {
+                  if (event.categoryId == r[i].categoryId.toString())
+                    {subList.add(r[i])}
+                },
+              emit(SelectSubPartSuccess(list: subList)),
               listSubOld = r,
             });
   }

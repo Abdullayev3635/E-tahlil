@@ -9,7 +9,7 @@ class SendDataToServerEvent extends SendDataEvent {
   int? presenceOfDeputy;
   String? title;
   String? text;
-  List<SendModel>? images;
+  List<ImgModel>? images;
 
   SendDataToServerEvent(
       {required this.userId,

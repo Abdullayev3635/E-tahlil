@@ -7,8 +7,6 @@ class SendDataInitial extends SendDataState {}
 
 class SendDataLoading extends SendDataState {}
 
-class NoConnectionSendData extends SendDataState {}
-
 class SendDataSuccess extends SendDataState {
   late final String key;
 

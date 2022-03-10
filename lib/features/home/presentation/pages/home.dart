@@ -3,6 +3,7 @@ import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:etahlil/features/home/presentation/bloc/subCategory/sub_category_bloc.dart';
+import 'package:etahlil/features/kutilmoqda/presentetion/pages/yuborilmagan.dart';
 import 'package:etahlil/features/send_data/presentetion/pages/send_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -79,9 +80,9 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        // SizedBox(
-                        //   width: 24.w,
-                        // ),
+                        SizedBox(
+                          width: 24.w,
+                        ),
                         const Spacer(),
                         SizedBox(
                           width: 250.w,
@@ -95,6 +96,21 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const Spacer(),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => const NotSendPage()),
+                            );
+                          },
+                          child: SvgPicture.asset(
+                            "assets/icons/cloud_icon.svg",
+                            width: 24.w,
+                            height: 24.h,
+                          ),
+                        ),
                       ],
                     ),
                   ),

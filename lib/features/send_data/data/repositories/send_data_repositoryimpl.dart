@@ -3,7 +3,7 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/network/network_info.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_local_datasources.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_remote_datasources.dart';
-import 'package:etahlil/features/send_data/data/models/send_model.dart';
+import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/domain/repository/send_data_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +27,7 @@ class SendDataRepositoryImpl extends SendDataRepository {
       int presenceOfDeputy,
       String title,
       String text,
-      List<SendModel> images) async {
+      List<ImgModel> images) async {
     if (await networkInfo.isConnected) {
       try {
         final result = await dataRemoteDatasource.setData(
@@ -43,8 +43,19 @@ class SendDataRepositoryImpl extends SendDataRepository {
         return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
       }
     } else {
-      return const Left(
-          NoConnectionFailure("Интернет билан алоқани қайта текширинг"));
+      try {
+        final result = await dataLocalDatasource.setData(
+            sharedPreferences.getString("id") ?? "0",
+            subId,
+            subCategoryId,
+            presenceOfDeputy,
+            title,
+            text,
+            images);
+        return Right(result);
+      } on ServerFailure {
+        return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
+      }
     }
   }
 }

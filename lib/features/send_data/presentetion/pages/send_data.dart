@@ -5,7 +5,7 @@ import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/core/location/location_service.dart';
 import 'package:etahlil/di/dependency_injection.dart';
-import 'package:etahlil/features/send_data/data/models/send_model.dart';
+import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class _SendDataState extends State<SendData> {
 
   bool checkOrin = true;
 
-  late List<SendModel> images = [];
+  late List<ImgModel> images = [];
 
   @override
   void initState() {
@@ -314,10 +314,6 @@ class _SendDataState extends State<SendData> {
                         },
                         child: BlocBuilder<SendDataBloc, SendDataState>(
                           builder: (context, state) {
-                            if (state is NoConnectionSendData) {
-                              CustomToast.showToast(
-                                  "Интернет билан алоқа йўқ илтимос алоқани текширинг!");
-                            }
                             if (state is SendDataFailure) {
                               CustomToast.showToast(
                                   "Маълумотлар юкланишда хатолик юз берди!");
@@ -325,7 +321,7 @@ class _SendDataState extends State<SendData> {
                             if (state is SendDataSuccess) {
                               WidgetsBinding.instance!
                                   .addPostFrameCallback((_) {
-                                Navigator.pop(context);
+                                Navigator.of(context).pop();
                               });
                             }
                             if (state is SendDataInitial) {
@@ -461,37 +457,37 @@ class _SendDataState extends State<SendData> {
         imageBytes = _imageFile0!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang0, sana: sana0, image: imageString));
+            .add(ImgModel(latLang: latLang0, sana: sana0, image: imageString));
       }
       if (_imageFile1 != null) {
         imageBytes = _imageFile1!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang1, sana: sana1, image: imageString));
+            .add(ImgModel(latLang: latLang1, sana: sana1, image: imageString));
       }
       if (_imageFile2 != null) {
         imageBytes = _imageFile2!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang2, sana: sana2, image: imageString));
+            .add(ImgModel(latLang: latLang2, sana: sana2, image: imageString));
       }
       if (_imageFile3 != null) {
         imageBytes = _imageFile3!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang3, sana: sana3, image: imageString));
+            .add(ImgModel(latLang: latLang3, sana: sana3, image: imageString));
       }
       if (_imageFile4 != null) {
         imageBytes = _imageFile4!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang4, sana: sana4, image: imageString));
+            .add(ImgModel(latLang: latLang4, sana: sana4, image: imageString));
       }
       if (_imageFile5 != null) {
         imageBytes = _imageFile5!.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
-            .add(SendModel(latLang: latLang5, sana: sana5, image: imageString));
+            .add(ImgModel(latLang: latLang5, sana: sana5, image: imageString));
       }
       _bloc.add(
         SendDataToServerEvent(

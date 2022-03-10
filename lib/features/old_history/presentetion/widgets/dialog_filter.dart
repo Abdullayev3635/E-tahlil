@@ -127,10 +127,13 @@ class _DialogFilterState extends State<DialogFilter> {
                     return SelectPart.screen();
                   },
                 ).then((value) => {
-                      setState(() {
-                        categoryId = value['id'];
-                        categoryName = value['name'].toString();
-                      }),
+                      if (value != null)
+                        {
+                          setState(() {
+                            categoryId = value['id'];
+                            categoryName = value['name'].toString();
+                          }),
+                        },
                     });
               },
               child: Container(
@@ -171,10 +174,13 @@ class _DialogFilterState extends State<DialogFilter> {
                       return SelectSubPart.screen(categoryId.toString());
                     },
                   ).then((value) => {
-                        setState(() {
-                          subCategoryId = value['id'];
-                          subCategoryName = value['name'].toString();
-                        }),
+                        if (value != null)
+                          {
+                            setState(() {
+                              subCategoryId = value['id'];
+                              subCategoryName = value['name'].toString();
+                            }),
+                          }
                       });
                 }
               },

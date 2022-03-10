@@ -1,11 +1,11 @@
 import 'package:http/http.dart';
 
-class SendModel {
+class ImgModel {
   String? latLang;
   String? sana;
   String? image;
 
-  SendModel({this.latLang, this.sana, this.image});
+  ImgModel({this.latLang, this.sana, this.image});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
-import 'package:etahlil/features/send_data/data/models/send_model.dart';
+import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class SendDataRemoteDatasource {
   Future<bool> setData(String userId, int subId, int subCategoryId,
-      int presenceOfDeputy, String title, String text, List<SendModel> images);
+      int presenceOfDeputy, String title, String text, List<ImgModel> images);
 }
 
 class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
@@ -18,7 +18,7 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
       int presenceOfDeputy,
       String title,
       String text,
-      List<SendModel> images) async {
+      List<ImgModel> images) async {
     try {
       var json = jsonEncode(images.map((e) => e.toJson()).toList());
 

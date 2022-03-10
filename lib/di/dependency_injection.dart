@@ -49,6 +49,7 @@ import 'package:etahlil/features/profile/data/models/prof_model.dart';
 import 'package:etahlil/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:etahlil/features/profile/domain/usescases/u_profile.dart';
 import 'package:etahlil/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:etahlil/features/select_part/data/datasoursec/select_part_local_datasources.dart';
 import 'package:etahlil/features/select_part/data/datasoursec/select_part_remote_datasources.dart';
 import 'package:etahlil/features/select_part/data/repositories/select_part_remository_impl.dart';
 import 'package:etahlil/features/select_part/domain/repository/select_part_repository.dart';
@@ -175,7 +176,10 @@ Future<void> init() async {
   // selects
   di.registerLazySingleton<SelectPartRepository>(
     () => SelectPartRepositoryImpl(
-        networkInfo: di(), selectPartRemoteDatasourceImpl: di()),
+      networkInfo: di(),
+      selectPartRemoteDatasourceImpl: di(),
+      selectPartLocalDatasourceImpl: di(),
+    ),
   );
 
   /// UsesCases
@@ -261,6 +265,9 @@ Future<void> init() async {
   di.registerLazySingleton(
     () => SelectPartRemoteDatasourceImpl(sharedPreferences: di()),
   );
+  di.registerLazySingleton<SelectPartLocalDatasource>(
+    () => SelectPartLocalDatasourceImpl(),
+  );
 
   /// Image picker
   di.registerLazySingleton<ImagePickerUtils>(() => ImagePickerUtilsImpl());
@@ -295,4 +302,5 @@ Future<void> init() async {
   // profile
   Hive.registerAdapter(ProfModelAdapter());
   await Hive.openBox<ProfModel>(profileBox);
+  await Hive.openBox(forSendBox);
 }

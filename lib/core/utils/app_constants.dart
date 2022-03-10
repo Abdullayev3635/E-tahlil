@@ -40,6 +40,7 @@ const String subCategoryBox = 'sub_category_box';
 const String newHistoryBox = 'new_history_box';
 const String oldHistoryBox = 'old_history_box';
 const String profileBox = 'profile_box';
+const String forSendBox = 'for_send_box';
 
 // All sizes
 const double cRadius10 = 10.0;

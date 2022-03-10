@@ -84,18 +84,20 @@ class _OldHistoryState extends State<OldHistory> {
                             return const DialogFilter();
                           },
                         ).then((value) {
-                          setState(() {
-                            categoryName = value['categoryName'].toString() +
-                                ' бўйича сараланган';
-                          });
-                          _bloc.add(
-                            GetOldHistoryEvent(
-                              categoryId: value['categoryId'],
-                              subCategoryId: value['subCategoryId'],
-                              startData: value['startData'].toString(),
-                              endData: value['endData'].toString(),
-                            ),
-                          );
+                          if (value != null) {
+                            setState(() {
+                              categoryName = value['categoryName'].toString() +
+                                  ' бўйича сараланган';
+                            });
+                            _bloc.add(
+                              GetOldHistoryEvent(
+                                categoryId: value['categoryId'],
+                                subCategoryId: value['subCategoryId'],
+                                startData: value['startData'].toString(),
+                                endData: value['endData'].toString(),
+                              ),
+                            );
+                          }
                         });
                       },
                       child: SvgPicture.asset(
