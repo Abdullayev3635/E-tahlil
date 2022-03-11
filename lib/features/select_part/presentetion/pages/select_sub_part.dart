@@ -33,6 +33,12 @@ class _SelectSubPartState extends State<SelectSubPart> {
   }
 
   @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: cBackButtonColor,

@@ -1,7 +1,7 @@
 // const String baseUrl = "http://192.168.30.64:8000/api";
 // const String baseUrlImg = "http://192.168.30.64:8000/api/";
-const String baseUrl = "https://aqlli-uy.uz/api";
-const String baseUrlImg = "https://aqlli-uy.uz/";
+const String baseUrl = "https://api.e-tahlil.uz/api";
+const String baseUrlImg = "https://api.e-tahlil.uz/";
 
 const String loginPHP = "/users/mobile-login";
 const String authPHP = "/users/mobile-verification";

@@ -1,0 +1,8 @@
+import 'package:dartz/dartz.dart';
+import 'package:etahlil/core/errors/failures.dart';
+import 'package:etahlil/features/kutilmoqda/data/model/not_send_model.dart';
+
+abstract class NotSendRepository {
+  Future<Either<Failure, List<NotSendModel>>> getNotSends();
+  Future<Either<Failure, bool>> setNotSends(List<NotSendModel> list);
+}

@@ -9,10 +9,13 @@ import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:io';
+
+import 'package:intl/intl.dart';
 
 class SendData extends StatefulWidget {
   final int categoryId;
@@ -53,18 +56,14 @@ class _SendDataState extends State<SendData> {
       latLang3 = "",
       latLang4 = "",
       latLang5 = "";
-
   List<int>? imageBytes;
   String? imageString;
   TextEditingController subject = TextEditingController();
   TextEditingController text = TextEditingController();
-
   late SendDataBloc _bloc;
-
   bool checkOrin = true;
-
   late List<ImgModel> images = [];
-
+  final customFormat = DateFormat('yyyy.MM.dd hh:mm');
   @override
   void initState() {
     _bloc = BlocProvider.of<SendDataBloc>(context);
@@ -319,9 +318,11 @@ class _SendDataState extends State<SendData> {
                                   "Маълумотлар юкланишда хатолик юз берди!");
                             }
                             if (state is SendDataSuccess) {
-                              WidgetsBinding.instance!
+                              SchedulerBinding.instance!
                                   .addPostFrameCallback((_) {
-                                Navigator.of(context).pop();
+                                Future.delayed(Duration.zero, () {
+                                  Navigator.of(context).pop();
+                                });
                               });
                             }
                             if (state is SendDataInitial) {
@@ -380,27 +381,27 @@ class _SendDataState extends State<SendData> {
           final latLang = di<LocationService>();
           if (key == "0") {
             _imageFile0 = File(await picker.selectImageFromCamera());
-            sana0 = DateTime.now().toString();
+            sana0 = customFormat.format(DateTime.now()).toString();
             latLang0 = await latLang.getLatLang();
           } else if (key == "1") {
             _imageFile1 = File(await picker.selectImageFromCamera());
-            sana1 = DateTime.now().toString();
+            sana1 = customFormat.format(DateTime.now()).toString();
             latLang1 = await latLang.getLatLang();
           } else if (key == "2") {
             _imageFile2 = File(await picker.selectImageFromCamera());
-            sana2 = DateTime.now().toString();
+            sana2 = customFormat.format(DateTime.now()).toString();
             latLang2 = await latLang.getLatLang();
           } else if (key == "3") {
             _imageFile3 = File(await picker.selectImageFromCamera());
-            sana3 = DateTime.now().toString();
+            sana3 = customFormat.format(DateTime.now()).toString();
             latLang3 = await latLang.getLatLang();
           } else if (key == "4") {
             _imageFile4 = File(await picker.selectImageFromCamera());
-            sana4 = DateTime.now().toString();
+            sana4 = customFormat.format(DateTime.now()).toString();
             latLang4 = await latLang.getLatLang();
           } else if (key == "5") {
             _imageFile5 = File(await picker.selectImageFromCamera());
-            sana5 = DateTime.now().toString();
+            sana5 = customFormat.format(DateTime.now()).toString();
             latLang5 = await latLang.getLatLang();
           }
           setState(() {});
@@ -489,17 +490,21 @@ class _SendDataState extends State<SendData> {
         images
             .add(ImgModel(latLang: latLang5, sana: sana5, image: imageString));
       }
-      _bloc.add(
-        SendDataToServerEvent(
-          userId: 2,
-          subId: widget.categoryId,
-          subCategoryId: widget.subCategoryId,
-          presenceOfDeputy: checkOrin ? 1 : 0,
-          title: subject.text,
-          text: text.text,
-          images: images,
-        ),
-      );
+      if (images.isNotEmpty) {
+        _bloc.add(
+          SendDataToServerEvent(
+            userId: 2,
+            subId: widget.categoryId,
+            subCategoryId: widget.subCategoryId,
+            presenceOfDeputy: checkOrin ? 1 : 0,
+            title: subject.text,
+            text: text.text,
+            images: images,
+          ),
+        );
+      } else {
+        CustomToast.showToast("Илтимос аввал маълумот киритинг!");
+      }
     } on InputFormatterFailure {
       debugPrint("Малумотлар юкланишда ҳатолик");
       return;

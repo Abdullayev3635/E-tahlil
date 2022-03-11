@@ -18,6 +18,13 @@ import 'package:etahlil/features/home/domain/usescases/u_category.dart';
 import 'package:etahlil/features/home/domain/usescases/u_sub_category.dart';
 import 'package:etahlil/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:etahlil/features/home/presentation/bloc/subCategory/sub_category_bloc.dart';
+import 'package:etahlil/features/kutilmoqda/data/datasoursec/yuborilmagan_local_datasources.dart';
+import 'package:etahlil/features/kutilmoqda/data/model/not_send_model.dart';
+import 'package:etahlil/features/kutilmoqda/data/repositories/yuborilmagan_repository_impl.dart';
+import 'package:etahlil/features/kutilmoqda/domain/repository/yuborilmagan_repository.dart';
+import 'package:etahlil/features/kutilmoqda/domain/usescases/u_not_send.dart';
+import 'package:etahlil/features/kutilmoqda/domain/usescases/u_not_send_local.dart';
+import 'package:etahlil/features/kutilmoqda/presentetion/bloc/not_send_bloc.dart';
 import 'package:etahlil/features/lock/data/datasources/lock_local_datasources.dart';
 import 'package:etahlil/features/lock/data/repositories/lock_repositories.dart';
 import 'package:etahlil/features/lock/domain/bloc/pass_bloc.dart';
@@ -58,6 +65,7 @@ import 'package:etahlil/features/select_part/domain/usescases/u_select_sub_part.
 import 'package:etahlil/features/select_part/presentetion/bloc/select_part_bloc.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_local_datasources.dart';
 import 'package:etahlil/features/send_data/data/datasoursec/send_data_remote_datasources.dart';
+import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/data/repositories/send_data_repositoryimpl.dart';
 import 'package:etahlil/features/send_data/domain/repository/send_data_repository.dart';
 import 'package:etahlil/features/send_data/domain/usescase/u_send_data.dart';
@@ -114,6 +122,10 @@ Future<void> init() async {
   //selects
   di.registerFactory(
     () => SelectPartBloc(uSelectPart: di(), uSelectSubPart: di()),
+  );
+  //not send
+  di.registerFactory(
+    () => NotSendBloc(notSend: di(), notSendLocal: di()),
   );
 
   ///Repositories
@@ -181,6 +193,10 @@ Future<void> init() async {
       selectPartLocalDatasourceImpl: di(),
     ),
   );
+  // not send
+  di.registerLazySingleton<NotSendRepository>(
+    () => NotSendRepositoryImpl(notSendDataSourcesImpl: di()),
+  );
 
   /// UsesCases
   // sendData
@@ -204,6 +220,9 @@ Future<void> init() async {
   di.registerLazySingleton(() => USelectPart(selectPartRepo: di()));
   //selects
   di.registerLazySingleton(() => USelectSubPart(selectPartRepo: di()));
+  //selects
+  di.registerLazySingleton(() => NotSend(notSendRepository: di()));
+  di.registerLazySingleton(() => NotSendLocal(notSendRepository: di()));
 
   /// Data sources
   //send data
@@ -268,6 +287,10 @@ Future<void> init() async {
   di.registerLazySingleton<SelectPartLocalDatasource>(
     () => SelectPartLocalDatasourceImpl(),
   );
+  //not send
+  di.registerLazySingleton(
+    () => NotSendDataSourcesImpl(),
+  );
 
   /// Image picker
   di.registerLazySingleton<ImagePickerUtils>(() => ImagePickerUtilsImpl());
@@ -302,5 +325,8 @@ Future<void> init() async {
   // profile
   Hive.registerAdapter(ProfModelAdapter());
   await Hive.openBox<ProfModel>(profileBox);
+  // notSendData
+  Hive.registerAdapter(NotSendModelAdapter());
+  Hive.registerAdapter(ImgModelAdapter());
   await Hive.openBox(forSendBox);
 }

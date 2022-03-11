@@ -203,7 +203,7 @@ class _NewHistoryState extends State<NewHistory> {
                               ),
                               Container(
                                 child: Text(
-                                  state.list[index].title!,
+                                  state.list[index].title ?? "",
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontFamily: 'SemiBold',
@@ -216,7 +216,7 @@ class _NewHistoryState extends State<NewHistory> {
                                 height: 4.h,
                               ),
                               DescriptionTextWidget(
-                                text: state.list[index].text!,
+                                text: state.list[index].text ?? "",
                               ),
                               SizedBox(
                                 height: 13.h,

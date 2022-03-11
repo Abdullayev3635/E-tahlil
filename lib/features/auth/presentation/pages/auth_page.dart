@@ -33,7 +33,6 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     _bloc = BlocProvider.of<AuthBloc>(context);
-
     super.initState();
   }
 

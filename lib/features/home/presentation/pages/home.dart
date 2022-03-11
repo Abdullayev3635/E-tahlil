@@ -99,10 +99,10 @@ class _HomePageState extends State<HomePage> {
                         GestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
-                            Navigator.pushReplacement(
+                            Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => const NotSendPage()),
+                                  builder: (context) => NotSendPage.screen()),
                             );
                           },
                           child: SvgPicture.asset(

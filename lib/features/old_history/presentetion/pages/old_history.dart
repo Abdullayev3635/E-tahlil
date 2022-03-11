@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:etahlil/core/network/network_info.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/core/widgets/description_widget.dart';
@@ -32,6 +33,7 @@ class _OldHistoryState extends State<OldHistory> {
   final CarouselController _controller = CarouselController();
   late OldHistoryBloc _bloc;
   String categoryName = "Фильтр ишлатилмаган";
+  NetworkInfo networkInfo = di.get();
 
   @override
   void initState() {
@@ -76,29 +78,35 @@ class _OldHistoryState extends State<OldHistory> {
                           fontFamily: 'Medium'),
                     ),
                     InkWell(
-                      onTap: () {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const DialogFilter();
-                          },
-                        ).then((value) {
-                          if (value != null) {
-                            setState(() {
-                              categoryName = value['categoryName'].toString() +
-                                  ' бўйича сараланган';
-                            });
-                            _bloc.add(
-                              GetOldHistoryEvent(
-                                categoryId: value['categoryId'],
-                                subCategoryId: value['subCategoryId'],
-                                startData: value['startData'].toString(),
-                                endData: value['endData'].toString(),
-                              ),
-                            );
-                          }
-                        });
+                      onTap: () async {
+                        if (await networkInfo.isConnected) {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const DialogFilter();
+                            },
+                          ).then((value) {
+                            if (value != null) {
+                              setState(() {
+                                categoryName =
+                                    value['categoryName'].toString() +
+                                        ' бўйича сараланган';
+                              });
+                              _bloc.add(
+                                GetOldHistoryEvent(
+                                  categoryId: value['categoryId'],
+                                  subCategoryId: value['subCategoryId'],
+                                  startData: value['startData'].toString(),
+                                  endData: value['endData'].toString(),
+                                ),
+                              );
+                            }
+                          });
+                        } else {
+                          CustomToast.showToast(
+                              "Интернет билан алоқа йўқ! илтимос алоқани текширинг.");
+                        }
                       },
                       child: SvgPicture.asset(
                         "assets/icons/filter_icon.svg",
@@ -264,7 +272,7 @@ class _OldHistoryState extends State<OldHistory> {
                               ),
                               Container(
                                 child: Text(
-                                  state.list[index].title!,
+                                  state.list[index].title ?? "",
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       fontFamily: 'SemiBold',
@@ -277,7 +285,7 @@ class _OldHistoryState extends State<OldHistory> {
                                 height: 4.h,
                               ),
                               DescriptionTextWidget(
-                                text: state.list[index].text!,
+                                text: state.list[index].text ?? "",
                               ),
                               SizedBox(
                                 height: 13.h,

@@ -1,8 +1,13 @@
-import 'package:http/http.dart';
+import 'package:hive/hive.dart';
+part 'img_model.g.dart';
 
-class ImgModel {
+@HiveType(typeId: 6)
+class ImgModel extends HiveObject {
+  @HiveField(0)
   String? latLang;
+  @HiveField(1)
   String? sana;
+  @HiveField(2)
   String? image;
 
   ImgModel({this.latLang, this.sana, this.image});
@@ -13,5 +18,11 @@ class ImgModel {
     data['time'] = sana;
     data['image'] = image;
     return data;
+  }
+
+  ImgModel.fromJson(Map<String, dynamic> json) {
+    latLang = json['latLang'];
+    sana = json['sana'];
+    image = json['image'];
   }
 }
