@@ -4,7 +4,6 @@ import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/auth/presentation/pages/auth_page.dart';
 import 'package:etahlil/features/lock/presentation/pages/lock_page.dart';
 import 'package:etahlil/features/login/presentation/bloc/login_bloc.dart';
-import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
