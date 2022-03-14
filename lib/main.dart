@@ -12,6 +12,6 @@ void main() async {
     runApp(const AppProvider());
   }, (error, stacktrace) {
     log('runZonedGuarded Errors: $error');
-    debugPrint("Errors");
+    debugPrint("with m2 disk");
   });
 }
