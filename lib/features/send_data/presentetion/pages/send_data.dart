@@ -375,7 +375,8 @@ class _SendDataState extends State<SendData> {
 
   Widget pickedImage(File? _imageFile, String key) {
     return Expanded(
-      child: InkWell(
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
         onTap: () async {
           final picker = di<ImagePickerUtils>();
           final latLang = di<LocationService>();

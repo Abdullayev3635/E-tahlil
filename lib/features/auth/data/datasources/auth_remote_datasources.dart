@@ -10,6 +10,10 @@ abstract class AuthRemoteDatasource {
 }
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
+  final http.Client client;
+
+  AuthRemoteDatasourceImpl({required this.client});
+
   @override
   Future<dynamic> setData(String code, String tel, String mac) async {
     List<UserModel> _list = [];
@@ -20,8 +24,14 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         "phone_number": tel,
       };
 
-      final response =
-          await http.post(Uri.parse(baseUrl + authPHP), body: body);
+      final response = await client.post(
+        Uri.parse(baseUrl + authPHP),
+        body: jsonEncode(body),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+        },
+      );
       if (response.statusCode == 200) {
         if (response.body.toString() == "0") {
           return "0";

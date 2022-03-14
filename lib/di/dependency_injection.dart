@@ -1,4 +1,5 @@
 import 'package:etahlil/core/network/network_info.dart';
+import 'package:http/http.dart' as http;
 import 'package:etahlil/core/photo/image_picker_utils.dart';
 import 'package:etahlil/core/location/location_service.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
@@ -227,7 +228,7 @@ Future<void> init() async {
   /// Data sources
   //send data
   di.registerLazySingleton(
-    () => SendDataRemoteDatasourceImpl(),
+    () => SendDataRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton(
     () => SendDataLocalDatasourceImpl(),
@@ -238,28 +239,28 @@ Future<void> init() async {
   );
   //new history
   di.registerLazySingleton(
-    () => NewHistoryRemoteDatasourceImpl(di()),
+    () => NewHistoryRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton(
     () => NewHistoryDataSourcesImpl(),
   );
   //old history
   di.registerLazySingleton(
-    () => OldHistoryRemoteDatasourceImpl(di()),
+    () => OldHistoryRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton(
     () => OldHistoryDataSourcesImpl(),
   );
   //home
   di.registerLazySingleton(
-    () => HomeRemoteDatasourceImpl(sharedPreferences: di()),
+    () => HomeRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton(
     () => CategoryLocalDataSourceImpl(),
   );
   //login
   di.registerLazySingleton(
-    () => LoginRemoteDatasourceImpl(),
+    () => LoginRemoteDatasourceImpl(client: di()),
   );
   //login
   di.registerLazySingleton(
@@ -267,7 +268,7 @@ Future<void> init() async {
   );
   //auth
   di.registerLazySingleton(
-    () => AuthRemoteDatasourceImpl(),
+    () => AuthRemoteDatasourceImpl(client: di()),
   );
   //auth
   di.registerLazySingleton(
@@ -275,14 +276,14 @@ Future<void> init() async {
   );
   //profile
   di.registerLazySingleton(
-    () => ProfRemoteDatasourceImpl(),
+    () => ProfRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton(
     () => ProfileLocalDataSourcesImpl(),
   );
   //selects
   di.registerLazySingleton(
-    () => SelectPartRemoteDatasourceImpl(sharedPreferences: di()),
+    () => SelectPartRemoteDatasourceImpl(sharedPreferences: di(), client: di()),
   );
   di.registerLazySingleton<SelectPartLocalDatasource>(
     () => SelectPartLocalDatasourceImpl(),
@@ -297,6 +298,9 @@ Future<void> init() async {
 
   /// Location Service
   di.registerLazySingleton<LocationService>(() => LocationServiceImpl());
+
+  /// Network
+  di.registerLazySingleton<http.Client>(() => http.Client());
 
   /// Network Info
   di.registerLazySingleton(() => InternetConnectionChecker());

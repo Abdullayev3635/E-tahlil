@@ -4,17 +4,30 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/features/profile/data/models/prof_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ProfRemoteDatasource {
   Future<dynamic> setData(String userId);
 }
 
 class ProfRemoteDatasourceImpl implements ProfRemoteDatasource {
+  final SharedPreferences sharedPreferences;
+  final http.Client client;
+  ProfRemoteDatasourceImpl(
+      {required this.sharedPreferences, required this.client});
+
   @override
   Future<dynamic> setData(String userId) async {
     ProfModel? _list;
     try {
-      final response = await http.get(Uri.parse(baseUrl + profilePHP + userId));
+      final response = await client.get(
+        Uri.parse(baseUrl + profilePHP + userId),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
+      );
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         _list = ProfModel(

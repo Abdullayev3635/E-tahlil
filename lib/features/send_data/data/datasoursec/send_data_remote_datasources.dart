@@ -3,6 +3,7 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SendDataRemoteDatasource {
   Future<bool> setData(String userId, int subId, int subCategoryId,
@@ -10,6 +11,11 @@ abstract class SendDataRemoteDatasource {
 }
 
 class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
+  final SharedPreferences sharedPreferences;
+  final http.Client client;
+  SendDataRemoteDatasourceImpl(
+      {required this.sharedPreferences, required this.client});
+
   @override
   Future<bool> setData(
       String userId,
@@ -32,11 +38,13 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
         "images_list": json,
       };
 
-      final response = await http.post(
+      final response = await client.post(
         Uri.parse(baseUrl + worksPHP),
         body: jsonEncode(body),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
         },
       );
 

@@ -13,15 +13,14 @@ abstract class OldHistoryRemoteDatasource {
 class OldHistoryRemoteDatasourceImpl extends OldHistoryRemoteDatasource {
   final SharedPreferences sharedPreferences;
 
-  OldHistoryRemoteDatasourceImpl(this.sharedPreferences);
+  final http.Client client;
+
+  OldHistoryRemoteDatasourceImpl(
+      {required this.sharedPreferences, required this.client});
 
   @override
   Future<List<OldHistoryModel>> getOldHistory(int categoryId, int subCategoryId,
       String startDate, String endDate) async {
-    const Map<String, String> header = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-    };
     var body = {
       "start_date": startDate,
       "end_date": endDate,
@@ -31,10 +30,14 @@ class OldHistoryRemoteDatasourceImpl extends OldHistoryRemoteDatasource {
     };
     List<OldHistoryModel> list = [];
     try {
-      final response = await http.post(
+      final response = await client.post(
         Uri.parse(baseUrl + oldHistoryPHP),
         body: jsonEncode(body),
-        headers: header,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
       );
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);

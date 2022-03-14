@@ -15,14 +15,22 @@ abstract class HomeRemoteDatasource {
 
 class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
   final SharedPreferences sharedPreferences;
-
-  HomeRemoteDatasourceImpl({required this.sharedPreferences});
+  final http.Client client;
+  HomeRemoteDatasourceImpl(
+      {required this.sharedPreferences, required this.client});
 
   @override
   Future<List<CategoryModel>> getCategory() async {
     List<CategoryModel> list = [];
     try {
-      final response = await http.get(Uri.parse(baseUrl + categoriesPHP));
+      final response = await client.get(
+        Uri.parse(baseUrl + categoriesPHP),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
+      );
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         for (int i = 0; i < (parsed["data"] as List).length; i++) {
@@ -44,8 +52,15 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
   Future<List<SubCategoryModel>> getSubCategory(int id) async {
     List<SubCategoryModel> list = [];
     try {
-      final response = await http.get(Uri.parse(
-          baseUrl + subcategoriesPHP + sharedPreferences.getString("id")!));
+      final response = await client.get(
+        Uri.parse(
+            baseUrl + subcategoriesPHP + sharedPreferences.getString("id")!),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
+      );
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         for (int i = 0; i < (parsed["data"] as List).length; i++) {

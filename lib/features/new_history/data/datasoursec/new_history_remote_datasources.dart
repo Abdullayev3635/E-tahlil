@@ -12,14 +12,22 @@ abstract class NewHistoryRemoteDatasource {
 class NewHistoryRemoteDatasourceImpl extends NewHistoryRemoteDatasource {
   final SharedPreferences sharedPreferences;
 
-  NewHistoryRemoteDatasourceImpl(this.sharedPreferences);
+  final http.Client client;
+  NewHistoryRemoteDatasourceImpl(
+      {required this.sharedPreferences, required this.client});
 
   @override
   Future<List<NewHistoryModel>> getNewHistory(int userId) async {
     List<NewHistoryModel> list = [];
     try {
-      final response = await http
-          .get(Uri.parse(baseUrl + newHistoryPHP + sharedPreferences.getString("id")!));
+      final response = await client.get(
+        Uri.parse(baseUrl + newHistoryPHP + sharedPreferences.getString("id")!),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
+      );
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         for (int i = 0; i < (parsed["data"] as List).length; i++) {

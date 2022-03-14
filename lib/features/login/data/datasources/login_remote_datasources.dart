@@ -10,6 +10,10 @@ abstract class LoginRemoteDatasource {
 }
 
 class LoginRemoteDatasourceImpl implements LoginRemoteDatasource {
+  final http.Client client;
+
+  LoginRemoteDatasourceImpl({required this.client});
+
   @override
   Future<dynamic> setData(String tel, String macAddress) async {
     List<UserModel> _list = [];
@@ -19,8 +23,14 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDatasource {
         "mac_address": macAddress,
       };
 
-      final response =
-          await http.post(Uri.parse(baseUrl + loginPHP), body: body);
+      final response = await client.post(
+        Uri.parse(baseUrl + loginPHP),
+        body: jsonEncode(body),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Accept': 'application/json',
+        },
+      );
       if (response.statusCode == 200) {
         if (response.body.toString() == "1") {
           return response.body.toString();
