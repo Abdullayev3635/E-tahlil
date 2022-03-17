@@ -7,13 +7,12 @@ import 'package:etahlil/core/location/location_service.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/presentetion/bloc/send_data_bloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:io';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 import 'package:intl/intl.dart';
 
@@ -61,9 +60,10 @@ class _SendDataState extends State<SendData> {
   TextEditingController subject = TextEditingController();
   TextEditingController text = TextEditingController();
   late SendDataBloc _bloc;
-  bool checkOrin = true;
+  bool checkOrin = false;
   late List<ImgModel> images = [];
   final customFormat = DateFormat('yyyy.MM.dd hh:mm');
+
   @override
   void initState() {
     _bloc = BlocProvider.of<SendDataBloc>(context);
@@ -80,6 +80,7 @@ class _SendDataState extends State<SendData> {
 
   @override
   Widget build(BuildContext context) {
+    ProgressDialog pd = ProgressDialog(context: context);
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -309,47 +310,35 @@ class _SendDataState extends State<SendData> {
                     Expanded(
                       child: MaterialButton(
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           addFile();
                         },
-                        child: BlocBuilder<SendDataBloc, SendDataState>(
-                          builder: (context, state) {
+                        child: BlocListener<SendDataBloc, SendDataState>(
+                          listener: (context, state) {
                             if (state is SendDataFailure) {
+                              pd.close();
                               CustomToast.showToast(
                                   "Маълумотлар юкланишда хатолик юз берди!");
                             }
                             if (state is SendDataSuccess) {
-                              SchedulerBinding.instance!
-                                  .addPostFrameCallback((_) {
-                                Future.delayed(Duration.zero, () {
-                                  Navigator.of(context).pop();
-                                });
-                              });
+                              pd.close();
+                              Navigator.of(context).pop();
                             }
-                            if (state is SendDataInitial) {
-                              return Text(
-                                "Юбориш",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: cWhiteColor,
-                                    fontFamily: 'Regular'),
-                              );
-                            } else if (state is SendDataLoading) {
-                              return CupertinoTheme(
-                                data: CupertinoTheme.of(context)
-                                    .copyWith(primaryColor: cWhiteColor),
-                                child: const CupertinoActivityIndicator(),
-                              );
-                            } else {
-                              return Text(
-                                "Юбориш",
-                                style: TextStyle(
-                                    fontSize: 18.sp,
-                                    color: cWhiteColor,
-                                    fontFamily: 'Regular'),
-                              );
+                            if (state is SendDataLoading) {
+                              pd.show(
+                                  max: 100,
+                                  msg: 'File Uploading...',
+                                  barrierDismissible: false,
+                                  msgMaxLines: 1);
                             }
                           },
-                          bloc: _bloc,
+                          child: Text(
+                            "Юбориш",
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                color: cWhiteColor,
+                                fontFamily: 'Regular'),
+                          ),
                         ),
                         color: cFirstColor,
                         elevation: 0,

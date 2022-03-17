@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'category_model.g.dart';
+part 'category_model1.g.dart';
 
 @HiveType(typeId: 0)
 class CategoryModel extends HiveObject {
@@ -14,6 +14,10 @@ class CategoryModel extends HiveObject {
   int? status;
   @HiveField(4)
   bool isCheck = false;
+  @HiveField(5)
+  int? count;
+  @HiveField(6)
+  String? description;
 
   CategoryModel({
     this.id,
@@ -21,6 +25,8 @@ class CategoryModel extends HiveObject {
     this.repetition,
     this.status,
     required this.isCheck,
+    this.count,
+    this.description,
   });
 
   CategoryModel.fromMap(Map<String, dynamic> map) {
@@ -28,6 +34,8 @@ class CategoryModel extends HiveObject {
     name = map['name'];
     repetition = map['repetition'];
     status = map['status'];
+    count = map['count'];
+    description = map['description'];
   }
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +43,8 @@ class CategoryModel extends HiveObject {
     name = json['name'];
     repetition = json['repetition'];
     status = json['status'];
+    count = json['count'];
+    description = json['description'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +53,8 @@ class CategoryModel extends HiveObject {
     data['name'] = name;
     data['repetition'] = repetition;
     data['status'] = status;
+    data['count'] = count;
+    data['description'] = description;
     return data;
   }
 }

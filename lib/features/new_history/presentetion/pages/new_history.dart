@@ -59,7 +59,7 @@ class _NewHistoryState extends State<NewHistory> {
                       bottomRight: Radius.circular(cRadius22.r))),
               child: Center(
                 child: SizedBox(
-                  child: Text("Сектор котиби бўйича чиқмоқда",
+                  child: Text("Сектор котиби кўриб чиқмоқда",
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       style: TextStyle(

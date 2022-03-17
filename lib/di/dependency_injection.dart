@@ -11,7 +11,7 @@ import 'package:etahlil/features/auth/domain/usescases/auth.dart';
 import 'package:etahlil/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:etahlil/features/home/data/datasources/home_local_datasources.dart';
 import 'package:etahlil/features/home/data/datasources/home_remote_datasources.dart';
-import 'package:etahlil/features/home/data/models/category_model.dart';
+import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:etahlil/features/home/data/repositories/repository_impl.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
@@ -75,6 +75,8 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../features/kutilmoqda/data/datasoursec/yuborilmagan_remote_datasources.dart';
 
 final di = GetIt.instance;
 //di is referred to as Service Locator
@@ -196,7 +198,7 @@ Future<void> init() async {
   );
   // not send
   di.registerLazySingleton<NotSendRepository>(
-    () => NotSendRepositoryImpl(notSendDataSourcesImpl: di()),
+    () => NotSendRepositoryImpl(notSendDataSourcesImpl: di(), notSendRemoteDataSourcesImpl: di(), networkInfo: di()),
   );
 
   /// UsesCases
@@ -291,6 +293,9 @@ Future<void> init() async {
   //not send
   di.registerLazySingleton(
     () => NotSendDataSourcesImpl(),
+  );
+  di.registerLazySingleton<NotSendRemoteDatasource>(
+    () => NotSendRemoteDatasourceImpl(client: di(), sharedPreferences: di()),
   );
 
   /// Image picker

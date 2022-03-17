@@ -1,5 +1,5 @@
 import 'package:etahlil/core/utils/app_constants.dart';
-import 'package:etahlil/features/home/data/models/category_model.dart';
+import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:hive/hive.dart';
 

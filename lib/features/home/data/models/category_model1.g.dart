@@ -1,4 +1,10 @@
-part of 'category_model.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'category_model1.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
   @override
@@ -16,13 +22,15 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
       repetition: fields[2] as String?,
       status: fields[3] as int?,
       isCheck: fields[4] as bool,
+      count: fields[5] as int?,
+      description: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, CategoryModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -32,7 +40,11 @@ class CategoryModelAdapter extends TypeAdapter<CategoryModel> {
       ..writeByte(3)
       ..write(obj.status)
       ..writeByte(4)
-      ..write(obj.isCheck);
+      ..write(obj.isCheck)
+      ..writeByte(5)
+      ..write(obj.count)
+      ..writeByte(6)
+      ..write(obj.description);
   }
 
   @override

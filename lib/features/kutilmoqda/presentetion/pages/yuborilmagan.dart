@@ -3,9 +3,13 @@ import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/kutilmoqda/presentetion/bloc/not_send_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
+
+import '../../../../core/network/network_info.dart';
 
 class NotSendPage extends StatefulWidget {
   const NotSendPage({Key? key}) : super(key: key);
@@ -21,6 +25,7 @@ class NotSendPage extends StatefulWidget {
 
 class _NotSendPageState extends State<NotSendPage> {
   late NotSendBloc _bloc;
+  final NetworkInfo networkInfo = di.get();
 
   @override
   void initState() {
@@ -36,6 +41,7 @@ class _NotSendPageState extends State<NotSendPage> {
 
   @override
   Widget build(BuildContext context) {
+    ProgressDialog pd = ProgressDialog(context: context);
     return Scaffold(
       backgroundColor: cBackColor,
       body: Column(
@@ -88,10 +94,22 @@ class _NotSendPageState extends State<NotSendPage> {
             child: BlocBuilder<NotSendBloc, NotSendState>(
               builder: (context, state) {
                 if (state is NotSendFailure) {
+                  pd.close();
                   CustomToast.showToast(
                       "Маълумотлар юкланишда хатолик юз берди!");
                 }
+                if (state is NotSendLoading) {
+                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                    pd.show(
+                      max: 100,
+                      msg: 'File Uploading...',
+                      barrierDismissible: false,
+                      msgMaxLines: 1,
+                    );
+                  });
+                }
                 if (state is NotSendSuccess) {
+                  pd.close();
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       return Container(
@@ -137,11 +155,23 @@ class _NotSendPageState extends State<NotSendPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                             ),
                             const Spacer(),
-                            SvgPicture.asset(
-                              "assets/icons/send_icon.svg",
-                              width: 25.w,
-                              height: 24.h,
-                              color: cFirstColor,
+                            InkResponse(
+                              child: SvgPicture.asset(
+                                "assets/icons/send_icon.svg",
+                                width: 25.w,
+                                height: 24.h,
+                                color: cFirstColor,
+                              ),
+                              onTap: () async {
+                                if (await networkInfo.isConnected) {
+                                  _bloc.add(SetNotSendEvent(
+                                    notSendModel: state.list[index],
+                                  ));
+                                } else {
+                                  CustomToast.showToast(
+                                      "Интернет билан алоқа ёқ илтимос алоқани қайта текширинг!");
+                                }
+                              },
                             ),
                             SizedBox(
                               width: 25.w,
@@ -154,6 +184,7 @@ class _NotSendPageState extends State<NotSendPage> {
                     itemCount: state.list.length,
                   );
                 } else {
+                  pd.close();
                   return Container();
                 }
               },

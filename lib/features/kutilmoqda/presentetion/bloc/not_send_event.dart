@@ -4,3 +4,9 @@ part of 'not_send_bloc.dart';
 abstract class NotSendEvent {}
 
 class GetNotSendEvent extends NotSendEvent {}
+
+class SetNotSendEvent extends NotSendEvent {
+  final NotSendModel notSendModel;
+
+  SetNotSendEvent({required this.notSendModel});
+}

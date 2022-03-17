@@ -1,23 +1,33 @@
 part of 'category_bloc.dart';
 
 @immutable
-abstract class CategoryState {}
+abstract class CategoryState {
+  final bool isLarge;
 
-class HomeInitialState extends CategoryState {}
+  const CategoryState({required this.isLarge});
+}
 
-class HomeLoadingState extends CategoryState {}
+class HomeInitialState extends CategoryState {
+  const HomeInitialState({required bool isLarge}) : super(isLarge: isLarge);
+}
+
+class HomeLoadingState extends CategoryState {
+  const HomeLoadingState({required bool isLarge}) : super(isLarge: isLarge);
+}
 
 class HomeSuccessState extends CategoryState {
   final List<CategoryModel> list;
   final int selected;
 
-  HomeSuccessState(this.list, this.selected);
+  const HomeSuccessState({required this.list,required this.selected, required bool isLarge}) : super(isLarge: isLarge);
 }
 
 class HomeSuccessStateLocal extends CategoryState {
   final List<CategoryModel> list;
 
-  HomeSuccessStateLocal(this.list);
+  const HomeSuccessStateLocal({required this.list, required bool isLarge}) : super(isLarge: isLarge);
 }
 
-class HomeFailureState extends CategoryState {}
+class HomeFailureState extends CategoryState {
+  const HomeFailureState({required bool isLarge}) : super(isLarge: isLarge);
+}

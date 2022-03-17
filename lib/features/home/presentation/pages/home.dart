@@ -34,8 +34,6 @@ class _HomePageState extends State<HomePage> {
   late CategoryBloc _categoryBloc;
   late SubCategoryBloc _subCategoryBloc;
 
-  bool isLarge = false;
-
   @override
   void initState() {
     _categoryBloc = BlocProvider.of<CategoryBloc>(context);
@@ -63,178 +61,202 @@ class _HomePageState extends State<HomePage> {
         onRefresh: _handleRefresh,
         child: Column(
           children: [
-            Container(
-              height: isLarge ? (443) : (306).h,
-              decoration: BoxDecoration(
-                  color: cFirstColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(cRadius22.r),
-                      bottomRight: Radius.circular(cRadius22.r))),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 45.h,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 40.w),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is HomeFailureState) {
+                  CustomToast.showToast(
+                      "Маълумотлар юкланишда хатолик юз берди!");
+                }
+                if (state is HomeLoadingState) {
+                  return Container(
+                    height: state.isLarge ? (443) : (306).h,
+                    decoration: BoxDecoration(
+                        color: cFirstColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(cRadius22.r),
+                            bottomRight: Radius.circular(cRadius22.r))),
+                    child: const Center(child: CupertinoActivityIndicator()),
+                  );
+                } else if (state is HomeInitialState) {
+                  return Container(
+                    height: state.isLarge ? (443) : (306).h,
+                    decoration: BoxDecoration(
+                        color: cFirstColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(cRadius22.r),
+                            bottomRight: Radius.circular(cRadius22.r))),
+                    child: const Center(child: CupertinoActivityIndicator()),
+                  );
+                } else if (state is HomeSuccessState) {
+                  _subCategoryBloc.add(
+                      GetSubCategoryEvent(id: state.list[state.selected].id!));
+                  return Container(
+                    height: state.isLarge ? (443) : (306).h,
+                    decoration: BoxDecoration(
+                        color: cFirstColor,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(cRadius22.r),
+                            bottomRight: Radius.circular(cRadius22.r))),
+                    child: Column(
                       children: [
                         SizedBox(
-                          width: 24.w,
+                          height: 45.h,
                         ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 250.w,
-                          child: Text(
-                            "Ёшлар сиёсати, ижтимоий ривожлантириш ва маънавий-маърифий ишлар бўйича",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: cWhiteColor,
-                                fontFamily: 'Regular',
-                                fontSize: 15.sp),
-                          ),
-                        ),
-                        const Spacer(),
-                        GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => NotSendPage.screen()),
-                            );
-                          },
-                          child: SvgPicture.asset(
-                            "assets/icons/cloud_icon.svg",
-                            width: 24.w,
-                            height: 24.h,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 18.w),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: TextField(
-                              textAlign: TextAlign.start,
-                              autofocus: false,
-                              controller: search,
-                              cursorColor: cWhiteColor,
-                              decoration: InputDecoration(
-                                hintText: "Қидирув",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                    color: cBackColorIcon,
-                                    fontSize: 12.sp,
-                                    fontFamily: 'Medium'),
-                                prefixIconConstraints: BoxConstraints(
-                                  maxWidth: 25.w,
-                                  maxHeight: 20.h,
-                                  minHeight: 20.h,
-                                  minWidth: 25.w,
-                                ),
-                                contentPadding: EdgeInsets.only(bottom: 2.h),
-                                prefixIcon: SvgPicture.asset(
-                                  "assets/icons/search_icon.svg",
-                                  height: 20.h,
-                                  width: 20.w,
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 40.w),
+                          height: 60.h,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: 250.w,
+                                child: Text(
+                                  state.list[state.selected].description ?? "",
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                      color: cWhiteColor,
+                                      fontFamily: 'Regular',
+                                      fontSize: 15.sp),
                                 ),
                               ),
-                              onChanged: (text) {
-                                _subCategoryBloc
-                                    .add(SearchSubCategoryEvent(txt: text));
-                              },
-                              style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontFamily: 'Medium',
-                                  color: cWhiteColor),
-                            ),
-                            height: 57.h,
-                            padding: EdgeInsets.symmetric(horizontal: 19.w),
-                            decoration: BoxDecoration(
-                                color: cSecondColor,
-                                borderRadius:
-                                    BorderRadius.circular(cRadius16.r)),
+                              const Spacer(),
+                              GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) =>
+                                            NotSendPage.screen()),
+                                  );
+                                },
+                                child: SvgPicture.asset(
+                                  "assets/icons/cloud_icon.svg",
+                                  width: 24.w,
+                                  height: 24.h,
+                                ),
+                              ),
+                            ],
                           ),
-                          flex: 5,
                         ),
                         SizedBox(
-                          width: 12.w,
+                          height: 20.h,
                         ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              isLarge = !isLarge;
-                              setState(() {});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(cRadius16.r),
-                                  border: Border.all(
-                                      width: 1.5.w,
-                                      color:
-                                          isLarge ? cWhiteColor : cSecondColor),
-                                  color: cSecondColor),
-                              height: 57.h,
-                              width: 57.w,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 17.w, vertical: 17.h),
-                              child: SvgPicture.asset(
-                                "assets/icons/lounch_icon.svg",
-                                height: 20.h,
-                                width: 20.w,
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 18.w),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  child: TextField(
+                                    textAlign: TextAlign.start,
+                                    autofocus: false,
+                                    controller: search,
+                                    cursorColor: cWhiteColor,
+                                    decoration: InputDecoration(
+                                      hintText: "Қидирув",
+                                      border: InputBorder.none,
+                                      hintStyle: TextStyle(
+                                          color: cBackColorIcon,
+                                          fontSize: 12.sp,
+                                          fontFamily: 'Medium'),
+                                      prefixIconConstraints: BoxConstraints(
+                                        maxWidth: 25.w,
+                                        maxHeight: 20.h,
+                                        minHeight: 20.h,
+                                        minWidth: 25.w,
+                                      ),
+                                      contentPadding:
+                                          EdgeInsets.only(bottom: 2.h),
+                                      prefixIcon: SvgPicture.asset(
+                                        "assets/icons/search_icon.svg",
+                                        height: 20.h,
+                                        width: 20.w,
+                                      ),
+                                    ),
+                                    onChanged: (text) {
+                                      _subCategoryBloc.add(
+                                          SearchSubCategoryEvent(txt: text));
+                                    },
+                                    style: TextStyle(
+                                        fontSize: 15.sp,
+                                        fontFamily: 'Medium',
+                                        color: cWhiteColor),
+                                  ),
+                                  height: 57.h,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 19.w),
+                                  decoration: BoxDecoration(
+                                      color: cSecondColor,
+                                      borderRadius:
+                                          BorderRadius.circular(cRadius16.r)),
+                                ),
+                                flex: 5,
                               ),
-                            ),
+                              SizedBox(
+                                width: 12.w,
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    _categoryBloc.add(ChangeColor(
+                                        state.list, 0, state.isLarge));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(cRadius16.r),
+                                        border: Border.all(
+                                            width: 1.5.w,
+                                            color: state.isLarge
+                                                ? cWhiteColor
+                                                : cSecondColor),
+                                        color: cSecondColor),
+                                    height: 57.h,
+                                    width: 57.w,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 17.w, vertical: 17.h),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/lounch_icon.svg",
+                                      height: 20.h,
+                                      width: 20.w,
+                                    ),
+                                  ),
+                                ),
+                                flex: 1,
+                              ),
+                            ],
                           ),
-                          flex: 1,
                         ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  BlocBuilder<CategoryBloc, CategoryState>(
-                    builder: (context, state) {
-                      if (state is HomeFailureState) {
-                        CustomToast.showToast(
-                            "Маълумотлар юкланишда хатолик юз берди!");
-                      }
-                      if (state is HomeLoadingState) {
-                        return const Center(
-                            child: CupertinoActivityIndicator());
-                      } else if (state is HomeSuccessState) {
-                        _subCategoryBloc.add(GetSubCategoryEvent(
-                            id: state.list[state.selected].id!));
-                        return Container(
-                          height: isLarge ? (285).h : (85).h,
+                        const Spacer(),
+                        Container(
+                          height: state.isLarge ? (285).h : (85).h,
                           margin: EdgeInsets.only(left: 18.w),
                           child: GridView.builder(
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: isLarge ? 5 : 1,
+                                crossAxisCount: state.isLarge ? 5 : 1,
                                 mainAxisExtent: 68.w,
                                 crossAxisSpacing: 3.h,
                                 childAspectRatio: 1 / 1,
                                 mainAxisSpacing: 13.w,
                               ),
                               padding: const EdgeInsets.all(4.0),
-                              scrollDirection:
-                                  isLarge ? Axis.vertical : Axis.horizontal,
+                              scrollDirection: state.isLarge
+                                  ? Axis.vertical
+                                  : Axis.horizontal,
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.list.length,
                               itemBuilder: (context, index) {
                                 return InkWell(
                                   onTap: () {
-                                    _categoryBloc
-                                        .add(ChangeColor(state.list, index));
+                                    _categoryBloc.add(ChangeColor(
+                                        state.list, index, !state.isLarge));
                                   },
                                   child: Stack(
                                     children: [
@@ -269,14 +291,16 @@ class _HomePageState extends State<HomePage> {
                                                   BorderRadius.circular(15.r),
                                               color: cWhiteColor),
                                           margin: EdgeInsets.symmetric(
-                                              horizontal: isLarge ? 5.w : 0.w,
+                                              horizontal:
+                                                  state.isLarge ? 5.w : 0.w,
                                               vertical: 5.h),
                                           padding: EdgeInsets.only(bottom: 2.h),
                                           height: 18.h,
                                           width: 18.w,
                                           child: Center(
                                             child: Text(
-                                              "-1",
+                                              (state.list[index].count ?? "0")
+                                                  .toString(),
                                               maxLines: 1,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
@@ -292,18 +316,18 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               }),
-                        );
-                      } else {
-                        return Container(
-                          height: isLarge ? (220) : (75).h,
-                          margin: EdgeInsets.only(left: 18.w),
-                        );
-                      }
-                    },
-                  ),
-                  const Spacer(),
-                ],
-              ),
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container(
+                    height: state.isLarge ? (220) : (75).h,
+                    margin: EdgeInsets.only(left: 18.w),
+                  );
+                }
+              },
             ),
             SizedBox(
               height: 24.h,

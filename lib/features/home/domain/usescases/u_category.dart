@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/usescases/usecase.dart';
-import 'package:etahlil/features/home/data/models/category_model.dart';
+import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/domain/repositories/home_repository.dart';
 
 class UCategory extends UseCase<dynamic, GetCategoryParams> {

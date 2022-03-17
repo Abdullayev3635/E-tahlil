@@ -57,7 +57,10 @@ dependencies:
   geolocator: ^8.2.0
   # 19.For Image cached
   cached_network_image: ^3.2.0
-
+  # 20.For Progress
+  sn_progress_dialog: ^1.0.3
+  # 21. For Fingerprint
+  local_auth: ^1.1.0
 
 dev_dependencies:
   flutter_test:

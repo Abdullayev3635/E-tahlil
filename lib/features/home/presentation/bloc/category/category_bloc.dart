@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:etahlil/core/errors/failures.dart';
-import 'package:etahlil/features/home/data/models/category_model.dart';
+import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/domain/usescases/u_category.dart';
 import 'package:meta/meta.dart';
 
@@ -16,14 +16,14 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
 
   CategoryBloc({
     required this.home,
-  }) : super(HomeInitialState()) {
+  }) : super(const HomeInitialState(isLarge: false)) {
     on<GetCategory>(getCategory, transformer: sequential());
     on<ChangeColor>(changeColor, transformer: sequential());
   }
 
   FutureOr<void> getCategory(
       GetCategory event, Emitter<CategoryState> emit) async {
-    emit(HomeLoadingState());
+    emit(const HomeLoadingState(isLarge: false));
     final result = await home(
       GetCategoryParams(),
     );
@@ -31,20 +31,22 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
-                {emit(HomeFailureState())}
+                {emit(const HomeFailureState(isLarge: false))}
               else if (failure is ServerFailure)
-                {emit(HomeFailureState())}
+                {emit(const HomeFailureState(isLarge: false))}
             },
         (r) => {
               if (r.isEmpty)
-                {emit(HomeFailureState())}
+                {emit(const HomeFailureState(isLarge: false))}
               else
-                {emit(HomeSuccessState(r, 0))}
+                {emit(HomeSuccessState(list: r, selected: 0, isLarge: false))}
             });
   }
 
   FutureOr<void> changeColor(
       ChangeColor event, Emitter<CategoryState> emit) async {
-    emit(HomeSuccessState(event.list, event.index));
+    emit(HomeSuccessState(
+        list: event.list, selected: event.index, isLarge: !event.isLarge));
   }
+
 }

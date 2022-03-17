@@ -144,7 +144,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 SizedBox(
                   height: 100.h,
                 ),
-                numPad(_pinPutController),
+                numPad(_pinPutController, context),
               ],
             ),
           ),

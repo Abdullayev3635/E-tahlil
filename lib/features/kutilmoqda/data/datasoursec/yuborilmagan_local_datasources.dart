@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 
 abstract class NotSendDataSources {
   Future<List<NotSendModel>> getNotSends();
+  Future<List<NotSendModel>> getDeleted(NotSendModel notSendModel);
 }
 
 class NotSendDataSourcesImpl extends NotSendDataSources {
@@ -11,6 +12,18 @@ class NotSendDataSourcesImpl extends NotSendDataSources {
   Future<List<NotSendModel>> getNotSends() async {
     try {
       final box = Hive.box(forSendBox);
+      final eventsFromHive = box.values.toList().cast<NotSendModel>();
+      return eventsFromHive;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<NotSendModel>> getDeleted(NotSendModel notSendModel) async {
+    try {
+      final box = Hive.box(forSendBox);
+      box.delete(notSendModel.key);
       final eventsFromHive = box.values.toList().cast<NotSendModel>();
       return eventsFromHive;
     } catch (e) {

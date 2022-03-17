@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // All colors
 const cFirstColor = Color(0xFF2972FE);
@@ -53,7 +52,7 @@ const double cNumberLockH90 = 90.0;
 const double cNumberLockText42 = 42.0;
 
 // versions
-const String version = "1.0.0";
+const String version = "1.0.1";
 
 // lock number style
 

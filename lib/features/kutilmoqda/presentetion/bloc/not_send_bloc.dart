@@ -8,6 +8,7 @@ import 'package:etahlil/features/kutilmoqda/domain/usescases/u_not_send.dart';
 import 'package:etahlil/features/kutilmoqda/domain/usescases/u_not_send_local.dart';
 import 'package:meta/meta.dart';
 
+
 part 'not_send_event.dart';
 
 part 'not_send_state.dart';
@@ -21,6 +22,7 @@ class NotSendBloc extends Bloc<NotSendEvent, NotSendState> {
     required this.notSendLocal,
   }) : super(NotSendInitial()) {
     on<GetNotSendEvent>(getNotSend, transformer: sequential());
+    on<SetNotSendEvent>(setNotSend, transformer: sequential());
   }
 
   FutureOr<void> getNotSend(
@@ -28,6 +30,24 @@ class NotSendBloc extends Bloc<NotSendEvent, NotSendState> {
     emit(NotSendLoading());
     final result = await notSendLocal(
       NotSendParamsLocal(),
+    );
+    result.fold(
+        (failure) => {
+              if (failure is NoConnectionFailure)
+                {emit(NotSendFailure(message: failure.message))}
+              else if (failure is ServerFailure)
+                {emit(NotSendFailure(message: failure.message))}
+            },
+        (r) => {emit(NotSendSuccess(list: r))});
+  }
+
+  FutureOr<void> setNotSend(
+      SetNotSendEvent event, Emitter<NotSendState> emit) async {
+    emit(NotSendLoading());
+    final result = await notSend(
+      NotSendParams(
+        event.notSendModel,
+      ),
     );
     result.fold(
         (failure) => {
