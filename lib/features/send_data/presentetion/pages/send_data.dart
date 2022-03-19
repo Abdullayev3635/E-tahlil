@@ -16,19 +16,23 @@ import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 import 'package:intl/intl.dart';
 
+import '../../data/datasoursec/send_data_remote_datasources.dart';
+
 class SendData extends StatefulWidget {
   final int categoryId;
   final int subCategoryId;
+  final String categoryName;
 
   const SendData(
-      {Key? key, required this.categoryId, required this.subCategoryId})
+      {Key? key, required this.categoryId, required this.categoryName, required this.subCategoryId})
       : super(key: key);
 
-  static Widget screen(int catId, int subCatId) => BlocProvider(
+  static Widget screen(int catId, int subCatId, String categoryName) => BlocProvider(
         create: (context) => di<SendDataBloc>(),
         child: SendData(
           categoryId: catId,
           subCategoryId: subCatId,
+          categoryName: categoryName,
         ),
       );
 
@@ -63,7 +67,7 @@ class _SendDataState extends State<SendData> {
   bool checkOrin = false;
   late List<ImgModel> images = [];
   final customFormat = DateFormat('yyyy.MM.dd hh:mm');
-
+  final SendDataRemoteDatasourceImpl sendDataRemoteDatasourceImpl = di.get();
   @override
   void initState() {
     _bloc = BlocProvider.of<SendDataBloc>(context);
@@ -81,6 +85,7 @@ class _SendDataState extends State<SendData> {
   @override
   Widget build(BuildContext context) {
     ProgressDialog pd = ProgressDialog(context: context);
+
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -117,7 +122,7 @@ class _SendDataState extends State<SendData> {
                     ),
                     const Spacer(),
                     SizedBox(
-                      child: Text("Дам олиш объектлари",
+                      child: Text(widget.categoryName,
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           style: TextStyle(
@@ -327,9 +332,12 @@ class _SendDataState extends State<SendData> {
                             if (state is SendDataLoading) {
                               pd.show(
                                   max: 100,
-                                  msg: 'File Uploading...',
+                                  msg: 'Файл юкланиш бошланди',
                                   barrierDismissible: false,
                                   msgMaxLines: 1);
+                              sendDataRemoteDatasourceImpl.user.listen((event) {
+                                pd.update(value: event, msg: 'Файл юкланмоқда...');
+                              });
                             }
                           },
                           child: Text(

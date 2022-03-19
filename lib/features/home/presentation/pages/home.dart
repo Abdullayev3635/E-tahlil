@@ -383,9 +383,9 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => SendData.screen(
+                                      builder: (context) => SendData. screen(
                                           state.list[index].categoryId!,
-                                          state.list[index].id!)),
+                                          state.list[index].id!, state.list[index].name!)),
                                 );
                               },
                               child: Container(

@@ -17,6 +17,10 @@ class SendDataBloc extends Bloc<SendDataEvent, SendDataState> {
     on<SendDataToServerEvent>(_sendData, transformer: sequential());
   }
 
+  final _user = StreamController<int>();
+  Sink get updateUser => _user.sink;
+  Stream<int> get user => _user.stream;
+
   FutureOr<void> _sendData(
       SendDataToServerEvent event, Emitter<SendDataState> emit) async {
     emit(SendDataLoading());
