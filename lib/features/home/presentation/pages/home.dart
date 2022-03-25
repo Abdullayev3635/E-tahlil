@@ -117,7 +117,8 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(
                                     color: cWhiteColor,
                                     fontFamily: 'Regular',
-                                    fontSize: 15.sp),
+                                    fontSize: 15.sp,
+                                ),
                               ),
                             ),
                             const Spacer(),

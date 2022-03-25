@@ -119,7 +119,7 @@ class _ProfileState extends State<Profile> {
                                 child: const Text('Ҳа'),
                               ),
                             ],
-                            actionsPadding: EdgeInsets.all(15),
+                            actionsPadding: const EdgeInsets.all(15),
                           ),
                         ),
                         child: SvgPicture.asset(
