@@ -61,6 +61,8 @@ dependencies:
   sn_progress_dialog: ^1.0.3
   # 21. For Fingerprint
   local_auth: ^1.1.0
+  # 22 For stream
+  rxdart: ^0.27.3
 
 dev_dependencies:
   flutter_test:

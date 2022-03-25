@@ -5,7 +5,10 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/domain/usescases/u_category.dart';
+import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
+
+import '../../../../../core/utils/app_constants.dart';
 
 part 'category_event.dart';
 
@@ -27,7 +30,7 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
     final result = await home(
       GetCategoryParams(),
     );
-
+    final box = Hive.box(forSendBox);
     result.fold(
         (failure) => {
               if (failure is NoConnectionFailure)
@@ -39,14 +42,15 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
               if (r.isEmpty)
                 {emit(const HomeFailureState(isLarge: false))}
               else
-                {emit(HomeSuccessState(list: r, selected: 0, isLarge: false))}
+                {emit(HomeSuccessState(list: r, selected: 0, isLarge: false, count: box.length))}
             });
   }
 
   FutureOr<void> changeColor(
       ChangeColor event, Emitter<CategoryState> emit) async {
+    final box = Hive.box(forSendBox);
     emit(HomeSuccessState(
-        list: event.list, selected: event.index, isLarge: !event.isLarge));
+        list: event.list, selected: event.index, isLarge: !event.isLarge, count: box.length));
   }
 
 }

@@ -85,7 +85,6 @@ class _SendDataState extends State<SendData> {
   @override
   Widget build(BuildContext context) {
     ProgressDialog pd = ProgressDialog(context: context);
-
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -271,7 +270,6 @@ class _SendDataState extends State<SendData> {
                           color: cGrayColor2,
                           fontFamily: 'Regular'),
                     ),
-                    //    <-- label
                     value: checkOrin,
                     onChanged: (newValue) {
                       checkOrin = newValue!;
@@ -319,7 +317,7 @@ class _SendDataState extends State<SendData> {
                           addFile();
                         },
                         child: BlocListener<SendDataBloc, SendDataState>(
-                          listener: (context, state) {
+                          listener: (context, state) async  {
                             if (state is SendDataFailure) {
                               pd.close();
                               CustomToast.showToast(
@@ -332,12 +330,15 @@ class _SendDataState extends State<SendData> {
                             if (state is SendDataLoading) {
                               pd.show(
                                   max: 100,
-                                  msg: 'Файл юкланиш бошланди',
+                                  msg: 'Файл юкланмоқда...',
                                   barrierDismissible: false,
-                                  msgMaxLines: 1);
-                              sendDataRemoteDatasourceImpl.user.listen((event) {
-                                pd.update(value: event, msg: 'Файл юкланмоқда...');
-                              });
+                                  msgMaxLines: 1,
+                              );
+                              for (int i = 0; i <= 99; i++) {
+                                pd.update(value: i);
+                                i++;
+                                await Future.delayed(const Duration(milliseconds: 100));
+                              }
                             }
                           },
                           child: Text(

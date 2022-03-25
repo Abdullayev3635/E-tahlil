@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../presentetion/bloc/send_data_bloc.dart';
 
 abstract class SendDataRemoteDatasource {
   Future<bool> setData(String userId, int subId, int subCategoryId,
       int presenceOfDeputy, String title, String text, List<ImgModel> images);
+
 }
 
 class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
@@ -21,7 +20,7 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
       {required this.sharedPreferences, required this.client});
 
 
-  final _user = StreamController<int>();
+  final PublishSubject<int> _user = PublishSubject<int>();
   Sink get updateUser => _user.sink;
   Stream<int> get user => _user.stream;
 
@@ -60,14 +59,14 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
 
       Stream.value(stringEncodedPayload)
           .transform(utf8.encoder)
-          .listen((chunk) {
+          .listen((chunk) async{
         transferredLength += chunk.length;
         uploadProgress = transferredLength / totalLength;
-        debugPrint("Chunk: ${chunk.length}, transferred: $transferredLength, progress: $uploadProgress");
         streamedRequest.sink.add(chunk);
-        updateUser.add((uploadProgress*100).round());
+        if (!_user.isClosed) {
+          updateUser.add((uploadProgress*100).round());
+        }
       }, onDone: () {
-        debugPrint("Done. Total: $totalLength, transferred: $transferredLength, progress: $uploadProgress");
         streamedRequest.sink.close();
       });
 

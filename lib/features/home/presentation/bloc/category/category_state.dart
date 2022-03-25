@@ -18,14 +18,14 @@ class HomeLoadingState extends CategoryState {
 class HomeSuccessState extends CategoryState {
   final List<CategoryModel> list;
   final int selected;
+  final int count;
 
-  const HomeSuccessState({required this.list,required this.selected, required bool isLarge}) : super(isLarge: isLarge);
-}
-
-class HomeSuccessStateLocal extends CategoryState {
-  final List<CategoryModel> list;
-
-  const HomeSuccessStateLocal({required this.list, required bool isLarge}) : super(isLarge: isLarge);
+  const HomeSuccessState(
+      {required this.list,
+      required this.selected,
+      required bool isLarge,
+      required this.count})
+      : super(isLarge: isLarge);
 }
 
 class HomeFailureState extends CategoryState {

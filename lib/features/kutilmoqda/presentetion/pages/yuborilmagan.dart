@@ -99,13 +99,18 @@ class _NotSendPageState extends State<NotSendPage> {
                       "Маълумотлар юкланишда хатолик юз берди!");
                 }
                 if (state is NotSendLoading) {
-                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  SchedulerBinding.instance?.addPostFrameCallback((_)async{
                     pd.show(
                       max: 100,
                       msg: 'File Uploading...',
                       barrierDismissible: false,
                       msgMaxLines: 1,
                     );
+                    for (int i = 0; i <= 99; i++) {
+                      pd.update(value: i);
+                      i++;
+                      await Future.delayed(const Duration(milliseconds: 100));
+                    }
                   });
                 }
                 if (state is NotSendSuccess) {
