@@ -15,6 +15,7 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
   final USubCategory subCategory;
 
   List<SubCategoryModel> subList = [];
+  bool isStatus = false;
 
   SubCategoryBloc({
     required this.subCategory,
@@ -44,9 +45,17 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
                 {
                   for (int i = 0; r.length > i; i++)
                     {
-                      if (event.id == r[i].categoryId) {subList.add(r[i])}
+                      if (event.id == r[i].categoryId)
+                        {
+                          subList.add(r[i]),
+                        },
+                      if (r[i].status == "1")
+                        {
+                          isStatus = true,
+                        }
                     },
-                  emit(SubCategorySuccessState(list: subList)),
+                  emit(SubCategorySuccessState(
+                      list: subList, isState: isStatus)),
                 }
             });
   }
@@ -55,14 +64,15 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
       SearchSubCategoryEvent event, Emitter<SubCategoryState> emit) async {
     emit(SubCategoryLoadingState());
     if (event.txt.isEmpty) {
-      emit(SubCategorySuccessState(list: subList));
+      emit(SubCategorySuccessState(list: subList, isState: isStatus));
     } else {
       emit(SubCategorySuccessState(
           list: subList.where((element) {
-        final titleLower = element.name!.toLowerCase();
-        final searchLower = event.txt.toLowerCase();
-        return titleLower.contains(searchLower);
-      }).toList()));
+            final titleLower = element.name!.toLowerCase();
+            final searchLower = event.txt.toLowerCase();
+            return titleLower.contains(searchLower);
+          }).toList(),
+          isState: isStatus));
     }
   }
 }

@@ -115,9 +115,9 @@ class _HomePageState extends State<HomePage> {
                                 textAlign: TextAlign.center,
                                 maxLines: 3,
                                 style: TextStyle(
-                                    color: cWhiteColor,
-                                    fontFamily: 'Regular',
-                                    fontSize: 15.sp,
+                                  color: cWhiteColor,
+                                  fontFamily: 'Regular',
+                                  fontSize: 15.sp,
                                 ),
                               ),
                             ),
@@ -406,14 +406,31 @@ class _HomePageState extends State<HomePage> {
                             child: GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => SendData.screen(
-                                          state.list[index].categoryId!,
-                                          state.list[index].id!,
-                                          state.list[index].name!)),
-                                ).then((value) => _handleRefresh);
+                                if (state.list[index].status == "1") {
+                                  Navigator.push(
+                                    context,
+                                    CupertinoPageRoute(
+                                        builder: (context) => SendData.screen(
+                                            state.list[index].categoryId!,
+                                            state.list[index].id!,
+                                            state.list[index].name!)),
+                                  ).then((value) => _handleRefresh);
+                                } else {
+                                  if(!state.isState){
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => SendData.screen(
+                                              state.list[index].categoryId!,
+                                              state.list[index].id!,
+                                              state.list[index].name!)),
+                                    ).then((value) => _handleRefresh);
+                                  }
+                                  else {
+                                    CustomToast.showToast(
+                                        "Илтимос аввал бажарилиши зарур бўлган ишларни бажаринг!");
+                                  }
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(

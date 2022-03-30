@@ -9,8 +9,8 @@ class SubCategoryLoadingState extends SubCategoryState {}
 
 class SubCategorySuccessState extends SubCategoryState {
   final List<SubCategoryModel> list;
-
-  SubCategorySuccessState({required this.list});
+  final bool isState;
+  SubCategorySuccessState({required this.list, required this.isState});
 }
 
 class SubCategoryFailureState extends SubCategoryState {}
