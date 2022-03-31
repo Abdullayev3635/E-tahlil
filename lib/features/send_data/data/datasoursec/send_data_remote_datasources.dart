@@ -4,7 +4,6 @@ import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/utils/api_path.dart';
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class SendDataRemoteDatasource {
@@ -19,10 +18,6 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
   SendDataRemoteDatasourceImpl(
       {required this.sharedPreferences, required this.client});
 
-
-  final PublishSubject<int> _user = PublishSubject<int>();
-  Sink get updateUser => _user.sink;
-  Stream<int> get user => _user.stream;
 
   @override
   Future<bool> setData(
@@ -52,20 +47,20 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
       streamedRequest.headers['Authorization'] = "Bearer ${sharedPreferences.getString("token")}";
 
 
-      var transferredLength = 0;
-      var uploadProgress = 0.0;
+      // var transferredLength = 0;
+      // var uploadProgress = 0.0;
       var stringEncodedPayload = jsonEncode(body);
-      var totalLength = stringEncodedPayload.length;
+      // var totalLength = stringEncodedPayload.length;
 
       Stream.value(stringEncodedPayload)
           .transform(utf8.encoder)
           .listen((chunk) async{
-        transferredLength += chunk.length;
-        uploadProgress = transferredLength / totalLength;
+        // transferredLength += chunk.length;
+        // uploadProgress = transferredLength / totalLength;
         streamedRequest.sink.add(chunk);
-        if (!_user.isClosed) {
-          updateUser.add((uploadProgress*100).round());
-        }
+        // if (!_user.isClosed) {
+        //   updateUser.add((uploadProgress*100).round());
+        // }
       }, onDone: () {
         streamedRequest.sink.close();
       });
