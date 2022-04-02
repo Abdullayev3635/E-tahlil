@@ -24,7 +24,7 @@ class HomeRemoteDatasourceImpl implements HomeRemoteDatasource {
     List<CategoryModel> list = [];
     try {
       final response = await client.get(
-        Uri.parse(baseUrl + categoriesPHP),
+        Uri.parse(baseUrl + categoriesPHP + sharedPreferences.getString("id")!),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Accept': 'application/json',

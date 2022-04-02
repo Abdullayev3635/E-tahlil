@@ -13,6 +13,7 @@ abstract class ProfRemoteDatasource {
 class ProfRemoteDatasourceImpl implements ProfRemoteDatasource {
   final SharedPreferences sharedPreferences;
   final http.Client client;
+
   ProfRemoteDatasourceImpl(
       {required this.sharedPreferences, required this.client});
 
@@ -21,7 +22,7 @@ class ProfRemoteDatasourceImpl implements ProfRemoteDatasource {
     ProfModel? _list;
     try {
       final response = await client.get(
-        Uri.parse(baseUrl + profilePHP + userId),
+        Uri.parse(baseUrl + profilePHP + sharedPreferences.getString("id")!),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -31,18 +32,33 @@ class ProfRemoteDatasourceImpl implements ProfRemoteDatasource {
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
         _list = ProfModel(
-            id: parsed["data"]["id"],
-            name: parsed["data"]["name"],
-            regionName: parsed["data"]["region_name"],
-            sectorId: parsed["data"]["sector_id"],
-            phoneNumber: parsed["data"]["phone_number"],
-            viloyatBoyicha: parsed["data"]["viloyat_boyicha"],
-            tumanBoyicha: parsed["data"]["tuman_boyicha"],
-            barchaJonatmalar: parsed["data"]["barcha_jonatmalar"],
-            sectorKotibiKormoqda: parsed["data"]["sector_kotibi_kormoqda"],
-            rejaGrafikBoyicha: parsed["data"]["reja_grafik_boyicha"],
-            bajarilishiKerakIshlar: parsed["data"]["bajarilishi_kerak_ishlar"]);
+          id: parsed["data"]["id"],
+          name: parsed["data"]["name"],
+          regionName: parsed["data"]["region_name"],
+          sectorId: parsed["data"]["sector_id"],
+          phoneNumber: parsed["data"]["phone_number"],
+          viloyatBoyicha: parsed["data"]["viloyat_boyicha"],
+          tumanBoyicha: parsed["data"]["tuman_boyicha"],
+          barchaJonatmalar: parsed["data"]["barcha_jonatmalar"],
+          sectorKotibiKormoqda: parsed["data"]["sector_kotibi_kormoqda"],
+          rejaGrafikBoyicha: parsed["data"]["reja_grafik_boyicha"],
+          bajarilishiKerakIshlar: parsed["data"]["bajarilishi_kerak_ishlar"],
+        );
         return _list;
+      } else {
+        return ProfModel(
+          id: 0,
+          name: "",
+          regionName: "",
+          sectorId: 0,
+          phoneNumber: "",
+          viloyatBoyicha: 0,
+          tumanBoyicha: 0,
+          barchaJonatmalar: 0,
+          sectorKotibiKormoqda: 0,
+          rejaGrafikBoyicha: 0,
+          bajarilishiKerakIshlar: 0,
+        );
       }
     } on InputFormatterFailure {
       return "500";
