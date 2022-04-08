@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:etahlil/core/utils/app_constants.dart';
 import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
@@ -7,9 +10,13 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
 import '../../../../core/network/network_info.dart';
+import '../../../../core/utils/api_path.dart';
+import '../../data/model/not_send_model.dart';
 
 class NotSendPage extends StatefulWidget {
   const NotSendPage({Key? key}) : super(key: key);
@@ -26,10 +33,14 @@ class NotSendPage extends StatefulWidget {
 class _NotSendPageState extends State<NotSendPage> {
   late NotSendBloc _bloc;
   final NetworkInfo networkInfo = di.get();
+  SharedPreferences sharedPreferences = di.get();
+  Dio dio = di.get();
+  late ProgressDialog pd;
 
   @override
   void initState() {
     _bloc = BlocProvider.of<NotSendBloc>(context);
+    pd = ProgressDialog(context: context);
     super.initState();
   }
 
@@ -41,7 +52,6 @@ class _NotSendPageState extends State<NotSendPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProgressDialog pd = ProgressDialog(context: context);
     return Scaffold(
       backgroundColor: cBackColor,
       body: Column(
@@ -94,27 +104,10 @@ class _NotSendPageState extends State<NotSendPage> {
             child: BlocBuilder<NotSendBloc, NotSendState>(
               builder: (context, state) {
                 if (state is NotSendFailure) {
-                  pd.close();
                   CustomToast.showToast(
                       "Маълумотлар юкланишда хатолик юз берди!");
                 }
-                if (state is NotSendLoading) {
-                  SchedulerBinding.instance?.addPostFrameCallback((_)async{
-                    pd.show(
-                      max: 100,
-                      msg: 'File Uploading...',
-                      barrierDismissible: false,
-                      msgMaxLines: 1,
-                    );
-                    for (int i = 0; i <= 99; i++) {
-                      pd.update(value: i);
-                      i++;
-                      await Future.delayed(const Duration(milliseconds: 100));
-                    }
-                  });
-                }
                 if (state is NotSendSuccess) {
-                  pd.close();
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       return Container(
@@ -169,9 +162,10 @@ class _NotSendPageState extends State<NotSendPage> {
                               ),
                               onTap: () async {
                                 if (await networkInfo.isConnected) {
-                                  _bloc.add(SetNotSendEvent(
-                                    notSendModel: state.list[index],
-                                  ));
+                                  // _bloc.add(SetNotSendEvent(
+                                  //   notSendModel: state.list[index],
+                                  // ));
+                                  sendData(state.list[index]);
                                 } else {
                                   CustomToast.showToast(
                                       "Интернет билан алоқа ёқ илтимос алоқани қайта текширинг!");
@@ -189,7 +183,6 @@ class _NotSendPageState extends State<NotSendPage> {
                     itemCount: state.list.length,
                   );
                 } else {
-                  pd.close();
                   return Container();
                 }
               },
@@ -201,5 +194,56 @@ class _NotSendPageState extends State<NotSendPage> {
         ],
       ),
     );
+  }
+
+  void sendData(NotSendModel notSendModel) async {
+    pd.show(max: 100, msg: "Маълумотлар юкланмоқда...", msgFontSize: 17.sp);
+    var json =
+        jsonEncode(notSendModel.imagesList!.map((e) => e.toJson()).toList());
+
+    var body = {
+      "user_id": sharedPreferences.getString("id")!,
+      "category_id": notSendModel.categoryId.toString(),
+      "subCategory_id": notSendModel.subCategoryId.toString(),
+      "orinbosar_ishtirokida": notSendModel.orinbosarIshtirokida.toString(),
+      "title": notSendModel.title.toString(),
+      "text": notSendModel.text.toString(),
+      "images_list": json,
+    };
+
+    try {
+      Options options = Options(
+        receiveDataWhenStatusError: true,
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Accept": "application/json",
+          "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        },
+        receiveTimeout: 60 * 1000,
+        sendTimeout: 60 * 1000,
+      );
+
+      final response = await dio.post(
+        baseUrl + worksPHP,
+        data: body,
+        options: options,
+        onSendProgress: (int sent, int total) {
+          pd.update(value: (sent / total * 100).round() - 1);
+        },
+      );
+      if (response.statusCode == 200) {
+        final box = Hive.box(forSendBox);
+        box.delete(notSendModel.key);
+        _bloc.add(GetNotSendEvent());
+        pd.close();
+      } else {
+        pd.close();
+        CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      pd.close();
+      CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+    }
   }
 }

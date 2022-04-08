@@ -9,15 +9,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class SendDataRemoteDatasource {
   Future<bool> setData(String userId, int subId, int subCategoryId,
       int presenceOfDeputy, String title, String text, List<ImgModel> images);
-
 }
 
 class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
   final SharedPreferences sharedPreferences;
   final http.Client client;
+
   SendDataRemoteDatasourceImpl(
       {required this.sharedPreferences, required this.client});
-
 
   @override
   Future<bool> setData(
@@ -41,31 +40,27 @@ class SendDataRemoteDatasourceImpl implements SendDataRemoteDatasource {
         "images_list": json,
       };
 
-      final streamedRequest = http.StreamedRequest("POST", Uri.parse(baseUrl + worksPHP),);
-      streamedRequest.headers['Content-Type'] = 'application/json; charset=UTF-8';
+      final streamedRequest = http.StreamedRequest(
+        "POST",
+        Uri.parse(baseUrl + worksPHP),
+      );
+      streamedRequest.headers['Content-Type'] =
+          'application/json; charset=UTF-8';
       streamedRequest.headers['Accept'] = 'application/json';
-      streamedRequest.headers['Authorization'] = "Bearer ${sharedPreferences.getString("token")}";
+      streamedRequest.headers['Authorization'] =
+          "Bearer ${sharedPreferences.getString("token")}";
 
-
-      // var transferredLength = 0;
-      // var uploadProgress = 0.0;
       var stringEncodedPayload = jsonEncode(body);
-      // var totalLength = stringEncodedPayload.length;
 
-      Stream.value(stringEncodedPayload)
-          .transform(utf8.encoder)
-          .listen((chunk) async{
-        // transferredLength += chunk.length;
-        // uploadProgress = transferredLength / totalLength;
+      Stream.value(stringEncodedPayload).transform(utf8.encoder).listen(
+          (chunk) async {
         streamedRequest.sink.add(chunk);
-        // if (!_user.isClosed) {
-        //   updateUser.add((uploadProgress*100).round());
-        // }
-      }, onDone: () {
+      },onDone: () {
         streamedRequest.sink.close();
       });
 
-      final response = await client.send(streamedRequest).then(http.Response.fromStream);
+      final response =
+          await client.send(streamedRequest).then(http.Response.fromStream);
 
       if (response.statusCode == 200) {
         return true;

@@ -63,6 +63,7 @@ dependencies:
   local_auth: ^1.1.0
   # 22 For stream
   rxdart: ^0.27.3
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

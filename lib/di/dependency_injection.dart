@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:etahlil/core/network/network_info.dart';
 import 'package:http/http.dart' as http;
 import 'package:etahlil/core/photo/image_picker_utils.dart';
@@ -306,6 +307,7 @@ Future<void> init() async {
 
   /// Network
   di.registerLazySingleton<http.Client>(() => http.Client());
+  di.registerLazySingleton<Dio>(() => Dio());
 
   /// Network Info
   di.registerLazySingleton(() => InternetConnectionChecker());

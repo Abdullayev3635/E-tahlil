@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future _handleRefresh() async {
-    return _categoryBloc.add(GetCategory());
+    _categoryBloc.add(GetCategory());
   }
 
   @override
@@ -130,7 +130,10 @@ class _HomePageState extends State<HomePage> {
                                   CupertinoPageRoute(
                                       builder: (context) =>
                                           NotSendPage.screen()),
-                                ).then((value) => _handleRefresh);
+                                ).then((value) {
+                                  _handleRefresh();
+                                  debugPrint('on back');
+                                });
                               },
                               child: Stack(
                                 children: [
@@ -348,8 +351,14 @@ class _HomePageState extends State<HomePage> {
                 );
               } else {
                 return Container(
-                  height: state.isLarge ? (220) : (75).h,
-                  margin: EdgeInsets.only(left: 18.w),
+                  height: state.isLarge ? (443) : (306).h,
+                  decoration: BoxDecoration(
+                    color: cFirstColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(cRadius22.r),
+                      bottomRight: Radius.circular(cRadius22.r),
+                    ),
+                  ),
                 );
               }
             },
@@ -414,9 +423,12 @@ class _HomePageState extends State<HomePage> {
                                             state.list[index].categoryId!,
                                             state.list[index].id!,
                                             state.list[index].name!)),
-                                  ).then((value) => _handleRefresh);
+                                  ).then((value) {
+                                    _handleRefresh();
+                                    debugPrint('on back');
+                                  });
                                 } else {
-                                  if(!state.isState){
+                                  if (!state.isState) {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
@@ -424,9 +436,11 @@ class _HomePageState extends State<HomePage> {
                                               state.list[index].categoryId!,
                                               state.list[index].id!,
                                               state.list[index].name!)),
-                                    ).then((value) => _handleRefresh);
-                                  }
-                                  else {
+                                    ).then((value) {
+                                      _handleRefresh();
+                                      debugPrint('on back');
+                                    });
+                                  } else {
                                     CustomToast.showToast(
                                         "Илтимос аввал бажарилиши зарур бўлган ишларни бажаринг!");
                                   }

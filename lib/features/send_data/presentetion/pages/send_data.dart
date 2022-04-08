@@ -11,12 +11,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
-import '../../data/datasoursec/send_data_remote_datasources.dart';
+import 'package:dio/dio.dart';
+import '../../../../core/network/network_info.dart';
+import '../../../../core/utils/api_path.dart';
+import '../../../kutilmoqda/data/model/not_send_model.dart';
 
 class SendData extends StatefulWidget {
   final int categoryId;
@@ -24,10 +28,14 @@ class SendData extends StatefulWidget {
   final String categoryName;
 
   const SendData(
-      {Key? key, required this.categoryId, required this.categoryName, required this.subCategoryId})
+      {Key? key,
+      required this.categoryId,
+      required this.categoryName,
+      required this.subCategoryId})
       : super(key: key);
 
-  static Widget screen(int catId, int subCatId, String categoryName) => BlocProvider(
+  static Widget screen(int catId, int subCatId, String categoryName) =>
+      BlocProvider(
         create: (context) => di<SendDataBloc>(),
         child: SendData(
           categoryId: catId,
@@ -67,10 +75,18 @@ class _SendDataState extends State<SendData> {
   bool checkOrin = false;
   late List<ImgModel> images = [];
   final customFormat = DateFormat('yyyy.MM.dd hh:mm');
-  final SendDataRemoteDatasourceImpl sendDataRemoteDatasourceImpl = di.get();
+  SharedPreferences sharedPreferences = di.get();
+  final NetworkInfo networkInfo = di.get();
+  http.Client client = di.get();
+
+  Dio dio = di.get();
+
+  late ProgressDialog pd;
+
   @override
   void initState() {
     _bloc = BlocProvider.of<SendDataBloc>(context);
+    pd = ProgressDialog(context: context);
     super.initState();
   }
 
@@ -84,7 +100,6 @@ class _SendDataState extends State<SendData> {
 
   @override
   Widget build(BuildContext context) {
-    ProgressDialog pd = ProgressDialog(context: context);
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -316,38 +331,12 @@ class _SendDataState extends State<SendData> {
                           FocusManager.instance.primaryFocus?.unfocus();
                           addFile();
                         },
-                        child: BlocListener<SendDataBloc, SendDataState>(
-                          listener: (context, state) async  {
-                            if (state is SendDataFailure) {
-                              pd.close();
-                              CustomToast.showToast(
-                                  "Маълумотлар юкланишда хатолик юз берди!");
-                            }
-                            if (state is SendDataSuccess) {
-                              pd.close();
-                              Navigator.of(context).pop();
-                            }
-                            if (state is SendDataLoading) {
-                              pd.show(
-                                  max: 100,
-                                  msg: 'Файл юкланмоқда...',
-                                  barrierDismissible: false,
-                                  msgMaxLines: 1,
-                              );
-                              for (int i = 0; i <= 99; i++) {
-                                pd.update(value: i);
-                                i++;
-                                await Future.delayed(const Duration(milliseconds: 100));
-                              }
-                            }
-                          },
-                          child: Text(
-                            "Юбориш",
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                color: cWhiteColor,
-                                fontFamily: 'Regular'),
-                          ),
+                        child: Text(
+                          "Юбориш",
+                          style: TextStyle(
+                              fontSize: 18.sp,
+                              color: cWhiteColor,
+                              fontFamily: 'Regular'),
                         ),
                         color: cFirstColor,
                         elevation: 0,
@@ -451,6 +440,7 @@ class _SendDataState extends State<SendData> {
   }
 
   void addFile() async {
+    pd.show(max: 100, msg: "Маълумотлар юкланмоқда...", msgFontSize: 17.sp);
     try {
       images.clear();
       if (_imageFile0 != null) {
@@ -490,17 +480,73 @@ class _SendDataState extends State<SendData> {
             .add(ImgModel(latLang: latLang5, sana: sana5, image: imageString));
       }
       if (images.isNotEmpty) {
-        _bloc.add(
-          SendDataToServerEvent(
-            userId: 2,
-            subId: widget.categoryId,
-            subCategoryId: widget.subCategoryId,
-            presenceOfDeputy: checkOrin ? 1 : 0,
-            title: subject.text,
-            text: text.text,
-            images: images,
-          ),
-        );
+
+
+        if(await networkInfo.isConnected){
+          var json = jsonEncode(images.map((e) => e.toJson()).toList());
+
+          var body = {
+            "user_id": sharedPreferences.getString("id")!,
+            "category_id": widget.categoryId.toString(),
+            "subCategory_id": widget.subCategoryId.toString(),
+            "orinbosar_ishtirokida": (checkOrin ? 1 : 0).toString(),
+            "title": subject.text.toString(),
+            "text": text.text.toString(),
+            "images_list": json,
+          };
+          try {
+            Options options = Options(
+              receiveDataWhenStatusError: true,
+              headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                "Accept": "application/json",
+                "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+              },
+              receiveTimeout: 60 * 1000,
+              sendTimeout: 60 * 1000,
+            );
+
+            final response = await dio.post(
+              baseUrl + worksPHP,
+              data: body,
+              options: options,
+              onSendProgress: (int sent, int total) {
+                pd.update(value: (sent / total * 100).round() - 2);
+              },
+            );
+            if (response.statusCode == 200) {
+              pd.close();
+              Navigator.pop(context);
+            } else {
+              pd.close();
+              CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+            }
+          } catch (e) {
+            debugPrint(e.toString());
+            pd.close();
+            CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+          }
+        } else {
+          NotSendModel list = NotSendModel(
+            userId: sharedPreferences.getString("id")!,
+            categoryId: widget.categoryId.toString(),
+            subCategoryId: widget.subCategoryId.toString(),
+            orinbosarIshtirokida: (checkOrin ? 1 : 0).toString(),
+            title: subject.text.toString(),
+            text: text.text.toString(),
+            imagesList: images,
+          );
+          try {
+            final box = Hive.box(forSendBox);
+            box.add(list);
+            pd.close();
+            Navigator.pop(context);
+          } catch (e) {
+            debugPrint(e.toString());
+            pd.close();
+            CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+          }
+        }
       } else {
         CustomToast.showToast("Илтимос аввал маълумот киритинг!");
       }
@@ -509,4 +555,19 @@ class _SendDataState extends State<SendData> {
       return;
     }
   }
+
+  void updateCount(int round) async {
+    pd.update(value: round);
+  }
 }
+// _bloc.add(
+//   SendDataToServerEvent(
+//     userId: 2,
+//     subId: widget.categoryId,
+//     subCategoryId: widget.subCategoryId,
+//     presenceOfDeputy: checkOrin ? 1 : 0,
+//     title: subject.text,
+//     text: text.text,
+//     images: images,
+//   ),
+// );
