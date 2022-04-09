@@ -40,7 +40,7 @@ class CategoryBloc extends Bloc<HomeEvent, CategoryState> {
             },
         (r) => {
               if (r.isEmpty)
-                {emit(const HomeFailureState(isLarge: false))}
+                {emit(const HomeFailureState1(isLarge: false))}
               else
                 {emit(HomeSuccessState(list: r, selected: 0, isLarge: false, count: box.length))}
             });

@@ -6,7 +6,6 @@ import 'package:etahlil/core/widgets/costum_toast.dart';
 import 'package:etahlil/di/dependency_injection.dart';
 import 'package:etahlil/features/kutilmoqda/presentetion/bloc/not_send_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

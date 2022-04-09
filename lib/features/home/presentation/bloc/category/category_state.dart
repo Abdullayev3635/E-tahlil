@@ -31,3 +31,7 @@ class HomeSuccessState extends CategoryState {
 class HomeFailureState extends CategoryState {
   const HomeFailureState({required bool isLarge}) : super(isLarge: isLarge);
 }
+
+class HomeFailureState1 extends CategoryState {
+  const HomeFailureState1({required bool isLarge}) : super(isLarge: isLarge);
+}
