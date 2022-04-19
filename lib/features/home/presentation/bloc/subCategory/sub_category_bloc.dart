@@ -48,8 +48,12 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
                       if (event.id == r[i].categoryId)
                         {
                           subList.add(r[i]),
+                        }
+                      else if (event.id == 0)
+                        {
+                          if (r[i].status == "1") {subList.add(r[i])}
                         },
-                      if (r[i].status == "1")
+                      if (r[i].status! == "1")
                         {
                           isStatus = true,
                         }

@@ -16,7 +16,7 @@ class PassBloc extends Bloc<PassEvent, PassState> {
         super(const PassInitial("Махфий паролни киритинг")) {
     on<PassCompileEvent>(
       _nextPage,
-      transformer: sequential(),
+      transformer: restartable(),
     );
   }
 

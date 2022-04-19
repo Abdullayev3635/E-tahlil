@@ -296,9 +296,11 @@ class _HomePageState extends State<HomePage> {
                                           shape: BoxShape.circle,
                                           border: Border.all(
                                               width: 1.5.w,
-                                              color: state.selected == index
-                                                  ? cWhiteColor
-                                                  : cSecondColor),
+                                              color: state.list[index].id == 0
+                                                  ? cRedColor
+                                                  : state.selected == index
+                                                      ? cWhiteColor
+                                                      : cSecondColor),
                                           color: cSecondColor),
                                       height: 75.h,
                                       width: 68.w,
@@ -617,13 +619,16 @@ class _HomePageState extends State<HomePage> {
                                     SizedBox(
                                       width: 15.w,
                                     ),
-                                    Text(
-                                      state.list[index].name!,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                          fontSize: 16.sp,
-                                          color: cGrayColor2,
-                                          fontFamily: 'Medium'),
+                                    SizedBox(
+                                      width: 250.w,
+                                      child: Text(
+                                        state.list[index].name!,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            color: cGrayColor2,
+                                            fontFamily: 'Medium'),
+                                      ),
                                     ),
                                     const Spacer(),
                                     Text(

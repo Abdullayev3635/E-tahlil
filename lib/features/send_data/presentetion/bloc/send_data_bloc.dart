@@ -14,7 +14,7 @@ class SendDataBloc extends Bloc<SendDataEvent, SendDataState> {
   final SendData sendData;
 
   SendDataBloc({required this.sendData}) : super(SendDataInitial()) {
-    on<SendDataToServerEvent>(_sendData, transformer: sequential());
+    on<SendDataToServerEvent>(_sendData, transformer: restartable());
   }
 
   FutureOr<void> _sendData(

@@ -29,14 +29,6 @@ class CategoryModel extends HiveObject {
     this.description,
   });
 
-  CategoryModel.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    name = map['name'];
-    repetition = map['repetition'];
-    status = map['status'];
-    count = map['count'];
-    description = map['description'];
-  }
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

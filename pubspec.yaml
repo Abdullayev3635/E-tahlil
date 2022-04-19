@@ -53,13 +53,13 @@ dependencies:
   dartz: ^0.10.1
   # 19.For get uni address
   device_info_plus: ^3.2.2
-  # 19.For get current location
+  # 20.For get current location
   geolocator: ^8.2.0
-  # 19.For Image cached
+  # 21.For Image cached
   cached_network_image: ^3.2.0
-  # 20.For Progress
+  # 22.For Progress
   sn_progress_dialog: ^1.0.3
-  # 21. For Fingerprint
+  # 23. For Fingerprint
   local_auth: ^1.1.0
   # 22 For stream
   rxdart: ^0.27.3
