@@ -89,8 +89,9 @@ class _HomePageState extends State<HomePage> {
                   child: const Center(child: CupertinoActivityIndicator()),
                 );
               } else if (state is HomeSuccessState) {
-                _subCategoryBloc.add(
-                    GetSubCategoryEvent(id: state.list[state.selected].id!));
+                _subCategoryBloc.add(GetSubCategoryEvent(
+                    id: state.list[state.selected].id!,
+                    list: state.list));
                 return Container(
                   height: state.isLarge ? (443) : (306).h,
                   decoration: BoxDecoration(
@@ -317,33 +318,36 @@ class _HomePageState extends State<HomePage> {
                                             fontSize: 9.sp),
                                       )),
                                     ),
-                                    Align(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.r),
-                                            color: cWhiteColor),
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal:
-                                                state.isLarge ? 5.w : 0.w,
-                                            vertical: 5.h),
-                                        padding: EdgeInsets.only(bottom: 2.h),
-                                        height: 18.h,
-                                        width: 18.w,
-                                        child: Center(
-                                          child: Text(
-                                            (state.list[index].count ?? "0")
-                                                .toString(),
-                                            maxLines: 1,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: cFirstColor,
-                                                fontFamily: 'Medium',
-                                                fontSize: 9.sp),
+                                    Visibility(
+                                      child: Align(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.r),
+                                              color: cWhiteColor),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal:
+                                                  state.isLarge ? 5.w : 0.w,
+                                              vertical: 5.h),
+                                          padding: EdgeInsets.only(bottom: 2.h),
+                                          height: 18.h,
+                                          width: 18.w,
+                                          child: Center(
+                                            child: Text(
+                                              (state.list[index].count ?? "0")
+                                                  .toString(),
+                                              maxLines: 1,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: cFirstColor,
+                                                  fontFamily: 'Medium',
+                                                  fontSize: 9.sp),
+                                            ),
                                           ),
                                         ),
+                                        alignment: Alignment.topRight,
                                       ),
-                                      alignment: Alignment.topRight,
+                                      visible: state.list[index].count!=0,
                                     ),
                                   ],
                                 ),

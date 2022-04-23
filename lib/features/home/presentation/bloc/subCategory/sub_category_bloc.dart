@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:etahlil/core/errors/failures.dart';
+import 'package:etahlil/features/home/data/models/category_model1.dart';
 import 'package:etahlil/features/home/data/models/sub_category_model.dart';
 import 'package:etahlil/features/home/domain/usescases/u_sub_category.dart';
 import 'package:meta/meta.dart';
@@ -53,9 +54,14 @@ class SubCategoryBloc extends Bloc<SubCategoryEvent, SubCategoryState> {
                         {
                           if (r[i].status == "1") {subList.add(r[i])}
                         },
-                      if (r[i].status == "1" && (r[i].countWorks ?? 0) > 0)
+                      if (r[i].status == "1")
                         {
-                          isStatus = true,
+                          for (int i1 = 0; event.list.length > i1; i1++)
+                            {
+                              if (r[i].categoryId == event.list[i1].id &&
+                                  event.list[i1].count! > 0)
+                                {isStatus = true}
+                            }
                         }
                     },
                   emit(SubCategorySuccessState(

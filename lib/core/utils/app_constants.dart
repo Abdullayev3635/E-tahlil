@@ -52,7 +52,7 @@ const double cNumberLockH90 = 90.0;
 const double cNumberLockText42 = 42.0;
 
 // versions
-const String version = "1.0.3";
+const String version = "1.0.4";
 
 // lock number style
 

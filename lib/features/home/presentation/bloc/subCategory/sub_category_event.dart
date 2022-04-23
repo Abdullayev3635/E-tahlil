@@ -5,8 +5,9 @@ abstract class SubCategoryEvent {}
 
 class GetSubCategoryEvent extends SubCategoryEvent {
   final int id;
+  final List<CategoryModel> list;
 
-  GetSubCategoryEvent({required this.id});
+  GetSubCategoryEvent({required this.id,required this.list});
 }
 
 class SearchSubCategoryEvent extends SubCategoryEvent {
