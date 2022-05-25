@@ -78,6 +78,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../features/kutilmoqda/data/datasoursec/yuborilmagan_remote_datasources.dart';
+import '../features/password/presentation/bloc/pin_bloc.dart';
 
 final di = GetIt.instance;
 //di is referred to as Service Locator
@@ -88,6 +89,12 @@ Future<void> init() async {
   di.registerFactory(
     () => SendDataBloc(
       sendData: di(),
+    ),
+  );
+  // password
+  di.registerFactory(
+    () => PinBloc(
+      sharedPreferences: di(),
     ),
   );
   //lock

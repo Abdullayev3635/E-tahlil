@@ -5,6 +5,8 @@ import 'lock/presentation/pages/lock_page.dart';
 import 'login/presentation/pages/login_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'navigation/navigation.dart';
+
 class AppProvider extends StatelessWidget {
   const AppProvider({Key? key}) : super(key: key);
 
@@ -35,7 +37,11 @@ class App extends StatelessWidget {
           );
         },
         debugShowCheckedModeBanner: false,
-        home: id == "" ? LoginPage.screen() : PasswordScreen.screen(),
+        home: id == ""
+            ? LoginPage.screen()
+            : (sharedPreferences.getString('pin_code') ?? '') != ''
+                ? PasswordScreen.screen()
+                : const BottomNavigationPage(),
       ),
     );
   }

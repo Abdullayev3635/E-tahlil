@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../login/presentation/pages/login_page.dart';
+import '../../../password/presentation/pages/password_dialog.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -133,7 +134,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 SizedBox(
-                  height: 50.h,
+                  height: 12.h,
                 ),
                 Text(
                   state.object.regionName!,
@@ -160,7 +161,7 @@ class _ProfileState extends State<Profile> {
                       fontFamily: 'Medium'),
                 ),
                 SizedBox(
-                  height: 24.h,
+                  height: 12.h,
                 ),
                 SvgPicture.asset(
                   "assets/icons/person.svg",
@@ -168,13 +169,13 @@ class _ProfileState extends State<Profile> {
                   height: 153.h,
                 ),
                 SizedBox(
-                  height: 24.h,
+                  height: 12.h,
                 ),
                 Card(
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 25.h,
+                        height: 15.h,
                       ),
                       infoWidget(
                         state.object.viloyatBoyicha!.toString(),
@@ -185,7 +186,7 @@ class _ProfileState extends State<Profile> {
                         cFirstColor,
                       ),
                       SizedBox(
-                        height: 25.h,
+                        height: 15.h,
                       ),
                       infoWidget(
                           state.object.barchaJonatmalar!.toString(),
@@ -195,7 +196,7 @@ class _ProfileState extends State<Profile> {
                           cYellowColor,
                           cYellowColor),
                       SizedBox(
-                        height: 25.h,
+                        height: 15.h,
                       ),
                       infoWidget(
                           state.object.rejaGrafikBoyicha!.toString(),
@@ -205,7 +206,7 @@ class _ProfileState extends State<Profile> {
                           cYellowColor,
                           cRedColor),
                       SizedBox(
-                        height: 25.h,
+                        height: 15.h,
                       ),
                     ],
                   ),
@@ -213,6 +214,43 @@ class _ProfileState extends State<Profile> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(cRadius22.r),
+                  ),
+                ),
+                SizedBox(
+                  height: 12.h,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PasswordEditDialog.screen();
+                        }).then((value) {
+                      setState(() {});
+                    });
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 21.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.r),
+                        color: cWhiteColor),
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset("assets/icons/ic_shield-security.svg",
+                            width: 24.w, height: 24.h, color: cFirstColor),
+                        const SizedBox(width: 18),
+                        Expanded(
+                          child: Text(
+                            "Parolni o’rnatish(o’zgartirish)",
+                            style: TextStyle(
+                                color: cFirstColor,
+                                fontSize: 16.sp,
+                                fontFamily: 'Regular'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Spacer(),

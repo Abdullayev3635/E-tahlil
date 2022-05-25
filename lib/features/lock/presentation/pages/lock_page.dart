@@ -5,6 +5,7 @@ import 'package:etahlil/features/lock/presentation/widgets/num_pad.dart';
 import 'package:etahlil/features/navigation/navigation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,25 +63,33 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 50.w),
                   child: BlocBuilder<PassBloc, PassState>(
-                    buildWhen: (_, state) {
-                      if (state is PassSuccess) {
-                        Navigator.pushReplacement(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  const BottomNavigationPage()),
-                        );
-                      }
-                      debugPrint(state.message);
-                      return state is PassSuccess;
-                    },
                     builder: (context, state) {
+                      if (state is PassSuccess) {
+                        SchedulerBinding.instance?.addPostFrameCallback((_) {
+                          // add your code here.
+                          Navigator.pushReplacement(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                const BottomNavigationPage()),
+                          );
+                        });
+                      }
                       if (state is PassInitial) {
                         return Text(
                           state.message,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: cWhiteColor,
+                              fontSize: 16.sp,
+                              fontFamily: 'Regular'),
+                        );
+                      } else if (state is PassError) {
+                        return Text(
+                          state.errorMessage,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: cYellowColor,
                               fontSize: 16.sp,
                               fontFamily: 'Regular'),
                         );
