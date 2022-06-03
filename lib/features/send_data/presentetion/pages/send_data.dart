@@ -480,73 +480,72 @@ class _SendDataState extends State<SendData> {
             .add(ImgModel(latLang: latLang5, sana: sana5, image: imageString));
       }
       if (images.isNotEmpty) {
-
-
-        if(await networkInfo.isConnected){
-          var json = jsonEncode(images.map((e) => e.toJson()).toList());
-
-          var body = {
-            "user_id": sharedPreferences.getString("id")!,
-            "category_id": widget.categoryId.toString(),
-            "subCategory_id": widget.subCategoryId.toString(),
-            "orinbosar_ishtirokida": (checkOrin ? 1 : 0).toString(),
-            "title": subject.text.toString(),
-            "text": text.text.toString(),
-            "images_list": json,
-          };
-          try {
-            Options options = Options(
-              receiveDataWhenStatusError: true,
-              headers: {
-                "Content-Type": "application/json; charset=UTF-8",
-                "Accept": "application/json",
-                "Authorization": "Bearer ${sharedPreferences.getString("token")}"
-              },
-              receiveTimeout: 60 * 1000,
-              sendTimeout: 60 * 1000,
-            );
-
-            final response = await dio.post(
-              baseUrl + worksPHP,
-              data: body,
-              options: options,
-              onSendProgress: (int sent, int total) {
-                pd.update(value: (sent / total * 100).round() - 2);
-              },
-            );
-            if (response.statusCode == 200) {
-              pd.close();
-              Navigator.pop(context);
-            } else {
-              pd.close();
-              CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
-            }
-          } catch (e) {
-            debugPrint(e.toString());
-            pd.close();
-            CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
-          }
-        } else {
-          NotSendModel list = NotSendModel(
-            userId: sharedPreferences.getString("id")!,
-            categoryId: widget.categoryId.toString(),
-            subCategoryId: widget.subCategoryId.toString(),
-            orinbosarIshtirokida: (checkOrin ? 1 : 0).toString(),
-            title: subject.text.toString(),
-            text: text.text.toString(),
-            imagesList: images,
-          );
-          try {
-            final box = Hive.box(forSendBox);
-            box.add(list);
-            pd.close();
-            Navigator.pop(context);
-          } catch (e) {
-            debugPrint(e.toString());
-            pd.close();
-            CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
-          }
+        NotSendModel list = NotSendModel(
+          userId: sharedPreferences.getString("id")!,
+          categoryId: widget.categoryId.toString(),
+          subCategoryId: widget.subCategoryId.toString(),
+          orinbosarIshtirokida: (checkOrin ? 1 : 0).toString(),
+          title: subject.text.toString(),
+          text: text.text.toString(),
+          imagesList: images,
+        );
+        try {
+          final box = Hive.box(forSendBox);
+          box.add(list);
+          pd.close();
+          Navigator.pop(context);
+        } catch (e) {
+          debugPrint(e.toString());
+          pd.close();
+          CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
         }
+        // if(await networkInfo.isConnected){
+        //   var json = jsonEncode(images.map((e) => e.toJson()).toList());
+        //
+        //   var body = {
+        //     "user_id": sharedPreferences.getString("id")!,
+        //     "category_id": widget.categoryId.toString(),
+        //     "subCategory_id": widget.subCategoryId.toString(),
+        //     "orinbosar_ishtirokida": (checkOrin ? 1 : 0).toString(),
+        //     "title": subject.text.toString(),
+        //     "text": text.text.toString(),
+        //     "images_list": json,
+        //   };
+        //   try {
+        //     Options options = Options(
+        //       receiveDataWhenStatusError: true,
+        //       headers: {
+        //         "Content-Type": "application/json; charset=UTF-8",
+        //         "Accept": "application/json",
+        //         "Authorization": "Bearer ${sharedPreferences.getString("token")}"
+        //       },
+        //       receiveTimeout: 60 * 1000,
+        //       sendTimeout: 60 * 1000,
+        //     );
+        //
+        //     final response = await dio.post(
+        //       baseUrl + worksPHP,
+        //       data: body,
+        //       options: options,
+        //       onSendProgress: (int sent, int total) {
+        //         pd.update(value: (sent / total * 100).round() - 2);
+        //       },
+        //     );
+        //     if (response.statusCode == 200) {
+        //       pd.close();
+        //       Navigator.pop(context);
+        //     } else {
+        //       pd.close();
+        //       CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+        //     }
+        //   } catch (e) {
+        //     debugPrint(e.toString());
+        //     pd.close();
+        //     CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
+        //   }
+        // } else {
+        //
+        // }
       } else {
         CustomToast.showToast("Илтимос аввал маълумот киритинг!");
       }

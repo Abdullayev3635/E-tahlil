@@ -28,34 +28,50 @@ class SendDataRepositoryImpl extends SendDataRepository {
       String title,
       String text,
       List<ImgModel> images) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final result = await dataRemoteDatasource.setData(
-            sharedPreferences.getString("id") ?? "0",
-            subId,
-            subCategoryId,
-            presenceOfDeputy,
-            title,
-            text,
-            images);
-        return Right(result);
-      } on ServerFailure {
-        return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
-      }
-    } else {
-      try {
-        final result = await dataLocalDatasource.setData(
-            sharedPreferences.getString("id") ?? "0",
-            subId,
-            subCategoryId,
-            presenceOfDeputy,
-            title,
-            text,
-            images);
-        return Right(result);
-      } on ServerFailure {
-        return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
-      }
+    try {
+
+      final result = await dataLocalDatasource.setData(
+          sharedPreferences.getString("id") ?? "0",
+          subId,
+          subCategoryId,
+          presenceOfDeputy,
+          title,
+          text,
+          images);
+      return Right(result);
+
+    } on ServerFailure {
+      return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
     }
+
+    // if (await networkInfo.isConnected) {
+    //   try {
+    //     final result = await dataRemoteDatasource.setData(
+    //         sharedPreferences.getString("id") ?? "0",
+    //         subId,
+    //         subCategoryId,
+    //         presenceOfDeputy,
+    //         title,
+    //         text,
+    //         images);
+    //     return Right(result);
+    //   } on ServerFailure {
+    //     return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
+    //   }
+    // } else {
+    //  try {
+    //         final result = await dataLocalDatasource.setData(
+    //             sharedPreferences.getString("id") ?? "0",
+    //             subId,
+    //             subCategoryId,
+    //             presenceOfDeputy,
+    //             title,
+    //             text,
+    //             images);
+    //         return Right(result);
+    //       } on ServerFailure {
+    //         return const Left(ServerFailure("Маълумот юкланишда хатолик бўлди"));
+    //       }
+    // }
   }
 }
