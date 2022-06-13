@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:etahlil/core/errors/failures.dart';
 import 'package:etahlil/core/usescases/usecase.dart';
-import 'package:etahlil/features/kutilmoqda/data/model/not_send_model.dart';
+import 'package:etahlil/features/kutilmoqda/data/model/not_send_model1.dart';
 import 'package:etahlil/features/kutilmoqda/domain/repository/yuborilmagan_repository.dart';
 
 class NotSendLocal extends UseCase<List<NotSendModel>, NotSendParamsLocal> {

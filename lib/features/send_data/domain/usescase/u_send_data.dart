@@ -19,6 +19,8 @@ class SendData extends UseCase<bool, SendDataParams> {
         params.presenceOfDeputy,
         params.title,
         params.text,
+        params.categoryName,
+        params.subCategoryName,
         params.images);
   }
 }
@@ -30,11 +32,13 @@ class SendDataParams extends Equatable {
   final int presenceOfDeputy;
   final String title;
   final String text;
+  final String categoryName;
+  final  String subCategoryName;
   final List<ImgModel> images;
 
   @override
   List<Object?> get props => [userId, subId, title, text, images];
 
   const SendDataParams(this.userId, this.subId, this.subCategoryId,
-      this.presenceOfDeputy, this.title, this.text, this.images);
+      this.presenceOfDeputy, this.title, this.text, this.categoryName, this.subCategoryName, this.images);
 }

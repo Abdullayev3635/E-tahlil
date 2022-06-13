@@ -9,6 +9,8 @@ class SendDataToServerEvent extends SendDataEvent {
   int? presenceOfDeputy;
   String? title;
   String? text;
+  String? categoryName;
+  String? subCategoryName;
   List<ImgModel>? images;
 
   SendDataToServerEvent(
@@ -18,5 +20,7 @@ class SendDataToServerEvent extends SendDataEvent {
       required this.presenceOfDeputy,
       required this.title,
       required this.text,
+      required this.categoryName,
+      required this.subCategoryName,
       required this.images});
 }

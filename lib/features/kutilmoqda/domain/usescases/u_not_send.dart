@@ -5,7 +5,7 @@ import 'package:etahlil/core/usescases/usecase.dart';
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:etahlil/features/send_data/domain/repository/send_data_repository.dart';
 
-import '../../data/model/not_send_model.dart';
+import '../../data/model/not_send_model1.dart';
 import '../repository/yuborilmagan_repository.dart';
 
 class NotSend extends UseCase<dynamic, NotSendParams> {

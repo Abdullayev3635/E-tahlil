@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'not_send_model.dart';
+part of 'not_send_model1.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -23,6 +23,8 @@ class NotSendModelAdapter extends TypeAdapter<NotSendModel> {
       orinbosarIshtirokida: fields[3] as String?,
       title: fields[4] as String?,
       text: fields[5] as String?,
+      categoryName: fields[7] as String?,
+      subCategoryName: fields[8] as String?,
       imagesList: (fields[6] as List?)?.cast<ImgModel>(),
     );
   }
@@ -30,7 +32,7 @@ class NotSendModelAdapter extends TypeAdapter<NotSendModel> {
   @override
   void write(BinaryWriter writer, NotSendModel obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)
@@ -44,7 +46,11 @@ class NotSendModelAdapter extends TypeAdapter<NotSendModel> {
       ..writeByte(5)
       ..write(obj.text)
       ..writeByte(6)
-      ..write(obj.imagesList);
+      ..write(obj.imagesList)
+      ..writeByte(7)
+      ..write(obj.categoryName)
+      ..writeByte(8)
+      ..write(obj.subCategoryName);
   }
 
   @override

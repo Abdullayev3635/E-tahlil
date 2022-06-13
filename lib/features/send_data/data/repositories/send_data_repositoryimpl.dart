@@ -27,6 +27,8 @@ class SendDataRepositoryImpl extends SendDataRepository {
       int presenceOfDeputy,
       String title,
       String text,
+      String categoryName,
+      String subCategoryName,
       List<ImgModel> images) async {
     try {
 
@@ -37,6 +39,8 @@ class SendDataRepositoryImpl extends SendDataRepository {
           presenceOfDeputy,
           title,
           text,
+          categoryName,
+          subCategoryName,
           images);
       return Right(result);
 

@@ -28,6 +28,8 @@ class SendDataBloc extends Bloc<SendDataEvent, SendDataState> {
         event.presenceOfDeputy!,
         event.title!,
         event.text!,
+        event.categoryName!,
+        event.subCategoryName!,
         event.images!,
       ),
     );

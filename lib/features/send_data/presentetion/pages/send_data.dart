@@ -19,28 +19,30 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import '../../../../core/network/network_info.dart';
-import '../../../../core/utils/api_path.dart';
-import '../../../kutilmoqda/data/model/not_send_model.dart';
+import '../../../kutilmoqda/data/model/not_send_model1.dart';
 
 class SendData extends StatefulWidget {
   final int categoryId;
   final int subCategoryId;
   final String categoryName;
+  final String subCategoryName;
 
   const SendData(
       {Key? key,
       required this.categoryId,
       required this.categoryName,
-      required this.subCategoryId})
+      required this.subCategoryId,
+      required this.subCategoryName})
       : super(key: key);
 
-  static Widget screen(int catId, int subCatId, String categoryName) =>
+  static Widget screen(int catId, int subCatId, String categoryName, String subCategoryName) =>
       BlocProvider(
         create: (context) => di<SendDataBloc>(),
         child: SendData(
           categoryId: catId,
           subCategoryId: subCatId,
           categoryName: categoryName,
+          subCategoryName: subCategoryName,
         ),
       );
 
@@ -444,37 +446,37 @@ class _SendDataState extends State<SendData> {
     try {
       images.clear();
       if (_imageFile0 != null) {
-        imageBytes = _imageFile0!.readAsBytesSync();
+        imageBytes = _imageFile0?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang0, sana: sana0, image: imageString));
       }
       if (_imageFile1 != null) {
-        imageBytes = _imageFile1!.readAsBytesSync();
+        imageBytes = _imageFile1?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang1, sana: sana1, image: imageString));
       }
       if (_imageFile2 != null) {
-        imageBytes = _imageFile2!.readAsBytesSync();
+        imageBytes = _imageFile2?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang2, sana: sana2, image: imageString));
       }
       if (_imageFile3 != null) {
-        imageBytes = _imageFile3!.readAsBytesSync();
+        imageBytes = _imageFile3?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang3, sana: sana3, image: imageString));
       }
       if (_imageFile4 != null) {
-        imageBytes = _imageFile4!.readAsBytesSync();
+        imageBytes = _imageFile4?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang4, sana: sana4, image: imageString));
       }
       if (_imageFile5 != null) {
-        imageBytes = _imageFile5!.readAsBytesSync();
+        imageBytes = _imageFile5?.readAsBytesSync();
         imageString = base64Encode(imageBytes!);
         images
             .add(ImgModel(latLang: latLang5, sana: sana5, image: imageString));
@@ -487,6 +489,8 @@ class _SendDataState extends State<SendData> {
           orinbosarIshtirokida: (checkOrin ? 1 : 0).toString(),
           title: subject.text.toString(),
           text: text.text.toString(),
+          categoryName: widget.categoryName.toString(),
+          subCategoryName: widget.subCategoryName.toString(),
           imagesList: images,
         );
         try {

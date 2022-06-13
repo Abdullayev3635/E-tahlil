@@ -61,7 +61,7 @@ class _AuthPageState extends State<AuthPage> {
               CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
             }
             if (state is AuthSuccess) {
-              WidgetsBinding.instance?.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(

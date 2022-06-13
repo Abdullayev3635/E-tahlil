@@ -15,7 +15,7 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../../../../core/utils/api_path.dart';
-import '../../data/model/not_send_model.dart';
+import '../../data/model/not_send_model1.dart';
 
 class NotSendPage extends StatefulWidget {
   const NotSendPage({Key? key}) : super(key: key);
@@ -123,20 +123,35 @@ class _NotSendPageState extends State<NotSendPage> {
                                   child: Text(
                                     state.list[index].title ?? "",
                                     style: TextStyle(
-                                        fontSize: 16.sp,
+                                        fontSize: 24.sp,
                                         fontFamily: 'SemiBold'),
                                     maxLines: 1,
                                   ),
                                   margin: EdgeInsets.only(
-                                      left: 22.w,
-                                      right: 16.w,
-                                      top: 16.h,
-                                      bottom: 6.h),
+                                    left: 22.w,
+                                    right: 16.w,
+                                    top: 10.h,
+                                    bottom: 6.h,
+                                  ),
                                   width: 250.w,
                                 ),
                                 Container(
                                   child: Text(
-                                    state.list[index].text ?? "",
+                                    state.list[index].categoryName ?? "",
+                                    style: TextStyle(
+                                        fontSize: 17.sp, fontFamily: 'Medium'),
+                                    maxLines: 2,
+                                  ),
+                                  margin: EdgeInsets.only(
+                                      left: 22.w,
+                                      right: 16.w,
+                                      top: 6.h,
+                                      bottom: 5.h),
+                                  width: 250.w,
+                                ),
+                                Container(
+                                  child: Text(
+                                    state.list[index].subCategoryName ?? "",
                                     style: TextStyle(
                                         fontSize: 14.sp, fontFamily: 'Regular'),
                                     maxLines: 2,
@@ -153,11 +168,14 @@ class _NotSendPageState extends State<NotSendPage> {
                             ),
                             const Spacer(),
                             InkResponse(
-                              child: SvgPicture.asset(
-                                "assets/icons/send_icon.svg",
-                                width: 25.w,
-                                height: 24.h,
-                                color: cFirstColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: SvgPicture.asset(
+                                  "assets/icons/send_icon.svg",
+                                  width: 25.w,
+                                  height: 24.h,
+                                  color: cFirstColor,
+                                ),
                               ),
                               onTap: () async {
                                 if (await networkInfo.isConnected) {

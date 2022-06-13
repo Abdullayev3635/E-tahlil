@@ -581,6 +581,7 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) => SendData.screen(
                                             state.list[index].categoryId!,
                                             state.list[index].id!,
+                                            state.list[index].categoryName!,
                                             state.list[index].name!)),
                                   ).then((value) {
                                     _handleRefresh();
@@ -594,6 +595,7 @@ class _HomePageState extends State<HomePage> {
                                           builder: (context) => SendData.screen(
                                               state.list[index].categoryId!,
                                               state.list[index].id!,
+                                              state.list[index].categoryName!,
                                               state.list[index].name!)),
                                     ).then((value) {
                                       _handleRefresh();

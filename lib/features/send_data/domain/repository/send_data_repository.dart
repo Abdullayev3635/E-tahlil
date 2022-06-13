@@ -10,5 +10,7 @@ abstract class SendDataRepository {
       int presenceOfDeputy,
       String title,
       String text,
+      String categoryName,
+      String subCategoryName,
       List<ImgModel> images);
 }

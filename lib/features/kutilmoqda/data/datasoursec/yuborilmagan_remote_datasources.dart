@@ -4,7 +4,7 @@ import 'package:etahlil/core/utils/api_path.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/not_send_model.dart';
+import '../model/not_send_model1.dart';
 
 abstract class NotSendRemoteDatasource {
   Future<dynamic> setData(NotSendModel notSendMode);

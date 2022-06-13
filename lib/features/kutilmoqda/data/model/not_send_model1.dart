@@ -1,7 +1,7 @@
 import 'package:etahlil/features/send_data/data/models/img_model.dart';
 import 'package:hive/hive.dart';
 
-part 'not_send_model.g.dart';
+part 'not_send_model1.g.dart';
 
 @HiveType(typeId: 5)
 class NotSendModel extends HiveObject {
@@ -19,6 +19,10 @@ class NotSendModel extends HiveObject {
   String? text;
   @HiveField(6)
   List<ImgModel>? imagesList;
+  @HiveField(7)
+  String? categoryName;
+  @HiveField(8)
+  String? subCategoryName;
 
   NotSendModel(
       {this.userId,
@@ -27,6 +31,8 @@ class NotSendModel extends HiveObject {
       this.orinbosarIshtirokida,
       this.title,
       this.text,
+      this.categoryName,
+      this.subCategoryName,
       this.imagesList});
 
   NotSendModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +42,8 @@ class NotSendModel extends HiveObject {
     orinbosarIshtirokida = json['orinbosar_ishtirokida'];
     title = json['title'];
     text = json['text'];
+    title = json['categoryName'];
+    text = json['subCategoryName'];
     if (json['images_list'] != null) {
       imagesList = <ImgModel>[];
       json['images_list'].forEach((v) {

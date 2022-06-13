@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               CustomToast.showToast("Маълумотлар юкланишда хатолик юз берди!");
             }
             if (state is LoginSuccess) {
-              WidgetsBinding.instance?.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
               });
             }
             if (state is OldUser) {
-              WidgetsBinding.instance?.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.pushReplacement(
                   context,
                   CupertinoPageRoute(
